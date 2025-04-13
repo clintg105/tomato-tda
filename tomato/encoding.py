@@ -3,6 +3,9 @@ from transformers import BertTokenizer, BertModel
 from joblib import Parallel, delayed
 from tqdm import tqdm
 
+import numpy as np
+from sklearn.decomposition import PCA
+
 # Globals used by worker processes.
 T, M = None, None
 def bert_encode_reviews(
@@ -45,6 +48,38 @@ def bert_encode_reviews(
         return pd.DataFrame()
     dims = [f"dim_{i}" for i in range(len(rows[0]) - 3)]
     return pd.DataFrame(rows, columns=["review_id", "token_id", "attention_mask"] + dims)
+
+def subtract_pcs(X, min_pc=None, max_pc=None):
+    """
+    Subtracts selected principal components from X.
+
+    Args:
+      X: ndarray of shape (n, d)
+      min_pc: int, float, or None. If int, start index. If float in [0,1), min variance. None means 0.
+      max_pc: int, float, or None. If int < 0, drop top -max_pc PCs. If float in (0,1], max variance. None means d.
+
+    Returns:
+      X with PCs in range [min_pc, max_pc) removed.
+
+    Examples:
+      subtract_pcs(X, 0, -2)        # drop top 2 PCs
+      subtract_pcs(X, 2, 5)         # drop PCs 2 to 4
+      subtract_pcs(X, 0.9, 1.0)     # drop top 10 percent variance
+      subtract_pcs(X, 5, None)      # drop all PCs after 5
+    """
+    X -= X.mean(0)
+    pca = PCA().fit(X)
+    C, V, d = pca.components_, np.cumsum(pca.explained_variance_ratio_), X.shape[1]
+
+    def idx(v, is_upper): return (
+        d + v if is_upper and isinstance(v, int) and v < 0 else
+        np.searchsorted(V, v, 'right' if is_upper else 'left') if isinstance(v, float) else
+        (d if is_upper else 0) if v is None else 
+        v
+    )
+
+    i, j = idx(min_pc, 0), idx(max_pc, 1)
+    return X - X @ C[i:j].T @ C[i:j]
 
 if __name__ == "__main__":
     texts = ["This movie was great!", "Not so good.", "Average film."] * 5
