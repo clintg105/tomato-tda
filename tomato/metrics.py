@@ -68,6 +68,7 @@ def wasserstein_distances(df_enc, ground_metric="cosine", p=2):
     n = len(group_dstrbs)
     D = np.zeros((n, n))
     for i in range(n):
+    
         for j in range(i+1, n):
             dist_ij = wasserstein_distance(group_dstrbs[i], group_dstrbs[j], ground_metric, p=p)
             D[i, j] = dist_ij
@@ -79,13 +80,13 @@ def wasserstein_distances_parallel(df_enc, ground_metric="cosine", p=2, nCores=-
     group_dstrbs = [group[dim_cols].values for _, group in df_enc.groupby("review_id")]
     n = len(group_dstrbs)
 
-    def compute_ij(i, j):
-        d = wasserstein_distance(group_dstrbs[i], group_dstrbs[j], ground_metric, p=p)
+    def compute_ij(gi, gj, i, j):
+        d = wasserstein_distance(gi, gj, ground_metric, p=p)
         return (i, j, d)
 
     tasks = [(i, j) for i in range(n) for j in range(i+1, n)]
     results = Parallel(n_jobs=nCores)(
-        delayed(compute_ij)(i, j) for i, j in tqdm(tasks, desc="Wasserstein Dists")
+        delayed(compute_ij)(group_dstrbs[i], group_dstrbs[j], i, j) for i, j in tqdm(tasks, desc="Wasserstein Dists")
     )
 
     D = np.zeros((n, n))
