@@ -11,7 +11,7 @@ import pandas as pd
 
 from tomato.utils import load_critic_review_df, tomato_data_path
 from tomato.encoding import bert_encode_reviews
-from tomato.metrics import pdist2, wasserstein_distances_sinkhorn_parallel
+from tomato.metrics import pdist2, wasserstein_distances_sinkhorn_parallel, wasserstein_distances_parallel, geodesic_isomap
 
 class Mode(Enum):
     """What should happen if the artefact is missing on disk?"""
@@ -173,6 +173,7 @@ class TDAManager:
                 X = self.get(K[0], K[1], spec_base)
 
                 n = int(re.fullmatch(r"(\d+)nn", geod_check[2]).group(1))
+                D = geodesic_isomap(X, n)
             elif wass_check[0]:
                 # TODO: not impacted by K[1] (recheck other subdirs?)
                 df_enc = self.get(K[0], "encoding")
@@ -182,6 +183,8 @@ class TDAManager:
                 wass_spec = wass_check[2]
                 if wass_spec == "ws01":
                     D = wasserstein_distances_sinkhorn_parallel(df_enc, *args, 0.01)
+                if wass_spec == "wass":
+                    D = wasserstein_distances_parallel(df_enc, *args)
                 else:
                     raise ValueError(f"unknown encoding spec '{spec}'")
                 Path(path).parent.mkdir(parents=True, exist_ok=True)
