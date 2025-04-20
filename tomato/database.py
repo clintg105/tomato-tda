@@ -27,10 +27,23 @@ class TDAManager:
     Root
     └─ {dataset}/
        ├─ encoding.parquet
-       ├─ metric/{metric}.npy
-       └─ tda/
-          ├─ full/{metric}-{downsample}.npz
-          └─ split/{split}/{metric}-{downsample}.npz
+       └─ {transform}/
+            ├─ metric/{metric}.npy
+            └─ tda/
+                ├─ full/{metric}-{downsample}.npz
+                └─ split/{split}/{metric}-{downsample}.npz
+    
+    Example:
+    from tomato.database import TDAManager
+
+    tm = TDAManager()                                       # init
+    df_critic = tm.get("df_critic")                         # get full baseline dataset
+    df_critic_small = tm.get("bert_unif1k")                 # get computed downsample df_small
+    df_enc = tm.get("bert_unif1k","encoding")               # get *cached* encoding df_enc
+    X = tm.get("bert_unif1k","pooled")                      # get computed pooled mat of vectors X
+    mat1 = tm.get("bert_unif1k","cls","cos")                # get computed cos distance mat on CLS tokens
+    mat1 = tm.get("bert_unif1k","pooled","cos")             # get computed cos distance mat on pooled vectors
+    mat2 = tm.get("bert_unif1k","pooled","cos_ws01")        # get *cached* Sinkhorn r=0.01 distance mat with cos as base
     """
 
     # construction
@@ -129,7 +142,8 @@ class TDAManager:
                 else:
                     raise ValueError(f"Unknown encoding spec '{enc}'")
             # Everything below requires encoding and is used in base metrics 
-            # (this should not impact wasserstein metrics)
+            # (this should not impact wasserstein metrics, but it may later 
+            # if we subtract PCs)
             elif K[1] == "pooled":
                 df_enc = self.get(K[0], "encoding")
                 dim_cols = [c for c in df_enc.columns if c.startswith('dim_')]
