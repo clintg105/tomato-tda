@@ -11,7 +11,7 @@ from sklearn.metrics.pairwise import (
 
 import ot
 
-from scipy.spatial import distance
+from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import shortest_path
 from sklearn.neighbors import kneighbors_graph
 from sklearn.decomposition import PCA
@@ -363,3 +363,20 @@ def wasserstein_distances_optimized(
                 D[j, i] = dist_ij
 
     return D
+
+
+def geodesic_isomap(D: np.ndarray, k: int) -> np.ndarray:
+    """
+    Given full distance matrix D and neighborhood size k,
+    builds the k‑NN graph (weighted by distances), symmetrizes it,
+    and returns the all‑pairs geodesic distances.
+    """
+    G = kneighbors_graph(
+        D, 
+        n_neighbors=k, 
+        mode='distance', 
+        metric='precomputed', 
+        include_self=False
+    )
+    G = G.minimum(G.T)
+    return shortest_path(G, directed=False)
