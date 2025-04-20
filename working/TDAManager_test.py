@@ -12,6 +12,8 @@ df_critic = tm.get("df_critic")
 df_critic_small = tm.get("bert_unif1k")
 # get *cached* encoding df_enc
 df_enc = tm.get("bert_unif1k","encoding")
+# get computed pooled mat of vectors X
+X = tm.get("bert_unif1k","pooled")
 # get computed cos distance mat on CLS tokens
 mat1 = tm.get("bert_unif1k","cls","cos") 
 # get computed cos distance mat on pooled vectors
