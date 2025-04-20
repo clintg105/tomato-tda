@@ -1,5 +1,0 @@
-Put csv files here:
-
-rotten_tomatoes_critic_reviews.csv
-
-rotten_tomatoes_movies.csv
