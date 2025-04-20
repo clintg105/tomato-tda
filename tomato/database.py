@@ -100,6 +100,8 @@ class TDAManager:
         if len(K) == 1:
             if K[0] == "df_critic":
                 return load_critic_review_df()
+            else:
+                return self.get(K[0], "df_critic")
         
         # downsampled/encoded data
         if len(K) == 2:
