@@ -22,7 +22,7 @@ class Mode(Enum):
 
 class TDAManager:
     """
-    Interface to on‑disk cache.
+    Lazy loading / file system memoization / artifact store.
 
     Root
     └─ {dataset}/
@@ -101,6 +101,13 @@ class TDAManager:
         if len(K) == 3: # .npy
             f = enc_dir / K[1] / "metric" / f"{K[2]}.npy"
             return np.load(f) # raises if missing
+        
+        if len(K) == 4: # (ds, red, metric, split)
+            tdadir = enc_dir / K[1] / "tda" / (
+                "full" if K[3] == "full" else Path("split") / K[3]
+            )
+            f = tdadir / f"{K[2]}.npz"
+            return np.load(f, allow_pickle=True)["dgms"] # raises if missing
 
         raise FileNotFoundError  # unknown pattern – treat as “not on disk”
 
@@ -197,7 +204,39 @@ class TDAManager:
             return D
 
         # TDA data
-            
+        if len(K) == 4: # (ds, red, metric, split)
+            ds, red, metric, split = K
+            if path is None:
+                base = self.root / ds / red / "tda"
+                tdir = base / ("full" if split == "full"
+                               else Path("split") / split)
+                path = tdir / f"{metric}.npz"
+            path = Path(path)
+            path.parent.mkdir(parents=True, exist_ok=True)
+
+            # D sub-mat
+            D = self.get(ds, red, metric)
+            if split == "full":
+                idx = np.arange(D.shape[0])
+            else:
+                # *Minimal* canned splits; extend as needed.
+                df = self.get(ds, "df_critic")
+                if split == "fresh":
+                    idx = np.where(df.is_fresh.values)[0]
+                elif split == "rotten":
+                    idx = np.where(~df.is_fresh.values)[0]
+                else: # treat as critic name, example
+                    idx = np.where(df.critic_name == split)[0]
+                if idx.size == 0:
+                    raise ValueError(f"Unknown/empty split '{split}'")
+            D = D[np.ix_(idx, idx)]
+
+            # run Rip & cache
+            from ripser import ripser
+            dgms = ripser(D, distance_matrix=True, maxdim=1)["dgms"]
+            np.savez(path, dgms=dgms)
+            return dgms
+        
         raise KeyError(f"Unrecognised path: {K!r}")
 
 def get_pdist2_args_from_base(spec):
