@@ -9,7 +9,7 @@ from typing import Any, Dict, Tuple
 import numpy as np
 import pandas as pd
 
-from tomato.utils import load_critic_review_df, tomato_data_path
+from tomato.utils import load_critic_review_df, tomato_data_path, load_movie_df
 from tomato.encoding import bert_encode_reviews
 from tomato.metrics import pdist2, wasserstein_distances_sinkhorn_parallel, wasserstein_distances_parallel, geodesic_isomap
 
@@ -120,6 +120,22 @@ class TDAManager:
         if len(K) == 1:
             if K[0] == "df_critic":
                 return load_critic_review_df()
+            if K[0] == "df_movie":
+                return load_movie_df()
+            if K[0] == "df_full":
+                df_critic = self.get('df_critic')
+                df_movie = self.get('df_movie')
+
+                # merge critic-level data and movie-level data 
+                df_full = df_critic.merge(
+                    df_movie,
+                    on='rotten_tomatoes_link',
+                    how='inner'
+                ).dropna(
+                    subset=['review_content']
+                )
+                return df_full
+            
             else:
                 return self.get(K[0], "df_critic")
         
@@ -135,6 +151,39 @@ class TDAManager:
                 num = int(m.group(2)) * (1000 if downsample.endswith("k") else 1)
                 if key == "unif":
                     return df_full.sample(num,random_state=42)
+                if key == "strat":
+                    df_full = self.get('df_full')
+                    # identify "pure" drama vs "pure" comedy 
+                    df_full['drama_or_comedy'] = np.where(
+                        (
+                            df_full['genres'].str.contains('Drama', na=False) & 
+                            ~df_full['genres'].str.contains('Comedy', na=False)
+                        ),
+                        'Drama',
+                        np.where(
+                            (
+                                df_full['genres'].str.contains('Comedy', na=False) & 
+                                ~df_full['genres'].str.contains('Drama', na=False)
+                            ),
+                            'Comedy',
+                            None
+                        )
+                    )
+                    # get two most prolific critics 
+                    top_two_critics = df_full.critic_name.value_counts()[:2].index.tolist()
+                    # stratified random sample, 800 samples spready across 16 buckets 9
+                    df_strat = df_full[
+                        df_full.critic_name.isin(top_two_critics) &
+                        df_full.content_rating.isin(['R', 'PG']) &
+                        df_full.drama_or_comedy.notna()
+                    ].groupby(
+                        ['critic_name', 'content_rating', 'drama_or_comedy', 'review_type']
+                    ).sample(
+                        50, random_state=12
+                    ).reset_index(
+                        drop=True
+                    )
+                    return df_strat
                 else:
                     raise ValueError(f"Unknown sample spec '{key}'")
             elif K[1] == "encoding":

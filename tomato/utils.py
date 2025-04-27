@@ -10,3 +10,7 @@ def tomato_data_path():
 def load_critic_review_df():
     return pd.read_csv(
         tomato_data_path() / 'rotten_tomatoes_critic_reviews.csv')
+
+def load_movie_df():
+    return pd.read_csv(
+        tomato_data_path() / 'rotten_tomatoes_movies.csv')
