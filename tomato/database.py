@@ -9,6 +9,12 @@ from typing import Any, Dict, Tuple
 import numpy as np
 import pandas as pd
 
+from itertools import product
+from time import perf_counter
+from pprint import pformat
+
+from ripser import ripser
+
 from tomato.utils import load_critic_review_df, tomato_data_path, load_movie_df
 from tomato.encoding import bert_encode_reviews, bow_encode_reviews, tfidf_encode_reviews
 from tomato.metrics import pdist2, wasserstein_distances_sinkhorn_parallel, wasserstein_distances_parallel, geodesic_isomap
@@ -107,7 +113,7 @@ class TDAManager:
             tdadir = (self.root / ds / red / "tda" /
                       ("full" if split == "full" else Path("split") / split))
             f = tdadir / f"{metric}.npz"
-            return np.load(f, allow_pickle=True)["dgms"] # raises if missing
+            return np.load(f, allow_pickle=True)["out"] # raises if missing
 
         raise FileNotFoundError  # unknown pattern – treat as “not on disk”
 
@@ -286,19 +292,104 @@ class TDAManager:
                 raise ValueError(f"Empty split '{split}'")
             D = D[np.ix_(idx, idx)]
 
-            from ripser import ripser
-            dgms = ripser(D, distance_matrix=True, maxdim=1)["dgms"]
-            Path(path).parent.mkdir(parents=True, exist_ok=True)
-            np.savez(path, dgms=dgms)
-            return dgms
+            out = ripser(D, distance_matrix=True, maxdim=2)
+            if out["dgms"][0].size > 0:  # Check if there are any points in the 0-dimensional persistence diagram
+                Path(path).parent.mkdir(parents=True, exist_ok=True)
+                np.savez(path, out=out, allow_pickle=True)
+            else:
+                print(f"Warning: Persistence diagram is empty. No data saved to {path}.")
+            return out
         
         raise KeyError(f"Unrecognised path: {K!r}")
+    
+    def _split_idx(self, df: pd.DataFrame, spec: str) -> np.ndarray:
+        """
+        Return row-indices matching an underscore-delimited *spec* drawn from
+        {critic_name, content_rating, drama_or_comedy, review_type}.
+        Each token must match values in *exactly one* of those columns.
+        Ambiguous or unknown tokens raise.
+        """
+        cols = ['critic_name', 'content_rating', 'drama_or_comedy', 'review_type']
+        mask = np.ones(len(df), bool)
+        for tok in spec.split('_'):                       # usually one token
+            hit = [c for c in cols if tok in df[c].values]
+            if len(hit) != 1:
+                raise ValueError(f"Ambiguous / unknown split-token '{tok}'")
+            mask &= (df[hit[0]] == tok)
+        return np.flatnonzero(mask)
+    
+    def generate_all(tm: "TDAManager") -> None:
+        """
+        Exhaustively enumerates ( dataset, reduction, metric, split ) keys
+        and drives `tm.get(...)` so *every* artefact is computed and persisted.
+        """
+        class_dict = {'critic_name': ['Dennis Schwartz', 'Roger Ebert'], 'content_rating': ['PG', 'R'], 'drama_or_comedy': ['Comedy', 'Drama'], 'review_type': ['Fresh', 'Rotten']}
+        flattened = [item for sublist in class_dict.values() for item in sublist]
+        CONFIG = {
+            "DATASETS": ["bert_strat800", "bow_strat800", "tfidf_strat800"],
+            "REDUCTIONS": ["pooled"],
+            "BASE_METRICS": ["cos", "mp1"],
+            "WASS_SPECS": ["ws01"],
+            "KNN_K": [5, 10],
+            "SPLITS": ["full"] + flattened,
+        }
+        
+        def _all_metrics():
+            for b in CONFIG["BASE_METRICS"]:
+                yield b
+                for w in CONFIG["WASS_SPECS"]:
+                    bw = f"{b}_{w}"
+                    yield bw
+                    yield from (f"{bw}_{k}nn" for k in CONFIG["KNN_K"])
+                yield from (f"{b}_{k}nn" for k in CONFIG["KNN_K"])
+
+        # pretty banner
+        banner = {
+            "datasets": CONFIG["DATASETS"],
+            "reductions": CONFIG["REDUCTIONS"],
+            "metrics": list(_all_metrics()),
+            "splits": CONFIG["SPLITS"],
+        }
+        print("▁▁ TDAManager GENERATE-ALL ▁▁\n" + pformat(banner, sort_dicts=False) + "\n")
+
+        # guarantee global frames exist early (warms cache & avoids racey IO)
+        for k in ("df_critic", "df_movie", "df_full"):
+            _tic = perf_counter()
+            tm.get(k)
+            print(f"{k:<60} ➜ {perf_counter() - _tic:6.1f}s")
+
+        # main cartesian product
+        for ds, red in product(CONFIG["DATASETS"], CONFIG["REDUCTIONS"]):
+            hdr = f"\n── {ds}/{red} ─────────────────────────────────────────"
+            print(hdr)
+
+            # make sure encoding & vectors exist
+            for key in ("encoding", red):
+                _tic = perf_counter()
+                tm.get(ds, key)
+                print(f"{'get('+ds+','+key+')':<60} ➜ {perf_counter() - _tic:6.1f}s")
+
+            # all metrics for this (ds, red)
+            for metric in _all_metrics():
+                _tic = perf_counter()
+                tm.get(ds, red, metric)
+                print(f"{ds},{red},{metric:<20} (metric)        ➜ {perf_counter() - _tic:6.1f}s")
+
+                # generate TDA diagrams for every requested split
+                for split in CONFIG["SPLITS"]:
+                    _tic = perf_counter()
+                    tm.get(ds, red, metric, split)
+                    print(f"{ds},{red},{metric},{split:<15} (tda) ➜ {perf_counter() - _tic:6.1f}s")
 
 def get_pdist2_args_from_base(spec):
     if spec == "cos":
         return ["cosine"]
     elif spec == "mp1":
         return ["minkowski",1]
+    elif spec == "mp2":
+        return ["minkowski",2]
+    elif spec == "mpinf":
+        return ["minkowski",np.inf]
     else:
         raise ValueError(f"unknown encoding spec '{spec}'")
     
@@ -317,19 +408,3 @@ def contains_re(s, pats):
                 without_match = '_'.join(parts[:i] + parts[i+1:])
                 return True, p, match, without_match
     return False, None, s, s
-
-def _split_idx(self, df: pd.DataFrame, spec: str) -> np.ndarray:
-    """
-    Return row-indices matching an underscore-delimited *spec* drawn from
-    {critic_name, content_rating, drama_or_comedy, review_type}.
-    Each token must match values in *exactly one* of those columns.
-    Ambiguous or unknown tokens raise.
-    """
-    cols = ['critic_name', 'content_rating', 'drama_or_comedy', 'review_type']
-    mask = np.ones(len(df), bool)
-    for tok in spec.split('_'):                       # usually one token
-        hit = [c for c in cols if tok in df[c].values]
-        if len(hit) != 1:
-            raise ValueError(f"Ambiguous / unknown split-token '{tok}'")
-        mask &= (df[hit[0]] == tok)
-    return np.flatnonzero(mask)
