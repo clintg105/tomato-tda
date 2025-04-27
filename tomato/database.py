@@ -103,10 +103,10 @@ class TDAManager:
             return np.load(f) # raises if missing
         
         if len(K) == 4: # (ds, red, metric, split)
-            tdadir = enc_dir / K[1] / "tda" / (
-                "full" if K[3] == "full" else Path("split") / K[3]
-            )
-            f = tdadir / f"{K[2]}.npz"
+            ds, red, metric, split = K
+            tdadir = (self.root / ds / red / "tda" /
+                      ("full" if split == "full" else Path("split") / split))
+            f = tdadir / f"{metric}.npz"
             return np.load(f, allow_pickle=True)["dgms"] # raises if missing
 
         raise FileNotFoundError  # unknown pattern – treat as “not on disk”
@@ -130,9 +130,26 @@ class TDAManager:
                 df_full = df_critic.merge(
                     df_movie,
                     on='rotten_tomatoes_link',
-                    how='inner'
+                    how='inner',
+                    suffixes=('', '_y')
                 ).dropna(
                     subset=['review_content']
+                )
+                # identify "pure" drama vs "pure" comedy 
+                df_full['drama_or_comedy'] = np.where(
+                    (
+                        df_full['genres'].str.contains('Drama', na=False) & 
+                        ~df_full['genres'].str.contains('Comedy', na=False)
+                    ),
+                    'Drama',
+                    np.where(
+                        (
+                            df_full['genres'].str.contains('Comedy', na=False) & 
+                            ~df_full['genres'].str.contains('Drama', na=False)
+                        ),
+                        'Comedy',
+                        None
+                    )
                 )
                 return df_full
             
@@ -153,39 +170,35 @@ class TDAManager:
                     return df_full.sample(num,random_state=42)
                 if key == "strat":
                     df_full = self.get('df_full')
-                    # identify "pure" drama vs "pure" comedy 
-                    df_full['drama_or_comedy'] = np.where(
-                        (
-                            df_full['genres'].str.contains('Drama', na=False) & 
-                            ~df_full['genres'].str.contains('Comedy', na=False)
-                        ),
-                        'Drama',
-                        np.where(
-                            (
-                                df_full['genres'].str.contains('Comedy', na=False) & 
-                                ~df_full['genres'].str.contains('Drama', na=False)
-                            ),
-                            'Comedy',
-                            None
-                        )
-                    )
                     # get two most prolific critics 
                     top_two_critics = df_full.critic_name.value_counts()[:2].index.tolist()
                     # stratified random sample, 800 samples spready across 16 buckets 9
+                    cols = ['critic_name', 'content_rating', 'drama_or_comedy', 'review_type']
                     df_strat = df_full[
                         df_full.critic_name.isin(top_two_critics) &
                         df_full.content_rating.isin(['R', 'PG']) &
                         df_full.drama_or_comedy.notna()
                     ].groupby(
-                        ['critic_name', 'content_rating', 'drama_or_comedy', 'review_type']
+                        cols
                     ).sample(
                         50, random_state=12
                     ).reset_index(
                         drop=True
                     )
+                    unique_vals = {col: df_strat[col].unique().tolist() for col in cols}
+                    print(f"Stratified categories: {unique_vals}")
                     return df_strat
                 else:
                     raise ValueError(f"Unknown sample spec '{key}'")
+            if K[1] == "df_full":
+                df_small = self.get(K[0],'df_critic')
+                df_full = df_small.merge(
+                    self.get('df_movie'),
+                    on='rotten_tomatoes_link',
+                    how='inner',
+                    suffixes=('', '_y')
+                )
+                return df_full
             elif K[1] == "encoding":
                 df_small = self.get(K[0],'df_critic')
                 texts = df_small.review_content.astype(str).tolist()
@@ -257,34 +270,22 @@ class TDAManager:
             return D
 
         # TDA data
-        if len(K) == 4: # (ds, red, metric, split)
+        if len(K) == 4:                                      # (ds, red, metric, split)
             ds, red, metric, split = K
             if path is None:
                 base = self.root / ds / red / "tda"
-                tdir = base / ("full" if split == "full"
-                               else Path("split") / split)
-                path = tdir / f"{metric}.npz"
+                path = (base / "full" / f"{metric}.npz" if split == "full"
+                        else base / "split" / split / f"{metric}.npz")
             path = Path(path)
             path.parent.mkdir(parents=True, exist_ok=True)
 
-            # D sub-mat
-            D = self.get(ds, red, metric)
-            if split == "full":
-                idx = np.arange(D.shape[0])
-            else:
-                # *Minimal* canned splits; extend as needed.
-                df = self.get(ds, "df_critic")
-                if split == "fresh":
-                    idx = np.where(df.is_fresh.values)[0]
-                elif split == "rotten":
-                    idx = np.where(~df.is_fresh.values)[0]
-                else: # treat as critic name, example
-                    idx = np.where(df.critic_name == split)[0]
-                if idx.size == 0:
-                    raise ValueError(f"Unknown/empty split '{split}'")
+            D   = self.get(ds, red, metric)
+            idx = (np.arange(D.shape[0]) if split == "full"
+                   else self._split_idx(self.get(ds, "df_critic"), split))
+            if idx.size == 0:
+                raise ValueError(f"Empty split '{split}'")
             D = D[np.ix_(idx, idx)]
 
-            # run Rip & cache
             from ripser import ripser
             dgms = ripser(D, distance_matrix=True, maxdim=1)["dgms"]
             Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -316,3 +317,19 @@ def contains_re(s, pats):
                 without_match = '_'.join(parts[:i] + parts[i+1:])
                 return True, p, match, without_match
     return False, None, s, s
+
+def _split_idx(self, df: pd.DataFrame, spec: str) -> np.ndarray:
+    """
+    Return row-indices matching an underscore-delimited *spec* drawn from
+    {critic_name, content_rating, drama_or_comedy, review_type}.
+    Each token must match values in *exactly one* of those columns.
+    Ambiguous or unknown tokens raise.
+    """
+    cols = ['critic_name', 'content_rating', 'drama_or_comedy', 'review_type']
+    mask = np.ones(len(df), bool)
+    for tok in spec.split('_'):                       # usually one token
+        hit = [c for c in cols if tok in df[c].values]
+        if len(hit) != 1:
+            raise ValueError(f"Ambiguous / unknown split-token '{tok}'")
+        mask &= (df[hit[0]] == tok)
+    return np.flatnonzero(mask)
