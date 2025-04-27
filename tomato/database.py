@@ -239,7 +239,7 @@ class TDAManager:
                 wass_spec = wass_check[2]
                 if wass_spec == "ws01":
                     D = wasserstein_distances_sinkhorn_parallel(df_enc, *args, 0.01)
-                if wass_spec == "wass":
+                elif wass_spec == "wass":
                     D = wasserstein_distances_parallel(df_enc, *args)
                 else:
                     raise ValueError(f"unknown encoding spec '{spec}'")
@@ -283,6 +283,7 @@ class TDAManager:
             # run Rip & cache
             from ripser import ripser
             dgms = ripser(D, distance_matrix=True, maxdim=1)["dgms"]
+            Path(path).parent.mkdir(parents=True, exist_ok=True)
             np.savez(path, dgms=dgms)
             return dgms
         
