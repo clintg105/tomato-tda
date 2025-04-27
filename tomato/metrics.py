@@ -35,6 +35,8 @@ def pdist2(X, Y, metric="cosine", p=2):
                 return manhattan_distances(X, Y)
             elif p == 2:
                 return euclidean_distances(X, Y)
+            elif p == np.inf:
+                return pairwise_distances(X, Y, metric="chebyshev")
             else:
                 return pairwise_distances(X, Y, metric="minkowski", p=p)
         else:
