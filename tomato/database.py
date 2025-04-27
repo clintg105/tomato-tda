@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 
 from tomato.utils import load_critic_review_df, tomato_data_path, load_movie_df
-from tomato.encoding import bert_encode_reviews
+from tomato.encoding import bert_encode_reviews, bow_encode_reviews, tfidf_encode_reviews
 from tomato.metrics import pdist2, wasserstein_distances_sinkhorn_parallel, wasserstein_distances_parallel, geodesic_isomap
 
 class Mode(Enum):
@@ -188,15 +188,19 @@ class TDAManager:
                     raise ValueError(f"Unknown sample spec '{key}'")
             elif K[1] == "encoding":
                 df_small = self.get(K[0],'df_critic')
+                texts = df_small.review_content.astype(str).tolist()
+                ids = df_small.index.tolist()
                 if enc == "bert":
-                    texts = df_small.review_content.astype(str).tolist()
-                    ids = df_small.index.tolist()
                     df_enc = bert_encode_reviews(texts, ids, "bert-base-uncased")
-                    Path(path).parent.mkdir(parents=True, exist_ok=True)
-                    df_enc.to_parquet(path, compression='snappy')
-                    return df_enc
+                elif enc == "bow":
+                    df_enc = bow_encode_reviews(texts, ids)
+                elif enc == "tfidf":
+                    df_enc = tfidf_encode_reviews(texts, ids)
                 else:
                     raise ValueError(f"Unknown encoding spec '{enc}'")
+                Path(path).parent.mkdir(parents=True, exist_ok=True)
+                df_enc.to_parquet(path, compression='snappy')
+                return df_enc
             # Everything below requires encoding and is used in base metrics 
             # (this should not impact wasserstein metrics, but it may later 
             # if we subtract PCs)

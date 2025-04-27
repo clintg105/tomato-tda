@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import torch, pandas as pd
 from transformers import BertTokenizer, BertModel
 from joblib import Parallel, delayed
@@ -5,6 +7,14 @@ from tqdm import tqdm
 
 import numpy as np
 from sklearn.decomposition import PCA
+
+import re, numpy as np, pandas as pd
+import nltk
+from typing import List
+from nltk.corpus import stopwords, wordnet
+from nltk.stem import WordNetLemmatizer
+from nltk import pos_tag
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 
 # Globals used by worker processes.
 T, M = None, None
@@ -80,6 +90,65 @@ def subtract_pcs(X, min_pc=None, max_pc=None):
 
     i, j = idx(min_pc, 0), idx(max_pc, 1)
     return X - X @ C[i:j].T @ C[i:j]
+
+def download_if_missing(path, resource):
+    try:
+        nltk.data.find(path)
+    except LookupError:
+        nltk.download(resource, quiet=True)
+download_if_missing('corpora/stopwords', 'stopwords')
+download_if_missing('corpora/wordnet', 'wordnet')
+download_if_missing('taggers/averaged_perceptron_tagger_eng', 'averaged_perceptron_tagger_eng')
+
+_STOP = set(stopwords.words("english"))
+_LEM  = WordNetLemmatizer()
+
+def _wn_pos(tag: str):
+    return (wordnet.ADJ if tag.startswith("J") else
+            wordnet.VERB if tag.startswith("V") else
+            wordnet.NOUN if tag.startswith("N") else
+            wordnet.ADV if tag.startswith("R") else
+            wordnet.NOUN)
+
+def _clean(txt: str) -> str:
+    s = re.sub(r"[^a-z]", " ", txt.lower())
+    s = re.sub(r"\s+", " ", s)
+    words = [w for w in s.split() if w and w not in _STOP]
+    return " ".join(_LEM.lemmatize(w, _wn_pos(t)) for w, t in pos_tag(words))
+
+def _frame_from_matrix(mat: np.ndarray, ids: List[int]) -> pd.DataFrame:
+    dims = [f"dim_{i}" for i in range(mat.shape[1])]
+    rows = [(rid, 0, 1, *vec) for rid, vec in zip(ids, mat)]
+    return pd.DataFrame(rows,
+                        columns=["review_id", "token_id",
+                                 "attention_mask"] + dims)
+
+def bow_encode_reviews(texts: List[str],
+                       ids:   List[int],
+                       *,
+                       binary=True,
+                       min_df=2) -> pd.DataFrame:
+    """Binary / count BoW embedding with BERT-style output layout."""
+    if len(texts) != len(ids):
+        raise ValueError("texts and ids must have same length")
+    clean_texts = [_clean(t) for t in texts]
+    vec = CountVectorizer(binary=binary, min_df=min_df)
+    mat = vec.fit_transform(clean_texts).toarray()          # (n, d)
+    return _frame_from_matrix(mat, ids)
+
+def tfidf_encode_reviews(texts: List[str],
+                         ids:   List[int],
+                         *,
+                         min_df=2,
+                         ngram_range=(1, 3)) -> pd.DataFrame:
+    """TF-IDF embedding with BERT-style output layout."""
+    if len(texts) != len(ids):
+        raise ValueError("texts and ids must have same length")
+    clean_texts = [_clean(t) for t in texts]
+    vec = TfidfVectorizer(min_df=min_df, ngram_range=ngram_range)
+    mat = vec.fit_transform(clean_texts).toarray()          # (n, d)
+    return _frame_from_matrix(mat, ids)
+
 
 if __name__ == "__main__":
     texts = ["This movie was great!", "Not so good.", "Average film."] * 5
