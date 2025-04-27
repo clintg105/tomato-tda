@@ -1,0 +1,746 @@
+# BERT Representation Analysis with TDA
+# Analysis date: 2025-04-27 00:18:17
+
+## Visualizations
+The following visualizations have been generated in the results/data/plots directory:
+
+### Individual Group Visualizations
+- Persistence Diagrams: Shows birth-death pairs of topological features
+- Persistence Landscapes: Alternative representation of persistence diagrams
+- Betti Curves: Shows how Betti numbers change with filtration value
+
+### Comparative Visualizations
+- Distance Heatmaps: Visualizing distances between different groups
+- MDS Plots: 2D projection of groups based on topological distances
+- Statistical Comparisons: Boxplots of persistence statistics by group
+
+
+## CRITIC_NAME ANALYSIS
+
+Visualizations for critic_name can be found in: results/data/plots/critic_name/
+Comparative visualizations are in: results/data/plots/comparative/critic_name/
+
+
+### Wasserstein Distances Between Groups
+                 Dennis Schwartz  Roger Ebert
+Dennis Schwartz              0.0          0.0
+Roger Ebert                  0.0          0.0
+
+### Bottleneck Distances Between Groups
+                 Dennis Schwartz  Roger Ebert
+Dennis Schwartz         0.000000     0.197044
+Roger Ebert             0.197044     0.000000
+
+### Topological Statistics
+
+#### Dennis Schwartz
+dim0_num_features: 400
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+dim1_num_features: 7
+dim1_total_persistence: 0.08048593997955322
+dim1_max_persistence: 0.028897881507873535
+dim1_mean_persistence: 0.01149799142565046
+dim1_median_persistence: 0.010580450296401978
+dim1_std_persistence: 0.00815472544579606
+dim2_num_features: 3
+dim2_total_persistence: 0.022261887788772583
+dim2_max_persistence: 0.016911447048187256
+dim2_mean_persistence: 0.007420629262924194
+dim2_median_persistence: 0.004094511270523071
+dim2_std_persistence: 0.00681034034070134
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Roger Ebert
+dim0_num_features: 400
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+## CONTENT_RATING ANALYSIS
+
+Visualizations for content_rating can be found in: results/data/plots/content_rating/
+Comparative visualizations are in: results/data/plots/comparative/content_rating/
+
+
+### Wasserstein Distances Between Groups
+     PG    R
+PG  0.0  0.0
+R   0.0  0.0
+
+### Bottleneck Distances Between Groups
+          PG         R
+PG  0.000000  0.087027
+R   0.087027  0.000000
+
+### Topological Statistics
+
+#### PG
+dim0_num_features: 400
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+dim1_num_features: 10
+dim1_total_persistence: inf
+dim1_max_persistence: inf
+dim1_mean_persistence: inf
+dim1_median_persistence: inf
+dim1_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### R
+dim0_num_features: 400
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+dim1_num_features: 6
+dim1_total_persistence: inf
+dim1_max_persistence: inf
+dim1_mean_persistence: inf
+dim1_median_persistence: 0.0041121989488601685
+dim1_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+## DRAMA_OR_COMEDY ANALYSIS
+
+Visualizations for drama_or_comedy can be found in: results/data/plots/drama_or_comedy/
+Comparative visualizations are in: results/data/plots/comparative/drama_or_comedy/
+
+
+### Wasserstein Distances Between Groups
+        Comedy  Drama
+Comedy     0.0    0.0
+Drama      0.0    0.0
+
+### Bottleneck Distances Between Groups
+          Comedy     Drama
+Comedy  0.000000  0.091666
+Drama   0.091666  0.000000
+
+### Topological Statistics
+
+#### Comedy
+dim0_num_features: 400
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+dim1_num_features: 4
+dim1_total_persistence: inf
+dim1_max_persistence: inf
+dim1_mean_persistence: inf
+dim1_median_persistence: inf
+dim1_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Drama
+dim0_num_features: 400
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+dim1_num_features: 3
+dim1_total_persistence: inf
+dim1_max_persistence: inf
+dim1_mean_persistence: inf
+dim1_median_persistence: 0.008967578411102295
+dim1_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+## REVIEW_TYPE ANALYSIS
+
+Visualizations for review_type can be found in: results/data/plots/review_type/
+Comparative visualizations are in: results/data/plots/comparative/review_type/
+
+
+### Wasserstein Distances Between Groups
+        Fresh  Rotten
+Fresh     0.0     0.0
+Rotten    0.0     0.0
+
+### Bottleneck Distances Between Groups
+           Fresh    Rotten
+Fresh   0.000000  0.093924
+Rotten  0.093924  0.000000
+
+### Topological Statistics
+
+#### Fresh
+dim0_num_features: 400
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+dim1_num_features: 7
+dim1_total_persistence: inf
+dim1_max_persistence: inf
+dim1_mean_persistence: inf
+dim1_median_persistence: 0.011951684951782227
+dim1_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Rotten
+dim0_num_features: 400
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+dim1_num_features: 1
+dim1_total_persistence: inf
+dim1_max_persistence: inf
+dim1_mean_persistence: inf
+dim1_median_persistence: inf
+dim1_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+## CRITIC_GENRE ANALYSIS
+
+Visualizations for critic_genre can be found in: results/data/plots/critic_genre/
+Comparative visualizations are in: results/data/plots/comparative/critic_genre/
+
+
+### Wasserstein Distances Between Groups
+                        Dennis Schwartz_Comedy  Dennis Schwartz_Drama  Roger Ebert_Comedy  Roger Ebert_Drama
+Dennis Schwartz_Comedy                     0.0                    0.0                 0.0                0.0
+Dennis Schwartz_Drama                      0.0                    0.0                 0.0                0.0
+Roger Ebert_Comedy                         0.0                    0.0                 0.0                0.0
+Roger Ebert_Drama                          0.0                    0.0                 0.0                0.0
+
+### Bottleneck Distances Between Groups
+                        Dennis Schwartz_Comedy  Dennis Schwartz_Drama  Roger Ebert_Comedy  Roger Ebert_Drama
+Dennis Schwartz_Comedy                0.000000               0.091714            0.187710           0.190294
+Dennis Schwartz_Drama                 0.091714               0.000000            0.197169           0.198644
+Roger Ebert_Comedy                    0.187710               0.197169            0.000000           0.164696
+Roger Ebert_Drama                     0.190294               0.198644            0.164696           0.000000
+
+### Topological Statistics
+
+#### Dennis Schwartz_Comedy
+dim0_num_features: 200
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+dim1_num_features: 1
+dim1_total_persistence: inf
+dim1_max_persistence: inf
+dim1_mean_persistence: inf
+dim1_median_persistence: inf
+dim1_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Dennis Schwartz_Drama
+dim0_num_features: 200
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+dim1_num_features: 2
+dim1_total_persistence: 0.017693430185317993
+dim1_max_persistence: 0.008967578411102295
+dim1_mean_persistence: 0.008846715092658997
+dim1_median_persistence: 0.008846715092658997
+dim1_std_persistence: 0.00012086331844329834
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Roger Ebert_Comedy
+dim0_num_features: 200
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Roger Ebert_Drama
+dim0_num_features: 200
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+## RATING_GENRE ANALYSIS
+
+Visualizations for rating_genre can be found in: results/data/plots/rating_genre/
+Comparative visualizations are in: results/data/plots/comparative/rating_genre/
+
+
+### Wasserstein Distances Between Groups
+           PG_Comedy  PG_Drama  R_Comedy  R_Drama
+PG_Comedy        0.0       0.0       0.0      0.0
+PG_Drama         0.0       0.0       0.0      0.0
+R_Comedy         0.0       0.0       0.0      0.0
+R_Drama          0.0       0.0       0.0      0.0
+
+### Bottleneck Distances Between Groups
+           PG_Comedy  PG_Drama  R_Comedy   R_Drama
+PG_Comedy   0.000000  0.145366  0.182968  0.145366
+PG_Drama    0.145366  0.000000  0.195251  0.044711
+R_Comedy    0.182968  0.195251  0.000000  0.179927
+R_Drama     0.145366  0.044711  0.179927  0.000000
+
+### Topological Statistics
+
+#### PG_Comedy
+dim0_num_features: 200
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+dim1_num_features: 1
+dim1_total_persistence: inf
+dim1_max_persistence: inf
+dim1_mean_persistence: inf
+dim1_median_persistence: inf
+dim1_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### PG_Drama
+dim0_num_features: 200
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### R_Comedy
+dim0_num_features: 200
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### R_Drama
+dim0_num_features: 200
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+## CRITIC_RATING ANALYSIS
+
+Visualizations for critic_rating can be found in: results/data/plots/critic_rating/
+Comparative visualizations are in: results/data/plots/comparative/critic_rating/
+
+
+### Wasserstein Distances Between Groups
+                    Dennis Schwartz_PG  Dennis Schwartz_R  Roger Ebert_PG  Roger Ebert_R
+Dennis Schwartz_PG                 0.0                0.0             0.0            0.0
+Dennis Schwartz_R                  0.0                0.0             0.0            0.0
+Roger Ebert_PG                     0.0                0.0             0.0            0.0
+Roger Ebert_R                      0.0                0.0             0.0            0.0
+
+### Bottleneck Distances Between Groups
+                    Dennis Schwartz_PG  Dennis Schwartz_R  Roger Ebert_PG  Roger Ebert_R
+Dennis Schwartz_PG            0.000000           0.069909        0.195570       0.198875
+Dennis Schwartz_R             0.069909           0.000000        0.192065       0.196641
+Roger Ebert_PG                0.195570           0.192065        0.000000       0.181698
+Roger Ebert_R                 0.198875           0.196641        0.181698       0.000000
+
+### Topological Statistics
+
+#### Dennis Schwartz_PG
+dim0_num_features: 200
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+dim1_num_features: 1
+dim1_total_persistence: 0.024681836366653442
+dim1_max_persistence: 0.024681836366653442
+dim1_mean_persistence: 0.024681836366653442
+dim1_median_persistence: 0.024681836366653442
+dim1_std_persistence: 0.0
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Dennis Schwartz_R
+dim0_num_features: 200
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+dim1_num_features: 2
+dim1_total_persistence: 0.00815078616142273
+dim1_max_persistence: 0.007123380899429321
+dim1_mean_persistence: 0.004075393080711365
+dim1_median_persistence: 0.004075393080711365
+dim1_std_persistence: 0.0030479878187179565
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Roger Ebert_PG
+dim0_num_features: 200
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Roger Ebert_R
+dim0_num_features: 200
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+## FULL_STRAT ANALYSIS
+
+Visualizations for full_strat can be found in: results/data/plots/full_strat/
+Comparative visualizations are in: results/data/plots/comparative/full_strat/
+
+
+### Wasserstein Distances Between Groups
+                                  Dennis Schwartz_PG_Comedy_Fresh  Dennis Schwartz_PG_Comedy_Rotten  Dennis Schwartz_PG_Drama_Fresh  Dennis Schwartz_PG_Drama_Rotten  Dennis Schwartz_R_Comedy_Fresh  Dennis Schwartz_R_Comedy_Rotten  Dennis Schwartz_R_Drama_Fresh  Dennis Schwartz_R_Drama_Rotten  Roger Ebert_PG_Comedy_Fresh  Roger Ebert_PG_Comedy_Rotten  Roger Ebert_PG_Drama_Fresh  Roger Ebert_PG_Drama_Rotten  Roger Ebert_R_Comedy_Fresh  Roger Ebert_R_Comedy_Rotten  Roger Ebert_R_Drama_Fresh  Roger Ebert_R_Drama_Rotten
+Dennis Schwartz_PG_Comedy_Fresh                               0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Dennis Schwartz_PG_Comedy_Rotten                              0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Dennis Schwartz_PG_Drama_Fresh                                0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Dennis Schwartz_PG_Drama_Rotten                               0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Dennis Schwartz_R_Comedy_Fresh                                0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Dennis Schwartz_R_Comedy_Rotten                               0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Dennis Schwartz_R_Drama_Fresh                                 0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Dennis Schwartz_R_Drama_Rotten                                0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Roger Ebert_PG_Comedy_Fresh                                   0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Roger Ebert_PG_Comedy_Rotten                                  0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Roger Ebert_PG_Drama_Fresh                                    0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Roger Ebert_PG_Drama_Rotten                                   0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Roger Ebert_R_Comedy_Fresh                                    0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Roger Ebert_R_Comedy_Rotten                                   0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Roger Ebert_R_Drama_Fresh                                     0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+Roger Ebert_R_Drama_Rotten                                    0.0                               0.0                             0.0                              0.0                             0.0                              0.0                            0.0                             0.0                          0.0                           0.0                         0.0                          0.0                         0.0                          0.0                        0.0                         0.0
+
+### Bottleneck Distances Between Groups
+                                  Dennis Schwartz_PG_Comedy_Fresh  Dennis Schwartz_PG_Comedy_Rotten  Dennis Schwartz_PG_Drama_Fresh  Dennis Schwartz_PG_Drama_Rotten  Dennis Schwartz_R_Comedy_Fresh  Dennis Schwartz_R_Comedy_Rotten  Dennis Schwartz_R_Drama_Fresh  Dennis Schwartz_R_Drama_Rotten  Roger Ebert_PG_Comedy_Fresh  Roger Ebert_PG_Comedy_Rotten  Roger Ebert_PG_Drama_Fresh  Roger Ebert_PG_Drama_Rotten  Roger Ebert_R_Comedy_Fresh  Roger Ebert_R_Comedy_Rotten  Roger Ebert_R_Drama_Fresh  Roger Ebert_R_Drama_Rotten
+Dennis Schwartz_PG_Comedy_Fresh                          0.000000                          0.179876                        0.195251                         0.008921                        0.191656                         0.017100                       0.179927                        0.184050                     0.148626                      0.006801                    0.152627                     0.037804                    0.004938                     0.032343                   0.006953                    0.031174
+Dennis Schwartz_PG_Comedy_Rotten                         0.179876                          0.000000                        0.191441                         0.179876                        0.188990                         0.179876                       0.165457                        0.181824                     0.062499                      0.179876                    0.054498                     0.179876                    0.179876                     0.179876                   0.179876                    0.179876
+Dennis Schwartz_PG_Drama_Fresh                           0.195251                          0.191441                        0.000000                         0.195251                        0.182365                         0.195251                       0.183999                        0.022402                     0.191441                      0.195251                    0.191441                     0.195251                    0.195251                     0.195251                   0.195251                    0.195251
+Dennis Schwartz_PG_Drama_Rotten                          0.008921                          0.179876                        0.195251                         0.000000                        0.191656                         0.017100                       0.179927                        0.184050                     0.148626                      0.002120                    0.152627                     0.037804                    0.011050                     0.032343                   0.015874                    0.024734
+Dennis Schwartz_R_Comedy_Fresh                           0.191656                          0.188990                        0.182365                         0.191656                        0.000000                         0.191656                       0.186455                        0.171817                     0.188990                      0.191656                    0.188990                     0.191656                    0.191656                     0.191656                   0.191656                    0.191656
+Dennis Schwartz_R_Comedy_Rotten                          0.017100                          0.179876                        0.195251                         0.017100                        0.191656                         0.000000                       0.179927                        0.184050                     0.148626                      0.017100                    0.152627                     0.037804                    0.017864                     0.030487                   0.022688                    0.017920
+Dennis Schwartz_R_Drama_Fresh                            0.179927                          0.165457                        0.183999                         0.179927                        0.186455                         0.179927                       0.000000                        0.179371                     0.165457                      0.179927                    0.165457                     0.179927                    0.179927                     0.179927                   0.179927                    0.179927
+Dennis Schwartz_R_Drama_Rotten                           0.184050                          0.181824                        0.022402                         0.184050                        0.171817                         0.184050                       0.179371                        0.000000                     0.181824                      0.184050                    0.181824                     0.184050                    0.184050                     0.184050                   0.184050                    0.184050
+Roger Ebert_PG_Comedy_Fresh                              0.148626                          0.062499                        0.191441                         0.148626                        0.188990                         0.148626                       0.165457                        0.181824                     0.000000                      0.148626                    0.008002                     0.148626                    0.148626                     0.148626                   0.148626                    0.148626
+Roger Ebert_PG_Comedy_Rotten                             0.006801                          0.179876                        0.195251                         0.002120                        0.191656                         0.017100                       0.179927                        0.184050                     0.148626                      0.000000                    0.152627                     0.037804                    0.008930                     0.032343                   0.013754                    0.026854
+Roger Ebert_PG_Drama_Fresh                               0.152627                          0.054498                        0.191441                         0.152627                        0.188990                         0.152627                       0.165457                        0.181824                     0.008002                      0.152627                    0.000000                     0.152627                    0.152627                     0.152627                   0.152627                    0.152627
+Roger Ebert_PG_Drama_Rotten                              0.037804                          0.179876                        0.195251                         0.037804                        0.191656                         0.037804                       0.179927                        0.184050                     0.148626                      0.037804                    0.152627                     0.000000                    0.037804                     0.031522                   0.037804                    0.038558
+Roger Ebert_R_Comedy_Fresh                               0.004938                          0.179876                        0.195251                         0.011050                        0.191656                         0.017864                       0.179927                        0.184050                     0.148626                      0.008930                    0.152627                     0.037804                    0.000000                     0.032343                   0.004824                    0.032238
+Roger Ebert_R_Comedy_Rotten                              0.032343                          0.179876                        0.195251                         0.032343                        0.191656                         0.030487                       0.179927                        0.184050                     0.148626                      0.032343                    0.152627                     0.031522                    0.032343                     0.000000                   0.032343                    0.032874
+Roger Ebert_R_Drama_Fresh                                0.006953                          0.179876                        0.195251                         0.015874                        0.191656                         0.022688                       0.179927                        0.184050                     0.148626                      0.013754                    0.152627                     0.037804                    0.004824                     0.032343                   0.000000                    0.034650
+Roger Ebert_R_Drama_Rotten                               0.031174                          0.179876                        0.195251                         0.024734                        0.191656                         0.017920                       0.179927                        0.184050                     0.148626                      0.026854                    0.152627                     0.038558                    0.032238                     0.032874                   0.034650                    0.000000
+
+### Topological Statistics
+
+#### Dennis Schwartz_PG_Comedy_Fresh
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Dennis Schwartz_PG_Comedy_Rotten
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Dennis Schwartz_PG_Drama_Fresh
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Dennis Schwartz_PG_Drama_Rotten
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Dennis Schwartz_R_Comedy_Fresh
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Dennis Schwartz_R_Comedy_Rotten
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Dennis Schwartz_R_Drama_Fresh
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Dennis Schwartz_R_Drama_Rotten
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Roger Ebert_PG_Comedy_Fresh
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Roger Ebert_PG_Comedy_Rotten
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Roger Ebert_PG_Drama_Fresh
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Roger Ebert_PG_Drama_Rotten
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Roger Ebert_R_Comedy_Fresh
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Roger Ebert_R_Comedy_Rotten
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Roger Ebert_R_Drama_Fresh
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
+
+#### Roger Ebert_R_Drama_Rotten
+dim0_num_features: 50
+dim0_total_persistence: inf
+dim0_max_persistence: inf
+dim0_mean_persistence: inf
+dim0_median_persistence: inf
+dim0_std_persistence: nan
+total_persistence: inf
+max_persistence: inf
+mean_persistence: inf
+median_persistence: inf
+std_persistence: nan
