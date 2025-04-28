@@ -108,12 +108,13 @@ class TDAManager:
             f = enc_dir / K[1] / "metric" / f"{K[2]}.npy"
             return np.load(f) # raises if missing
         
-        if len(K) == 4: # (ds, red, metric, split)
+        if len(K) == 4:
             ds, red, metric, split = K
             tdadir = (self.root / ds / red / "tda" /
-                      ("full" if split == "full" else Path("split") / split))
+                    ("full" if split == "full" else Path("split")/split))
             f = tdadir / f"{metric}.npz"
-            return np.load(f, allow_pickle=True)["out"] # raises if missing
+            data = np.load(f, allow_pickle=True)
+            return data["out"].item() 
 
         raise FileNotFoundError  # unknown pattern – treat as “not on disk”
 
@@ -328,7 +329,7 @@ class TDAManager:
         CONFIG = {
             "DATASETS": ["bert_strat800", "bow_strat800", "tfidf_strat800"],
             "REDUCTIONS": ["pooled"],
-            "BASE_METRICS": ["cos", "mp1"],
+            "BASE_METRICS": ["cos", "mp1", "mpinf"],
             "WASS_SPECS": ["ws01"],
             "KNN_K": [5, 10],
             "SPLITS": ["full"] + flattened,
