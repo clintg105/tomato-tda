@@ -11,10 +11,10 @@
 \contentsline {subsubsection}{\numberline {2.0.1}Characterization}{2}{subsubsection.2.0.1}%
 \contentsline {section}{\numberline {3}Discriminating Structure}{2}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Observation 1: Schwartz}{2}{subsection.3.1}%
-\contentsline {subsubsection}{\numberline {3.1.1}Observation 2: Roger Ebert}{2}{subsubsection.3.1.1}%
-\contentsline {subsubsection}{\numberline {3.1.2}Observation 3: Sentiment Analysis (Fresh vs. Rotten)}{3}{subsubsection.3.1.2}%
-\contentsline {subsubsection}{\numberline {3.1.3}Observation 4: Content Rating (PG vs. R)}{3}{subsubsection.3.1.3}%
+\contentsline {subsubsection}{\numberline {3.1.1}Observation 2: Roger Ebert}{5}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Observation 3: Sentiment Analysis (Fresh vs. Rotten)}{6}{subsubsection.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.1.3}Observation 4: Content Rating (PG vs. R)}{6}{subsubsection.3.1.3}%
 \contentsline {subsection}{\numberline {3.2}Preferred Metric}{7}{subsection.3.2}%
-\contentsline {section}{\numberline {4}Conclusions}{7}{section.4}%
-\contentsline {section}{References}{7}{section*.12}%
+\contentsline {section}{\numberline {4}Conclusions}{8}{section.4}%
+\contentsline {section}{References}{8}{section*.12}%
 \contentsfinish 

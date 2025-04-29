@@ -1088,14 +1088,6 @@ INPUT ../results/data/plots//comparative/critic_name/bottleneck_heatmap.png
 INPUT ../results/data/plots//comparative/critic_name/bottleneck_heatmap.png
 INPUT ../results/data/plots//comparative/critic_name/bottleneck_heatmap.png
 INPUT ../results/data/plots//comparative/critic_name/bottleneck_heatmap.png
-INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
-INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
-INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
-INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/vf/adobe/times/zptmcm7m.vf
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/times/psyro.tfm
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm
@@ -1104,18 +1096,26 @@ INPUT /usr/local/texlive/2023/texmf-dist/fonts/vf/adobe/times/zptmcm7t.vf
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/public/cm/cmr10.tfm
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
-INPUT ../results/data/plots//topological_complexity_barplot.png
-INPUT ../results/data/plots//topological_complexity_barplot.png
-INPUT ../results/data/plots//topological_complexity_barplot.png
-INPUT ../results/data/plots//topological_complexity_barplot.png
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
+INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
+INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
+INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
+INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
+INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png
+INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png
+INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png
+INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png
+INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
+INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
+INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
+INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
+INPUT ../results/data/plots//topological_complexity_barplot.png
+INPUT ../results/data/plots//topological_complexity_barplot.png
+INPUT ../results/data/plots//topological_complexity_barplot.png
+INPUT ../results/data/plots//topological_complexity_barplot.png
 INPUT ../results/data/plots//topological_complexity_heatmap.png
 INPUT ../results/data/plots//topological_complexity_heatmap.png
 INPUT ../results/data/plots//topological_complexity_heatmap.png
