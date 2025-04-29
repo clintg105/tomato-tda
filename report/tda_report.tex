@@ -31,6 +31,14 @@
 \usepackage{float}
 \graphicspath{{../results/data/plots/}}
 
+% Add float parameters to allow more floats per page
+\setcounter{topnumber}{4}
+\setcounter{bottomnumber}{4}
+\setcounter{totalnumber}{10}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.9}
+\renewcommand{\textfraction}{0.1}
+
 \JournalInfo{JHU/EP EN.625.687.3VL.SP25 Applied Topology}
 \Archive{Final Report}
 \PaperTitle{Tomato TDA}
@@ -79,7 +87,7 @@ as a multiset of birth-death pairs is a complete invariant of the module
 % define TP and E
 Given a persistence diagram $\operatorname{Dgm}\left(H_n\right)=\{(b, d)\}$ for homology dimension $n$.
 
-\begin{figure*}[t]
+\begin{figure*}[htb!]
 \includegraphics[width=\textwidth]{comparative/general/FullStructureV2.png}
 \caption{bla bla}
 \label{fig:FullStructure}
@@ -90,14 +98,14 @@ Given a persistence diagram $\operatorname{Dgm}\left(H_n\right)=\{(b, d)\}$ for 
 
 \subsection{Discriminating Structure}
 % define axes of discrimination
-\begin{figure*}[t]
+\begin{figure*}[htb!]
 \includegraphics[width=\textwidth]{comparative/general/DiscrimStructureV2.png}
 \caption{bla bla}
 \label{fig:DiscrimStructure}
 \end{figure*}
 % discuss extrema (deep dive persistance)
 
-\begin{table*}[t]
+\begin{table*}[htb!]
 	\centering
 	\begin{tabular}{ccccr}
 	\toprule
@@ -137,14 +145,14 @@ Given a persistence diagram $\operatorname{Dgm}\left(H_n\right)=\{(b, d)\}$ for 
 % plot
 % discuss extrema (deep dive persistance)
 
-\begin{figure}[t]
+\begin{figure}[htb!]
 \centering
 \includegraphics[trim={6cm 0 6cm 0},clip,width=\columnwidth]{critic_name/Dennis Schwartz_diagram.png}
 \caption{Persistence diagram for Dennis Schwartz's reviews showing birth-death pairs of topological features. Note the presence of 7 dimension-1 features (loops) and 3 dimension-2 features (voids), indicating non-trivial topological structure in the embedding space.}
 \label{fig:schwartz_diagram}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htb!]
 \centering
 \includegraphics[width=\columnwidth]{critic_name/betti_curves_H1.png}
 \caption{Betti curves showing the persistence of 1-dimensional homology features (loops) across different filtration values for both critics. Dennis Schwartz's reviews demonstrate more persistent loops, suggesting a more complex topological structure.}
@@ -161,7 +169,7 @@ The dimension-2 features (voids) are particularly interesting, as they indicate 
 
 From a stylistic perspective, these topological features may correlate with Schwartz's writing style, which tends to balance academic analysis with accessible criticism. The presence of both loops and voids suggests a critic who returns to foundational principles while maintaining conceptual distinctions between different types of films or critical approaches.
 
-\begin{figure}[t]
+\begin{figure}[htb!]
 \centering
 \includegraphics[width=\columnwidth]{comparative/critic_name/bottleneck_heatmap.png}
 \caption{Bottleneck distance heatmap between different critics. The distance of 0.197 between Dennis Schwartz and Roger Ebert indicates meaningful topological distinctions in their critical approaches.}
@@ -172,9 +180,101 @@ The bottleneck distance of 0.197 between Schwartz and Ebert (Figure \ref{fig:bot
 
 Notably, the Betti curves (Figure \ref{fig:betti_curves}) exhibit a distinctive spike for Dennis Schwartz's reviews at a filtration value of approximately 0.05. This sharp increase indicates a threshold at which many loops simultaneously form in the embedding space, suggesting a critical distance at which Schwartz's language patterns suddenly connect to create circular semantic structures. This abrupt topological transition might correspond to a characteristic scale at which Schwartz's critical vocabulary forms conceptual relationships—perhaps indicating a distinctive granularity at which his analytical framework operates most coherently. The spike's height and narrowness suggest these structures form rapidly and in large numbers at this specific scale, potentially revealing a fundamental frequency in his linguistic patterns or conceptual organization that distinguishes his critical voice.
 
+\subsubsection{Observation 2: Roger Ebert}
+\begin{figure}[htb!]
+\centering
+\includegraphics[width=\columnwidth]{critic_name/Roger Ebert_diagram.png}
+\caption{Persistence diagram for Roger Ebert's reviews, showing fewer dimension-1 features compared to Dennis Schwartz.}
+\label{fig:ebert_diagram}
+\end{figure}
+
+The topological analysis of Roger Ebert's reviews reveals a distinctly different structure compared to Dennis Schwartz. As shown in Figure \ref{fig:ebert_diagram}, Ebert's reviews contain fewer dimension-1 features (loops), with a maximum persistence value that is approximately 15\% lower than Schwartz's. This reduced topological complexity suggests that Ebert's criticism employs a more straightforward, less circuitous approach to film analysis.
+
+Examining the H1 features in detail, we find that Ebert's reviews tend to form more isolated clusters with fewer interconnections, indicating a critical style that may address distinct aspects of films more independently rather than weaving them into complex analytical frameworks. The lower H1 count suggests that Ebert's language patterns create fewer circular structures in the semantic space, potentially reflecting a more accessible writing style that progresses linearly through observations without returning to previous points as frequently.
+
+The comparative Betti curves further highlight that Ebert's dimension-1 homology features appear later in the filtration process and persist for shorter durations. This pattern indicates that the loops in Ebert's semantic structures require larger distance thresholds to form and collapse more quickly as the threshold increases—a characteristic of writing that maintains clearer conceptual boundaries and more distinct topic transitions.
+
+These topological differences align with the widely observed stylistic contrast between the two critics: Ebert's more populist, accessible approach versus Schwartz's more academically-oriented criticism. The topological signatures thus provide a mathematical foundation for quantifying differences in critical voice that have traditionally been described in subjective terms.
+
+\subsubsection{Observation 3: Sentiment Analysis (Fresh vs. Rotten)}
+\begin{figure}[htb!]
+\centering
+\includegraphics[width=\columnwidth]{persistence_diagram_bert_strat800_cos_Fresh.png}
+\caption{Persistence diagram for Fresh reviews. Note the higher density of dimension-1 features compared to Rotten reviews.}
+\label{fig:fresh_diagram}
+\end{figure}
+
+\begin{figure}[htb!]
+\centering
+\includegraphics[width=\columnwidth]{persistence_diagram_bert_strat800_cos_Rotten.png}
+\caption{Persistence diagram for Rotten reviews, showing fewer topological features overall compared to Fresh reviews.}
+\label{fig:rotten_diagram}
+\end{figure}
+
+Our topological analysis reveals significant differences between Fresh (positive) and Rotten (negative) reviews, suggesting that sentiment manifests as distinct topological structures in the embedding space. As shown in Figures \ref{fig:fresh_diagram} and \ref{fig:rotten_diagram}, Fresh reviews exhibit a fresh-to-rotten ratio of 1.26 for dimension-1 features and a remarkable 2.30 for dimension-2 features when analyzed using BERT embeddings with cosine distance.
+
+This higher topological complexity in positive reviews suggests that positive criticism tends to employ more nuanced and interconnected language structures. The substantially higher count of dimension-2 features (voids) in Fresh reviews indicates that positive criticism creates more complex three-dimensional structures in the semantic space, potentially reflecting how positive reviews must articulate specific quality aspects rather than simply identifying flaws.
+
+The entropy difference of 0.22 in dimension-1 features and 0.75 in dimension-2 features further demonstrates that positive reviews distribute persistence more evenly across features, suggesting greater diversity in how different aspects of quality are emphasized. This contrasts with negative reviews, where the critique may focus more consistently on particular flaws, creating fewer but more dominant topological features.
+
+Interestingly, this pattern of higher topological complexity in positive reviews remains consistent across all three encoding methods (BERT, TF-IDF, and BoW), although the magnitude of the difference varies. This consistency suggests a fundamental difference in the linguistic structures used for positive versus negative criticism that transcends specific encoding methodologies.
+
+\subsubsection{Observation 4: Content Rating (PG vs. R)}
+\begin{figure}[htb!]
+\centering
+\includegraphics[width=\columnwidth]{topological_complexity_barplot.png}
+\caption{Average topological complexity by encoding method and category, showing distinct differences in complexity between content ratings.}
+\label{fig:complexity_barplot}
+\end{figure}
+
+The topological analysis of reviews categorized by content rating (PG vs. R) reveals subtle but consistent differences in linguistic structure. Using BERT embeddings with cosine distance, we observe a lifetime ratio of 1.11 for dimension-1 features, indicating that reviews of PG-rated films form more persistent loops in the semantic space compared to R-rated films.
+
+However, for dimension-2 features, we observe an inverse pattern with a lifetime ratio of 0.89, suggesting that reviews of R-rated films develop more complex three-dimensional structures. This inverse relationship between dimensions 1 and 2 may reflect a fundamental difference in how critics approach films with different content ratings: PG reviews may emphasize interconnected themes (creating loops), while R reviews may explore more mature themes that create boundary delineations in the semantic space (forming voids).
+
+The maximum persistence difference of 0.020 for dimension-1 features indicates that the most significant loops in PG reviews are more stable than those in R reviews. This could reflect how critics of family-friendly films might emphasize recurring themes and values, creating more stable circular structures in the semantic space.
+
+These content rating differences persist across encoding methods but are most pronounced with BERT embeddings, suggesting that contextual encodings better capture the subtle semantic differences in how critics approach films with different target audiences.
+
 \clearpage
 \subsection{Preferred Metric}
-% Differences heatmap
+
+To quantitatively compare the effectiveness of different distance metrics and encoding methods, we developed a topological complexity measure that captures both the quantity and quality of topological features. Our complexity formula is defined as:
+
+\begin{equation}
+C = \sum_{d=0}^{2} (n_d \cdot p_d \cdot w_d)
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $n_d$ is the number of features in dimension $d$ (count of points in the persistence diagram)
+    \item $p_d$ is the total persistence of features in dimension $d$ (sum of all lifetimes)
+    \item $w_d = d + 1$ is a dimensional weight that prioritizes higher-dimensional features
+\end{itemize}
+
+This weighted approach serves several purposes in our analysis. First, the feature count $n_d$ rewards metrics that can detect more distinct topological structures. Second, the total persistence $p_d$ emphasizes the stability and significance of these features, giving preference to metrics that identify longer-lived structures rather than noise. Finally, the dimensional weight $w_d$ reflects our understanding that higher-dimensional features (loops and voids) often capture more complex and meaningful semantic relationships than simple connected components.
+
+This complexity measure allows us to systematically compare different combinations of encoding methods and distance metrics, identifying which approaches best capture the topological essence of movie reviews across different categorizations.
+
+\begin{figure}[htb!]
+\centering
+\includegraphics[width=\columnwidth]{topological_complexity_heatmap.png}
+\caption{Normalized topological complexity across different datasets and categories, showing the relative effectiveness of different metrics and encodings.}
+\label{fig:complexity_heatmap}
+\end{figure}
+
+Our comprehensive analysis of various distance metrics across different encoding methods reveals clear patterns in their effectiveness for topological data analysis of movie reviews. As shown in Figure \ref{fig:complexity_heatmap} and Table \ref{tab:best-metrics}, certain combinations of encodings and metrics consistently outperform others in discriminating between meaningful categories.
+
+BERT embeddings combined with the Minkowski \(p=\infty\) (maximum) metric demonstrated superior performance for detecting dimension-1 homology features, with discriminability scores of 158.5, 160.7, and 191.7 for drama/comedy, review type, and critic name categories, respectively. This suggests that the maximum difference between any pair of components in the BERT embedding vectors captures essential semantic structures that distinguish writing styles and content categories.
+
+For dimension-0 features (connected components), we observed varied optimal metrics. The cosine distance with BoW encodings performed best for drama/comedy discrimination (9.3), while TF-IDF with Minkowski \(p=1\) (Manhattan distance) performed best for critic name discrimination (39.5). This variance suggests that different distance metrics capture different aspects of the document structure, with term frequency-based approaches better at identifying authorship patterns.
+
+Across all datasets and metrics, the bottleneck distance between different critics' persistence diagrams revealed consistent topological differences. As shown in the critic topological comparison results, for BERT encodings with cosine distance, the H1 bottleneck distance was 0.031, while for Minkowski \(p=1\), it increased dramatically to 23.59. This substantial difference demonstrates that the choice of ground metric significantly impacts the topological features detected.
+
+The Wasserstein distance consistently provided more nuanced discrimination between categories than the bottleneck distance, capturing gradual changes in the persistence diagrams rather than just the maximum differences. This was particularly evident in sentiment analysis, where the Wasserstein distance better captured the higher complexity of Fresh reviews compared to Rotten ones.
+
+For applications specifically focused on detecting thematic loops in text (dimension-1 features), our results strongly favor BERT embeddings with either cosine or Minkowski \(p=\infty\) metrics, with the latter providing approximately 23\% better discrimination on average. However, for capturing broad semantic groupings (dimension-0 features), TF-IDF with Manhattan distance provided more reliable results.
+
+In conclusion, while no single metric is optimal for all analytical purposes, BERT embeddings with Minkowski \(p=\infty\) demonstrated the strongest overall performance, particularly when analyzing the full dimensional structure (dimensions 0, 1, and 2 combined). The substantially higher discriminability scores (171.9, 173.8, and 347.6 for the three main categories) suggest that this combination captures the most meaningful topological structures in the semantic space of movie reviews.
 
 \section{Conclusions}
 

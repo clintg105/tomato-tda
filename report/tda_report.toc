@@ -1,0 +1,17 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Methodology}{1}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Repository}{1}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Data Set}{1}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Stratification}{1}{subsubsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.3}Metrics}{1}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Results}{1}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Full Structure}{1}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Discriminating Structure}{1}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Observation 1: Schwartz}{1}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Observation 2: Roger Ebert}{2}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.3}Observation 3: Sentiment Analysis (Fresh vs. Rotten)}{4}{subsubsection.2.2.3}%
+\contentsline {subsubsection}{\numberline {2.2.4}Observation 4: Content Rating (PG vs. R)}{5}{subsubsection.2.2.4}%
+\contentsline {subsection}{\numberline {2.3}Preferred Metric}{7}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Conclusions}{7}{section.3}%
+\contentsline {section}{References}{7}{section*.12}%
+\contentsfinish 
