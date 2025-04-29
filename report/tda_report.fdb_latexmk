@@ -1,16 +1,19 @@
 # Fdb version 4
-["bibtex tda_report"] 1745960029 "tda_report.aux" "tda_report.bbl" "tda_report" 1745960034 0
+["bibtex tda_report"] 1745962463 "tda_report.aux" "tda_report.bbl" "tda_report" 1745962468 0
   "./tda.bib" 1745959557 7575 6b926176745bf1c8d441b243c32d5be0 ""
   "/usr/local/texlive/2023/texmf-dist/bibtex/bst/base/unsrt.bst" 1292289607 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "tda_report.aux" 1745960033 8457 e9d9d57c85f116ba2024b45eba2afd3f "pdflatex"
+  "tda_report.aux" 1745962468 9505 e320237d5770fa89bab3afd19ec74095 "pdflatex"
   (generated)
   "tda_report.bbl"
   "tda_report.blg"
   (rewritten before read)
-["pdflatex"] 1745960029 "/Users/lianghaochen/tomato-tda/report/tda_report.tex" "tda_report.pdf" "tda_report" 1745960034 0
+["pdflatex"] 1745962463 "/Users/lianghaochen/tomato-tda/report/tda_report.tex" "tda_report.pdf" "tda_report" 1745962468 0
   "../results/data/plots//comparative/critic_name/bottleneck_heatmap.png" 1745741504 112999 7dfd90e386eb6cceb3443b05e2ee60f4 ""
   "../results/data/plots//comparative/general/DiscrimStructureV2.png" 1745948155 4605579 fbae6b7f277d879475b1f68bba624bff ""
   "../results/data/plots//comparative/general/FullStructureV2.png" 1745948155 564068 b2ef91a4c46b482787631ed3a6bf88c0 ""
+  "../results/data/plots//content_rating/PG_diagram.png" 1745741504 70063 eaff0dee74acca0c85ef90ff8d0c78b8 ""
+  "../results/data/plots//content_rating/R_diagram.png" 1745741504 68524 909339f023357569ee447beb6d974374 ""
+  "../results/data/plots//content_rating/betti_curves_H1.png" 1745741504 84160 964350bdd256686d43074b8ad1a1a18d ""
   "../results/data/plots//critic_name/Dennis Schwartz_diagram.png" 1745741504 75444 313ffaeb9b98a91a8c008e42586418d8 ""
   "../results/data/plots//critic_name/Roger Ebert_diagram.png" 1745741504 70080 9fd2d19e0a1a6e72e5dc9c66f5424a12 ""
   "../results/data/plots//critic_name/betti_curves_H1.png" 1745741504 112287 cfa62d2d791f9f29ef0a6e2d6a56bd93 ""
@@ -18,7 +21,7 @@
   "../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png" 1745888426 331909 df6b9569ec87239fff59a0c8fcb9d162 ""
   "../results/data/plots//topological_complexity_barplot.png" 1745888427 162984 1555d9d1985df08953daca06305606a9 ""
   "../results/data/plots//topological_complexity_heatmap.png" 1745888427 242782 9bd6a76ffcf4cdf8bcea4b0de698c967 ""
-  "/Users/lianghaochen/tomato-tda/report/tda_report.tex" 1745960024 23111 53971316150e7a0fb8fc7d7804d5287c ""
+  "/Users/lianghaochen/tomato-tda/report/tda_report.tex" 1745962457 24021 ffd40601ee0f7bc7dc304df5e0f02a34 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1136768653 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -158,6 +161,7 @@
   "/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/mt-msb.cfg" 1678741534 5594 45ca1ba048c2fa6267d5419cc463d804 ""
   "/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/mt-ptm.cfg" 1678741534 12427 02d1873769280609ae2509e963f1fa66 ""
   "/usr/local/texlive/2023/texmf-dist/tex/latex/multirow/multirow.sty" 1615845910 6149 2398eec4faa1ee24ff761581e580ecf1 ""
+  "/usr/local/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty" 1137110565 4087 636308456f60d2b31cbf97867db5708d ""
   "/usr/local/texlive/2023/texmf-dist/tex/latex/psnfss/mathptmx.sty" 1586716065 4631 6e41de2b7a83dfa5d2c4b0a2fe01f046 ""
   "/usr/local/texlive/2023/texmf-dist/tex/latex/psnfss/omlztmcm.fd" 1137110629 411 12564a37a279e4e0b533cdf5e03eeb7c ""
   "/usr/local/texlive/2023/texmf-dist/tex/latex/psnfss/omsztmcm.fd" 1137110629 348 f4ce75d394e7d9ac12ca7aac4045ed77 ""
@@ -181,11 +185,11 @@
   "/usr/local/texlive/2023/texmf-var/web2c/pdftex/pdflatex.fmt" 1706040084 7883460 77b3d4351c5500f9109c5ee9396b49c2 ""
   "/usr/local/texlive/2023/texmf.cnf" 1678822455 577 1b2b1af17af2508fb20dd85783af4050 ""
   "SelfArx.cls" 1745948155 8092 737c8d1591f9545f221c870f69e6d87b ""
-  "tda_report.aux" 1745960033 8457 e9d9d57c85f116ba2024b45eba2afd3f "pdflatex"
-  "tda_report.bbl" 1745960029 2205 0535e64e551d124950c01df8ef2527ed "bibtex tda_report"
-  "tda_report.out" 1745960033 2804 b94a4221fe544fc442a9878506294ee4 "pdflatex"
-  "tda_report.tex" 1745960024 23111 53971316150e7a0fb8fc7d7804d5287c ""
-  "tda_report.toc" 1745960033 1579 ec3e9de37ca779fe65bd9c6a531a0d21 "pdflatex"
+  "tda_report.aux" 1745962468 9505 e320237d5770fa89bab3afd19ec74095 "pdflatex"
+  "tda_report.bbl" 1745962463 2205 0535e64e551d124950c01df8ef2527ed "bibtex tda_report"
+  "tda_report.out" 1745962468 2804 343b97a8a5d0e2ee58041e76b0251c2a "pdflatex"
+  "tda_report.tex" 1745962457 24021 ffd40601ee0f7bc7dc304df5e0f02a34 ""
+  "tda_report.toc" 1745962468 1579 35221c3edf8911f98dd580f2b1dae14c "pdflatex"
   (generated)
   "tda_report.aux"
   "tda_report.log"

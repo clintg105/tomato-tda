@@ -31,6 +31,7 @@
 \usepackage{booktabs,multirow}
 \usepackage[font=small,labelfont=bf,skip=6pt]{caption}
 \usepackage{float}
+\usepackage{placeins}  % For \FloatBarrier
 \graphicspath{{../results/data/plots/}}
 
 % Add float parameters to allow more floats per page
@@ -99,22 +100,23 @@ On each normalized diagram we compute total persistance and persistant entropy,
 \end{align*}
 capturing overall lifetime and dispersion of features \cite{adams2017persistence}.
 
-\begin{figure*}[!htbp]
+\begin{figure*}[p]
 \includegraphics[width=\textwidth]{comparative/general/FullStructureV2.png}
 \caption{bla bla}
 \label{fig:FullStructure}
 \end{figure*}
-% discuss extrema (deep dive persistance)
 
-% different embedding lead to different structure
-
-\section{Discriminating Structure}
-% define axes of discrimination
-\begin{figure*}[!htbp]
+\begin{figure*}[p]
 \includegraphics[width=\textwidth]{comparative/general/DiscrimStructureV2.png}
 \caption{bla bla}
 \label{fig:DiscrimStructure}
 \end{figure*}
+
+\FloatBarrier  % Force all floats to be placed before this point
+\clearpage      % Force a page break
+
+\section{Discriminating Structure}
+% define axes of discrimination
 % discuss extrema (deep dive persistance)
 
 \begin{table*}[htb!]
@@ -170,6 +172,7 @@ capturing overall lifetime and dispersion of features \cite{adams2017persistence
 \caption{Betti curves showing the persistence of 1-dimensional homology features (loops) across different filtration values for both critics. Dennis Schwartz's reviews demonstrate more persistent loops, suggesting a more complex topological structure.}
 \label{fig:betti_curves}
 \end{figure}
+\vspace{-0.3cm}
 
 The topological analysis of movie reviews written by Dennis Schwartz reveals intriguing structures in the BERT embedding space. As shown in Figure \ref{fig:schwartz_diagram}, Schwartz's reviews demonstrate a notable presence of higher-dimensional topological features, with 7 dimension-1 features (loops) and 3 dimension-2 features (voids). The maximum persistence value for dimension-1 features is 0.029, while for dimension-2 features it is 0.017, indicating reasonably stable topological structures.
 
@@ -187,6 +190,7 @@ From a stylistic perspective, these topological features may correlate with Schw
 \caption{Bottleneck distance heatmap between different critics. The distance of 0.197 between Dennis Schwartz and Roger Ebert indicates meaningful topological distinctions in their critical approaches.}
 \label{fig:bottleneck_distance}
 \end{figure}
+\vspace{-0.3cm}
 
 The bottleneck distance of 0.197 between Schwartz and Ebert (Figure \ref{fig:bottleneck_distance}) quantifies the difference in their topological signatures. This substantial distance suggests fundamentally different cognitive frameworks between the two critics, despite reviewing the same films. This divergence likely reflects different priorities in their evaluations and distinct rhetorical strategies in their writing.
 
@@ -206,7 +210,7 @@ Examining the H1 features in detail, we find that Ebert's reviews tend to form m
 
 The comparative Betti curves further highlight that Ebert's dimension-1 homology features appear later in the filtration process and persist for shorter durations. This pattern indicates that the loops in Ebert's semantic structures require larger distance thresholds to form and collapse more quickly as the threshold increases—a characteristic of writing that maintains clearer conceptual boundaries and more distinct topic transitions.
 
-These topological differences align with the widely observed stylistic contrast between the two critics: Ebert's more populist, accessible approach versus Schwartz's more academically-oriented criticism. The topological signatures thus provide a mathematical foundation for quantifying differences in critical voice that have traditionally been described in subjective terms.
+These topological differences align with the widely observed stylistic contrast between the two critics: Ebert's more populist, accessible approach versus Schwartz's more \\academically-oriented criticism. The topological signatures thus provide a mathematical foundation for quantifying differences in critical voice that have traditionally been described in subjective terms.
 
 \subsubsection{Observation 3: Sentiment Analysis (Fresh vs. Rotten)}
 \begin{figure}[H]
@@ -232,15 +236,37 @@ The entropy difference of 0.22 in dimension-1 features and 0.75 in dimension-2 f
 Interestingly, this pattern of higher topological complexity in positive reviews remains consistent across all three encoding methods (BERT, TF-IDF, and BoW), although the magnitude of the difference varies. This consistency suggests a fundamental difference in the linguistic structures used for positive versus negative criticism that transcends specific encoding methodologies.
 
 \subsubsection{Observation 4: Content Rating (PG vs. R)}
-The topological analysis of reviews categorized by content rating (PG vs. R) reveals subtle but consistent differences in linguistic structure. Using BERT embeddings with cosine distance, we observe a lifetime ratio of 1.11 for dimension-1 features, indicating that reviews of PG-rated films form more persistent loops in the semantic space compared to R-rated films.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{content_rating/betti_curves_H1.png}
+\caption{Betti curves for dimension-1 features comparing PG and R rated movie reviews. Note the differences in the patterns of loop formation and persistence.}
+\label{fig:content_rating_betti}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{content_rating/PG_diagram.png}
+\caption{Persistence diagram for PG rated reviews.}
+\label{fig:pg_diagram}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{content_rating/R_diagram.png}
+\caption{Persistence diagram for R rated reviews.}
+\label{fig:r_diagram}
+\end{figure}
+\vspace{-0.3cm}
+
+The topological analysis of reviews categorized by content rating (PG vs. R) reveals subtle but consistent differences in linguistic structure. Using BERT embeddings with cosine distance, we observe a lifetime ratio of 1.11 for dimension-1 features, indicating that reviews of PG-rated films form more persistent loops in the semantic space compared to R-rated films, as clearly visible in the Betti curves (Figure \ref{fig:content_rating_betti}).
 
 However, for dimension-2 features, we observe an inverse pattern with a lifetime ratio of 0.89, suggesting that reviews of R-rated films develop more complex three-dimensional structures. This inverse relationship between dimensions 1 and 2 may reflect a fundamental difference in how critics approach films with different content ratings: PG reviews may emphasize interconnected themes (creating loops), while R reviews may explore more mature themes that create boundary delineations in the semantic space (forming voids).
 
-The maximum persistence difference of 0.020 for dimension-1 features indicates that the most significant loops in PG reviews are more stable than those in R reviews. This could reflect how critics of family-friendly films might emphasize recurring themes and values, creating more stable circular structures in the semantic space.
+The maximum persistence difference of 0.020 for dimension-1 features indicates that the most significant loops in PG reviews are more stable than those in R reviews, as shown in Figures \ref{fig:pg_diagram} and \ref{fig:r_diagram}. This could reflect how critics of family-friendly films might emphasize recurring themes and values, creating more stable circular structures in the semantic space.
 
 These content rating differences persist across encoding methods but are most pronounced with BERT embeddings, suggesting that contextual encodings better capture the subtle semantic differences in how critics approach films with different target audiences.
 
-\clearpage
 \subsection{Preferred Metric}
 
 To quantitatively compare the effectiveness of different distance metrics and encoding methods, we developed a topological complexity measure that captures both the quantity and quality of topological features. Our complexity formula is defined as:

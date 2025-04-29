@@ -854,6 +854,17 @@ INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/float/float.sty
 INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/float/float.sty
 INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/float/float.sty
 INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/float/float.sty
+INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
 INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/psnfss/ot1ptm.fd
@@ -1076,18 +1087,6 @@ INPUT ../results/data/plots//comparative/general/DiscrimStructureV2.png
 INPUT ../results/data/plots//comparative/general/DiscrimStructureV2.png
 INPUT ../results/data/plots//comparative/general/DiscrimStructureV2.png
 INPUT ../results/data/plots//comparative/general/DiscrimStructureV2.png
-INPUT ../results/data/plots//critic_name/Dennis Schwartz_diagram.png
-INPUT ../results/data/plots//critic_name/Dennis Schwartz_diagram.png
-INPUT ../results/data/plots//critic_name/Dennis Schwartz_diagram.png
-INPUT ../results/data/plots//critic_name/Dennis Schwartz_diagram.png
-INPUT ../results/data/plots//critic_name/betti_curves_H1.png
-INPUT ../results/data/plots//critic_name/betti_curves_H1.png
-INPUT ../results/data/plots//critic_name/betti_curves_H1.png
-INPUT ../results/data/plots//critic_name/betti_curves_H1.png
-INPUT ../results/data/plots//comparative/critic_name/bottleneck_heatmap.png
-INPUT ../results/data/plots//comparative/critic_name/bottleneck_heatmap.png
-INPUT ../results/data/plots//comparative/critic_name/bottleneck_heatmap.png
-INPUT ../results/data/plots//comparative/critic_name/bottleneck_heatmap.png
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/vf/adobe/times/zptmcm7m.vf
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/times/psyro.tfm
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm
@@ -1100,6 +1099,18 @@ INPUT /usr/local/texlive/2023/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
 INPUT /usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
+INPUT ../results/data/plots//critic_name/Dennis Schwartz_diagram.png
+INPUT ../results/data/plots//critic_name/Dennis Schwartz_diagram.png
+INPUT ../results/data/plots//critic_name/Dennis Schwartz_diagram.png
+INPUT ../results/data/plots//critic_name/Dennis Schwartz_diagram.png
+INPUT ../results/data/plots//critic_name/betti_curves_H1.png
+INPUT ../results/data/plots//critic_name/betti_curves_H1.png
+INPUT ../results/data/plots//critic_name/betti_curves_H1.png
+INPUT ../results/data/plots//critic_name/betti_curves_H1.png
+INPUT ../results/data/plots//comparative/critic_name/bottleneck_heatmap.png
+INPUT ../results/data/plots//comparative/critic_name/bottleneck_heatmap.png
+INPUT ../results/data/plots//comparative/critic_name/bottleneck_heatmap.png
+INPUT ../results/data/plots//comparative/critic_name/bottleneck_heatmap.png
 INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
 INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
 INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
@@ -1112,6 +1123,18 @@ INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
 INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
 INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
 INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
+INPUT ../results/data/plots//content_rating/betti_curves_H1.png
+INPUT ../results/data/plots//content_rating/betti_curves_H1.png
+INPUT ../results/data/plots//content_rating/betti_curves_H1.png
+INPUT ../results/data/plots//content_rating/betti_curves_H1.png
+INPUT ../results/data/plots//content_rating/PG_diagram.png
+INPUT ../results/data/plots//content_rating/PG_diagram.png
+INPUT ../results/data/plots//content_rating/PG_diagram.png
+INPUT ../results/data/plots//content_rating/PG_diagram.png
+INPUT ../results/data/plots//content_rating/R_diagram.png
+INPUT ../results/data/plots//content_rating/R_diagram.png
+INPUT ../results/data/plots//content_rating/R_diagram.png
+INPUT ../results/data/plots//content_rating/R_diagram.png
 INPUT ../results/data/plots//topological_complexity_barplot.png
 INPUT ../results/data/plots//topological_complexity_barplot.png
 INPUT ../results/data/plots//topological_complexity_barplot.png
