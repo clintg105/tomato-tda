@@ -1,176 +1,98 @@
-close all
+%% Refactored TDA Plot Script
+% Automatically compute axis limits from data, add tunable margin, and loop over plots
+
+close all;
 
 SCRIPT_DIR = fileparts(mfilename('fullpath'));
 OUT_DIR    = SCRIPT_DIR;
 
-totTbl  = readtable(fullfile(OUT_DIR,'tda_summary.csv'));
-pairTbl  = readtable(fullfile(OUT_DIR,'ripser_wasserstein_pairs_p2.csv'));
+totTbl = readtable(fullfile(OUT_DIR,'tda_summary_hat.csv'));
+pairTbl = readtable(fullfile(OUT_DIR,'ripser_wasserstein_pairs_p2.csv'));
 
-
+%---- Settings ----
 mkrs = {'o','s','v','^','p','h'};
 styleLUT = struct( ...
-    'bert_strat800',  {mkrs}, ...
-    'bow_strat800',   {mkrs}, ...
-    'tfidf_strat800', {mkrs} );
-
+    'bert_strat800',{mkrs}, ...
+    'bow_strat800',{mkrs},  ...
+    'tfidf_strat800',{mkrs} ...
+);
 styleIDs   = fieldnames(styleLUT);
-palette    = lines(numel(styleIDs));                  % one colour / dataset
 metricCols = {'base','ws','5nn','10nn','ws 5nn','ws 10nn'};
 
-pickMarker = @(ds,metric) find([ ...
-        nnz(ds=='_')==0                                     , ... % base
-        nnz(ds=='_')==1 && contains(metric,'ws')            , ...
-        nnz(ds=='_')==1 && contains(metric,'5nn')           , ...
-        nnz(ds=='_')==1 && contains(metric,'10nn')          , ...
-        nnz(ds=='_')==2 && contains(metric,'5nn')           , ...
-        nnz(ds=='_')==2 && contains(metric,'10nn')],1,'first');
+% Color arrays
+clrMaps = {{'#000075','#4363d8','#42d4f4'}; {'#e6194B','#f58231','#911eb4'}; {'#808000','#3cb44b','#bfef45'}};
+clrCA = cellfun(@(m)validatecolor(flip(m),'multiple'), clrMaps, 'UniformOutput', false);
 
-clrPalletes = {@cool,@abyss ,@winter};
-nBaseMetrics = 3;
-clrCA = cellfun(@(f)flipud(f(nBaseMetrics)),clrPalletes,'UniformOutput',0);
+% Marker picker function
+pickMarker = @(ds,met) find([ ...
+    nnz(ds=='_')==0, ...               % base
+    nnz(ds=='_')==1&&contains(met,'ws'), ...
+    nnz(ds=='_')==1&&contains(met,'5nn'),...
+    nnz(ds=='_')==1&&contains(met,'10nn'),...
+    nnz(ds=='_')==2&&contains(met,'5nn'),...
+    nnz(ds=='_')==2&&contains(met,'10nn')],1,'first');
 
-map = {{'#000075','#4363d8','#42d4f4'};{'#e6194B','#f58231','#911eb4'};{'#808000','#3cb44b','#bfef45'}};
-clrCA = cellfun(@(map)validatecolor(flip(map), 'multiple'),map,'UniformOutput',0);
+sz = 100;              % scatter size
+marginFactor = 0.1;    % fraction of log-range to pad axes
 
-%% 
-figure('Name','Total persistence'); hold on; grid on
-xlabel('TP_{0}'); ylabel('TP_{1,2}')
-axLim = 10.^[0 5 -2.5 5]; axis(axLim);
-title('High vs Low-Dim Total Peristance')
+% Define plots: fields xCol, yCol, labels, title
+plots = struct( ...
+    'xCol', {'tp_0','entropy_0','tp_012'}, ...
+    'yCol', {'tp_12','entropy_12','entropy_012'}, ...
+    'xlabel', {'TP_{0}','E_{0}(D)','TP_{0,1,2}'}, ...
+    'ylabel', {'TP_{1,2}','E_{1,2}(D)','E_{0,1,2}(D)'}, ...
+    'title', {'High vs Low-Dim Total Persistence', ...
+              'High vs Low-Dim Persistent Entropy', ...
+              'Full Persistent Entropy vs Total Persistence'} ...
+);
 
-sz = 100;
-
-for ii = 1:height(totTbl)
-    isZero = 0;
-    ds = totTbl.dataset{ii};          
-    if ~isfield(styleLUT,ds),  continue, end
-    metric = totTbl.metric{ii};
-
-    mkIdx = pickMarker(metric,metric);       
-    if isempty(mkIdx), mkIdx = 1; end
-    mk = styleLUT.(ds){mkIdx};
-    clrIdx = contains(metric,'cos')+2*contains(metric,'mp1')+3*contains(metric,'mpinf');
-    clr = clrCA{strcmp(styleIDs,ds)}(clrIdx,:);
-
-    x = totTbl.tp_0(ii);
-    y = totTbl.tp_12(ii);
+% Loop over each plot configuration
+for i = 1:numel(plots)
+    cfg = plots(i);
+    figure('Name',cfg.title); hold on; grid on;
+    xlabel(cfg.xlabel); ylabel(cfg.ylabel);
+    title(cfg.title);
     
-    if x == 0, x = axLim(1); end
-    if y == 0, y = axLim(3); end
-    assert(x >= axLim(1) && x <= axLim(2))
-    assert(y >= axLim(3) && y <= axLim(4))
-    scatter(x,y, sz, clr, mk, 'LineWidth', 1.5)
-end
-set(gca,'XScale','log','YScale','log','FontWeight','bold','FontSize',12)
-
-%% 
-figure('Name','Total persistence'); hold on; grid on
-xlabel('E_{0}(D)'); ylabel('E_{1,2}(D)')
-axLim = 10.^[0 5 log10(1.5) log10(10)]; axis(axLim);
-title('High vs Low-Dim Persistant Entropy')
-
-sz = 100;
-
-for ii = 1:height(totTbl)
-    isZero = 0;
-    ds = totTbl.dataset{ii};          
-    if ~isfield(styleLUT,ds),  continue, end
-    metric = totTbl.metric{ii};
-
-    mkIdx = pickMarker(metric,metric);       
-    if isempty(mkIdx), mkIdx = 1; end
-    mk = styleLUT.(ds){mkIdx};
-    clrIdx = contains(metric,'cos')+2*contains(metric,'mp1')+3*contains(metric,'mpinf');
-    clr = clrCA{strcmp(styleIDs,ds)}(clrIdx,:);
-
-    x = totTbl.tp_0(ii);
-    y = totTbl.entropy_0(ii);
-    y = totTbl.tp_12(ii);
-    y = totTbl.entropy_12(ii);
+    % Extract positive data for axis limits
+    xData = totTbl.(cfg.xCol);
+    yData = totTbl.(cfg.yCol);
+    xPos = xData(xData>0);
+    yPos = yData(yData>0);
+    logX = log10([min(xPos), max(xPos)]);
+    logY = log10([min(yPos), max(yPos)]);
+    % Expand by marginFactor of the log-range
+    xLim = 10.^(logX + [-1,1]*marginFactor*(logX(2)-logX(1)));
+    yLim = 10.^(logY + [-1,1]*marginFactor*(logY(2)-logY(1)));
+    axis([xLim, yLim]);
+    set(gca, 'XScale','log','YScale','log','FontWeight','bold','FontSize',12);
     
-    if x == 0, x = axLim(1); end
-    if y == 0, y = axLim(3); end
-    assert(x >= axLim(1) && x <= axLim(2))
-    assert(y >= axLim(3) && y <= axLim(4))
-    scatter(x,y, sz, clr, mk, 'LineWidth', 1.5)
+    % Plot points
+    for ii = 1:height(totTbl)
+        ds = totTbl.dataset{ii};
+        if ~isfield(styleLUT, ds), continue; end
+        met = totTbl.metric{ii};
+        mkIdx = pickMarker(met, met);
+        if isempty(mkIdx), mkIdx = 1; end
+        mk  = styleLUT.(ds){mkIdx};
+        clrIdx = contains(met,'cos') + 2*contains(met,'mp1') + 3*contains(met,'mpinf');
+        clr = clrCA{strcmp(styleIDs, ds)}(clrIdx, :);
+        x = xData(ii); if x==0, x = xLim(1); end
+        y = yData(ii); if y==0, y = yLim(1); end
+        scatter(x, y, sz, clr, mk, 'LineWidth', 1.5);
+    end
 end
-set(gca,'XScale','log','YScale','log','FontWeight','bold','FontSize',12)
-%% 
-figure('Name','Total persistence'); hold on; grid on
-ylabel('E_{0,1,2}(D)'); xlabel('TP_{0,1,2}')
-axLim = 10.^[0.5 5 log10(1.5) log10(10)]; axis(axLim);
-title('Full Persistant Entropy vs Total Persistance')
 
-sz = 100;
-
+%--- Optional: Style grid legend (unchanged) ---
+figure('Name','Style grid legend'); hold on;
 for ii = 1:height(totTbl)
-    isZero = 0;
-    ds = totTbl.dataset{ii};          
-    if ~isfield(styleLUT,ds),  continue, end
-    metric = totTbl.metric{ii};
-
-    mkIdx = pickMarker(metric,metric);       
-    if isempty(mkIdx), mkIdx = 1; end
+    ds = totTbl.dataset{ii}; if ~isfield(styleLUT, ds), continue; end
+    met = totTbl.metric{ii};
+    mkIdx = pickMarker(met, met); if isempty(mkIdx), mkIdx=1; end
     mk = styleLUT.(ds){mkIdx};
-    clrIdx = contains(metric,'cos')+2*contains(metric,'mp1')+3*contains(metric,'mpinf');
-    clr = clrCA{strcmp(styleIDs,ds)}(clrIdx,:);
-
-    x = totTbl.tp_012(ii);
-    y = totTbl.entropy_012(ii);
-    
-    if x == 0, x = axLim(1); end
-    if y == 0, y = axLim(3); end
-    scatter(x,y, sz, clr, mk, 'LineWidth', 1.5)
-end
-set(gca,'XScale','log','YScale','log','FontWeight','bold','FontSize',12)
-
-%%
-nRows = numel(styleIDs); nCols = numel(metricCols);
-f= figure('Name','Style grid legend'); hold on; f.Position(3:4) = [501.6000000000004,215.2];
-for ii = 1:height(totTbl)
-    ds = totTbl.dataset{ii};          
-    if ~isfield(styleLUT,ds),  continue, end
-    metric = totTbl.metric{ii};
-
-    mkIdx = pickMarker(metric,metric);       
-    if isempty(mkIdx), mkIdx = 1; end
-    mk = styleLUT.(ds){mkIdx};
-    clrIdx = contains(metric,'cos')+2*contains(metric,'mp1')+3*contains(metric,'mpinf');
-    clr = clrCA{strcmp(styleIDs,ds)}(clrIdx,:);
-
+    clrIdx = contains(met,'cos') + 2*contains(met,'mp1') + 3*contains(met,'mpinf');
+    clr = clrCA{strcmp(styleIDs, ds)}(clrIdx, :);
     x0 = mkIdx;
-    y0 = 3*find(strcmp(styleIDs,ds))+clrIdx;
-
-    scatter(x0, y0, sz, clr, mk, 'LineWidth', 1.5)
+    y0 = 3*find(strcmp(styleIDs, ds)) - (4 - clrIdx);
+    scatter(x0, y0, sz, clr, mk, 'LineWidth', 1.5);
 end
-axis on
-y0 = 12.6;
-ca = {'HorizontalAlignment','center','VerticalAlignment','bottom','FontWeight','bold'};
-text(1,y0,'Base',ca{:})
-text(2,y0,'ws',ca{:})
-text(3,y0,'5nn',ca{:})
-text(4,y0,'10nn',ca{:})
-text(5,y0,'ws 5nn',ca{:})
-text(6,y0,'ws 10nn',ca{:})
-
-x0 = 0.5;
-ca = {'HorizontalAlignment','center','VerticalAlignment','middle','FontWeight','bold'};
-text(x0,4,'Cos',ca{:})
-text(x0,5,'L1',ca{:})
-text(x0,6,'LInf',ca{:})
-text(x0,7,'Cos',ca{:})
-text(x0,8,'L1',ca{:})
-text(x0,9,'LInf',ca{:})
-text(x0,10,'Cos',ca{:})
-text(x0,11,'L1',ca{:})
-text(x0,12,'LInf',ca{:})
-
-x0 = -0.2;
-text(x0,6,'BERT',ca{:})
-text(x0,9,'BoW',ca{:})
-text(x0,12,'TF-IDF',ca{:})
-
-axis([0 6 4 12.5])
-axis off
-% axis on
-
+axis off;  % tweak labels as needed
