@@ -91,15 +91,31 @@ for $p\ge1$ satisfy the metric axioms \cite{viro2008elementary}. We consider two
 	In text, $d_{\infty}$ might be interpreted as looking at the word with the most disproportionate frequency between two reviews. For example, if one review heavily uses the word “excellent” and another does not use it at all, Chebyshev distance would equal the normalized frequency difference for "excellent".
 \end{itemize}
 
-\section{Full Structure}
-\subsubsection{Characterization}
-On each normalized diagram we compute total persistance and persistant entropy,
-\begin{align*}
-	\operatorname{TP}_k(X)&=\sum_{\left(b_i, d_i\right) \in \operatorname{Dgm}_k(X)}\left(d_i-b_i\right)=\int_0^{\alpha_{\max }} \beta_k(\alpha) d \alpha\\
-	\operatorname{E}_k(X)&=\sum_{\left(b_i, d_i\right) \in \operatorname{Dgm}_k(X)}-p_i\log(p_i), \quad p_i=\frac{d_i-b_i}{\sum_j\left(d_j-b_j\right)}
-\end{align*}
-capturing overall lifetime and dispersion of features \cite{adams2017persistence}.
+\subsubsection{Entropic-Regularized Optimal Transport}\label{ws}
+Consider a review embedded as a series of BERT tokens. Suppose if instead of pooling the tokens into a vector, we represented each review as an empirical distribution, $P = \{\mathbf{x}_i\}_{i=1}^{m}$ or $Q = \{\mathbf{y}_j\}_{j=1}^{n}$ over our feature space. The Wasserstein distance (Earth Mover’s distance) between $P$ and $Q$ is defined as the minimum “cost” to transport the mass of distribution $P$ onto $Q$ \cite{villani2008optimal}. If the ground cost between points is taken to be \textit{any of the above metrics} $d(x,y)$, the $p$-Wasserstein distance is
+$$
+W_p(P, Q)=\left(\min _{\pi \in \Pi(P, Q)} \sum_{i, j} \pi_{i j} d\left(\mathbf{x}_i, \mathbf{y}_j\right)^p\right)^{1 / p}
+$$
+where $\Pi(P,Q)$ is the set of all couplings (or transport plans) $\pi$ with $\pi_{ij}\ge0$, $\sum_j \pi_{ij} = 1/m$ (supply at $\mathbf{x}_i$) and $\sum_i \pi_{ij} = 1/n$ (demand at $\mathbf{y}_j$). This optimal transport (OT) problem can be solved by linear programming \cite{flamary2021pot}, but this became computationally intractable for large $m,n$.\\
+Cuturi \cite{cuturi2013sinkhorn} proposed adding an entropy penalty to the OT problem to make it computationally efficient via iterative matrix scaling (Sinkhorn’s algorithm). The Sinkhorn–Wasserstein distance (also called Sinkhorn divergence when made symmetric) introduces a small $\epsilon > 0$ and solves
+$$
+W_p^{(\epsilon)}(P, Q)=\left(\min _{\pi \in \Pi(P, Q)} \sum_{i, j} \pi_{i j} d\left(\mathbf{x}_i, \mathbf{y}_j\right)^p+\epsilon \sum_{i, j} \pi_{i j} \ln \pi_{i j}\right)^{1 / p} .
+$$
+The extra entropy term $H(\pi) = -\sum_{ij}\pi_{ij}\ln \pi_{ij}$ encourages the optimal $\pi$ to be more diffuse (higher entropy), avoiding overly sparse solutions and greatly speeding up computation via iterative proportional fitting (the Sinkhorn-Knopp algorithm) \cite{cuturi2013sinkhorn}. In this work, we used a typically computed $W_1^{(0.01)}$ unless explicitly stated otherwise.\\
+For comparing text embedding distributions, $W_p$ gives a meaningful measure: if two sets of reviews have very similar content and style distribution, the Wasserstein distance will be low (cheap transport), whereas if one set of reviews uses very different language (requiring moving probability mass far in the embedding space), the distance will be high.
+\subsubsection{Graph-Based Geodesic Distances}
+Imagine for a moment that our movie-review embeddings aren't just scattered in $\mathbb{R}^D$ but actually lie on some hidden, winding "topic manifold" $M$. We can approximate the structure of this manifold by building the $k$-nearest-neighbor graph $G$ on our points $\left\{x_i\right\}$, weighing each edge by \textit{any of the above metrics} $d\left(x_i, x_j\right)$, and defining
+$$
+d_G\left(x_i, x_j\right)=\min _{\pi: i \rightarrow j} \sum_{(u, v) \in \pi} d(u, v)
+$$
+where the optimal path $\hat{\pi}: i \rightarrow j$ is computed via Dijkstra's or Floyd-Warshall in SciPy \cite{virtanen2020scipy}. Under mild sampling conditions,
+$$
+d_G\left(x_i, x_j\right) \xrightarrow[k \rightarrow \infty]{ } d_{M}\left(x_i, x_j\right)=\inf _{\gamma: i \rightarrow j} \int_0^1\left\|\gamma^{\prime}(t)\right\| d t
+$$
+up to a small error term $\mathcal{O}(h)$, where $h \approx \max _i \min _{j \neq i}\left\|x_i-x_j\right\|$ is the sampling radius \cite{tenenbaum2000global}.\\
+Intuitively, if two reviews are not directly similar (in Euclidean terms) but have a chain of intermediate reviews linking them (each similar to the next), then $d_G$ will reflect the sum of small hops, capturing that they are connected through a topic pathway.
 
+<<<<<<< Updated upstream
 \begin{figure*}[p]
 \includegraphics[width=\textwidth]{comparative/general/FullStructureV2.png}
 \caption{bla bla}
@@ -118,43 +134,288 @@ capturing overall lifetime and dispersion of features \cite{adams2017persistence
 \section{Discriminating Structure}
 % define axes of discrimination
 % discuss extrema (deep dive persistance)
+=======
 
-\begin{table*}[htb!]
-	\centering
-	\begin{tabular}{ccccr}
-	\toprule
-	\textbf{Category} & \textbf{Dim} & \textbf{Encoding} & \textbf{Top Metric} & \textbf{Discrim.} \\
-	\midrule
-	\multirow{4}{*}{Drama or comedy}
-	 & 0   & BoW   & Cosine                          & 9.3   \\
-	 & 1   & BERT  & Minkowski $p=\infty$             & 158.5 \\
-	 & 2   & BERT  & Minkowski $p=\infty$             & 6.6   \\
-	 & 012 & BERT  & Minkowski $p=\infty$             & \textbf{171.9} \\
-	\midrule
-	\multirow{4}{*}{Review type}
-	 & 0   & BERT  & Minkowski $p=\infty$             & 7.7   \\
-	 & 1   & BERT  & Minkowski $p=\infty$             & 160.7 \\
-	 & 2   & TF-IDF & Cosine + Wasserstein + 10NN Isomap & 10.9  \\
-	 & 012 & BERT  & Minkowski $p=\infty$             & \textbf{173.8} \\
- 	\midrule
- 	\multirow{4}{*}{Critic name}
-	 & 0   & TF-IDF & Minkowski $p=1$                  & 39.5  \\
-	 & 1   & BERT  & Minkowski $p=\infty$             & 191.7 \\
-	 & 2   & TF-IDF & Cosine                           & 23.3  \\
-	 & 012 & BERT  & Minkowski $p=\infty$             & \textbf{211.0} \\
-	 	\midrule
-	 	\multirow{4}{*}{Content rating}
-	 & 0   & BoW   & Cosine                          & 7.5   \\
-	 & 1   & BERT  & Minkowski $p=\infty$             & 331.6 \\
-	 & 2   & BERT  & Minkowski $p=\infty$             & 8.9   \\
-	 & 012 & BERT  & Minkowski $p=\infty$             & \textbf{347.6} \\
-	\bottomrule
-	\end{tabular}
-	\caption{Best metrics and max discriminability scores by category and dimension.}
-	\label{tab:best-metrics}
+\begin{figure*}[ht] % up here to move text
+\centering
+\includegraphics[width=0.95\textwidth]{comparative/general/FullStructureV2.png}
+\caption{\textbf{Complexity portrait.} Four-panel complexity portrait summarizing TDA metrics across encoding and distance variants. Panel (a) plots full persistent entropy $E_{0,1,2}(D)$ against total persistence $\mathrm{TP}_{0,1,2}$ on log–log scales. Panel (b) shows high- versus low-dimensional persistent entropy $E_{1,2}(D)$ as a function of $E_{0}(D)$, and panel (c) compares high- versus low-dimensional total persistence $\mathrm{TP}_{1,2}$ to $\mathrm{TP}_{0}$. The bottom-right grid legend maps marker shapes to metric families (base, Sinkhorn–Wasserstein “ws”, 5-NN, 10-NN, and their hybrids) and colors to encoding strategies (TF–IDF, BoW, BERT). Strong coupling in entropy contrasts with near-independence of total persistence.}
+\label{fig:FullStructure}
+\end{figure*}
+
+
+\subsection{Topological Structure}
+\subsubsection{Process}
+We follow the standard TDA procedure:
+\[
+(X,d)\xrightarrow{\tau_d}(X,\tau_d)
+\xrightarrow{\mathrm{VR}}\{\mathrm{VR}_\alpha(X)\}_{\alpha\ge0}
+\xrightarrow{H_k}\mathrm{Dgm}_k(X),
+\]
+where
+\begin{enumerate}[leftmargin=*,nosep]
+  \item From the metric, sets $B(x;r)=\{y:d(x,y)<r\}$ generate
+  \[
+    \tau_d=\{U\subset X:\forall x\in U\,\exists r>0\,B(x;r)\subset U\}.
+  \]
+  inducing the open-ball topology \cite{viro2008elementary,edelsbrunner2014short}
+  \item The Vietoris-Rips filtration
+  $$
+  \mathrm{VR}_\alpha(X)=\left\{\sigma \subset X: \max _{u, v \in \sigma} d(u, v) \leq \alpha\right\}
+  $$
+  forms nested simplicial complexes \cite{zomorodian2005topology}.
+  \item Filtered  boundary matrices define the homology functor
+  \begin{align*}
+  H_k(&\mathrm{VR}_\alpha(X);\mathbb{F}_2)=\ker\partial_k/\mathrm{im}\,\partial_{k+1},\quad\text{with}\\
+  &\partial_k([v_0,\dots,v_k])=\sum_{i=0}^k(-1)^i[v_0,\dots,\widehat v_i,\dots,v_k],
+  \end{align*}
+  \cite{edelsbrunner2009computational,edelsbrunner2014short}. Then Ripser’s cohomology‐based matrix-reduction algorithm is used to produce birth-death intervals $[b, d)$ \cite{bauer2021ripser}.
+\end{enumerate}
+\subsubsection{Persistence Diagrams}
+The persistence diagram 
+$$
+\operatorname{Dgm}_k(X)=\left\{\left(b_i, d_i\right)\right\}_{i=1}^{N_k}.
+$$
+is a complete invariant of the homology of the Vietoris-Rips filtration $\mathrm{VR}_\alpha(X)$, as it encodes the birth and death of topological features at various scales, uniquely characterizing the $k$-dimensional homology of $X$.
+\subsubsection{Betti Curves}
+Betti curves plot the rank of homology groups
+\begin{align*}
+	\beta_k(\alpha)&=\operatorname{rank}H_k(\mathrm{VR}_\alpha(X);\mathbb{F}_2)\\
+	&=\sum_{(b_i,d_i)\in\operatorname{Dgm}_k(X)}\!\mathbf 1_{[\,b_i,d_i)}(\alpha)\qquad 0\le\alpha\le\alpha_{\max}.
+\end{align*}
+as a function of the scale parameter $\alpha$, which corresponds to the parameter in the Vietoris-Rips filtration.
+>>>>>>> Stashed changes
+
+\subsubsection{Normalization}
+In order to compare across metrics and emphasize relative topology, we need to correct for the fact that every metric will have a distinct absolute scale.\\
+For a metric-space persistence diagram $\operatorname{Dgm}_k(X)$ with 
+$$\operatorname{diam}(X)=\max _{i, j} d\left(x_i, x_j\right),$$
+we normalize to $\widetilde{\operatorname{Dgm}}_k(X)$ via
+$$
+\left(b_i, d_i\right) \mapsto\left(b_i / \operatorname{diam}(X), d_i / \operatorname{diam}(X)\right).
+$$
+Stability under scalar multiplication ensures consistency and permits rescaling after diagram computation \cite{cohen2007stability}. Moreover, this extends naturally to Betti curves $\tilde{\beta}_k(u)=\beta_k\bigl(u\cdot\operatorname{diam}(X)\bigr)$.
+
+\section{Full Structure}
+
+
+\subsection{Quantifying Structure}
+On each normalized diagram we compute total persistance and persistant entropy,
+\begin{align*}
+	\operatorname{TP}_k(X)&=\sum_{i}\left(d_i-b_i\right)=\int_0^{\alpha_{\max }} \tilde{\beta}_k(\alpha) d \alpha\\
+	\operatorname{E}_k(X)&=\sum_{i}-p_i\log(p_i), \quad p_i=\frac{d_i-b_i}{\sum_j\left(d_j-b_j\right)}
+\end{align*}
+where each index $i$ above is of the from $\left(b_i, d_i\right) \in \widetilde{\operatorname{Dgm}}_k(X)$. Together these measures capture overall lifetime and dispersion of features \cite{adams2017persistence}.
+
+
+\subsection{Global Persistence–Entropy Insights}\label{sec:global-landscape}
+Across the 54 embedding–metric combinations in Figure \ref{fig:FullStructure} we never observe a configuration that is simultaneously \emph{high-persistence} and \emph{low-entropy}.
+Every push that lengthens lifetimes also widens their spectrum, so raising $TP_{1,2}$ inevitably drags $E_{1,2}$ upward.  
+The Pearson statistics (Tab.\,\ref{tab:corr}) show strong entropic coupling ($E_0$ vs.\ $E_{1,2}$) but almost no lifetime coupling ($TP_0$ vs.\ $TP_{1,2}$), reinforcing that loops/voids carry information unavailable to connected components yet must pay an entropic “tax.”
+
+\begin{table}[h]
+  \centering
+  \caption{Key correlations (all 54 metric pairs).}
+  \label{tab:corr}
+  \begin{tabular}{lc}
+  \toprule
+  Quantity pair & $r$\\
+  \midrule
+  $E_0$ vs $E_{1,2}$ & 0.70\\
+  $TP_0$ vs $TP_{1,2}$ & 0.07\\
+  $TP_{0,1,2}$ vs $E_{0,1,2}$ & 0.48\\
+  \bottomrule
+  \end{tabular}
+  \caption{\textbf{Scatter correlations.} Strong coupling in entropy contrasts with near-independence of total persistence.}
+\end{table}
+
+\subsection{Metric Families and Entropic Efficiency}\label{sec:metric-insight}
+
+Define the \emph{entropic efficiency ratio}
+$$
+\eta = \frac{TP_{1,2}}{E_{1,2}},
+$$
+units of lifetime gained per bit of high-dimensional entropy.  
+Median values by metric family are given in Tab.\,\ref{tab:eta}; higher $\eta$ means a “taller” diagram for the same entropic cost.
+
+\begin{table*}[h]
+  \centering
+  \caption{Median entropic efficiency $\eta$ (all embeddings pooled).}
+  \label{tab:eta}
+  \begin{tabular}{lcc}
+  \toprule
+  Ground / transport choice & $\tilde{\eta}$ & Interpretation\\
+  \midrule
+  $d_\infty$ + $W_1$ 			& 2.00 & exploits single-token extremes\\
+  $d_\infty$ + $W_1$ + 10-NN               & 0.82 & long-edge filtering removes gain\\
+  $d_1$ + $W_1$                 & 0.76 & mass smoothing, moderate gaps\\
+  ground $d_1$                      & 0.60 & coordinate averaging\\
+  Cosine + 10-NN                   & 0.50 & angular graph distances\\
+  plain Cosine                     & 0.34 & small angular spread\\
+  \bottomrule
+  \end{tabular}
 \end{table*}
 
-\subsection{Observation 1: Schwartz}
+\subsubsection*{Observations}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Chebyshev–Wasserstein rules.}  With $\tilde{\eta}=2.00$ it delivers roughly \emph{double} the loop/void lifetime per entropy bit compared to the next best family.  A single extreme coordinate both lengthens and diversifies lifetimes, so efficiency stays high even as entropy rises.
+  \item \textbf{Graph corrections trade height for tightness.}  Adding a 10-NN intrinsic metric cuts $\eta$ by more than half, confirming that long edges are the principal source of tall bars in the persistence diagram.
+  \item \textbf{Regularisation smooths, but costs amplitude.}  Sinkhorn on $d_1$ nudges $\eta$ downward; spreading mass flattens lifetime peaks, yielding more predictable—yet shorter—bars.
+  \item \textbf{Angular metrics are entropically expensive.}  Cosine produces the lowest $\eta$ values; its bounded range caps lifetime growth while entropy still rises through small-angle variability.
+\end{itemize}
+
+\subsubsection*{Practical takeaway}
+\emph{Tall, information-rich diagrams come at an entropic price.}  
+Chebyshev–Wasserstein pays the price most efficiently; geodesic or entropic smoothing lowers both cost and return; cosine invests entropy for meagre gains.  
+Consequently, when the analytic goal is discrimination rather than stability, $d_\infty$ with plain Wasserstein remains the metric of choice.
+
+\section{Discriminating Structure}
+\subsection{Quantifying Contrasts}
+In this section we use abbreviations $D,D'$ for distinct normalized diagrams, $\widetilde{\operatorname{Dgm}}_k$.
+\subsubsection{Wasserstein-1}
+
+Interprets each diagram as a mass distribution and computes the minimal $\ell^1$ transport cost. We have
+$$
+W_1(D,D') \;=\; \inf_{\gamma} \sum_{p \in D} \bigl\lVert p - \gamma(p)\bigr\rVert_{1},
+$$
+where the infimum is over all bijections $\gamma\colon D\to D'$ (allowing matches to the diagonal).
+
+\subsubsection{Bottleneck Distance}
+
+Finds the pairing that minimizes the maximal $\ell^\infty$ displacement, ensuring stability under small perturbations,
+$$
+d_B(D,D') \;=\; \inf_{\gamma}\;\sup_{p \in D} \bigl\lVert p - \gamma(p)\bigr\rVert_{\infty}.
+$$
+It satisfies the stability bound
+$$
+d_B\bigl(\mathrm{Dgm}(f),\,\mathrm{Dgm}(g)\bigr)\;\le\;\|f-g\|_{\infty},
+$$
+for real‐valued functions $f,g$ on a common domain \cite{cohen2007stability}.  
+
+
+\subsubsection{Vectorization}
+Both methods below are vectorizations embedding diagrams into a vector space for standard ML methods \cite{bubenik2015statistical,adams2017persistence}. One we represent diagrams $D,D'$ as vectors, we simply take the euclidean distance, $d_2$.
+
+\subsubsection{Persistence Landscapes}
+Transform each interval $(b_i,d_i)$ into a symmetric “tent” function, 
+$$
+f_{b_i,d_i}(t)=\max\bigl(0,\min\{t-b_i,\;d_i-t\}\bigr).
+$$
+Then at each time $t$ take the $k$-th largest tent height
+$$
+\lambda_k(t)=\text{the $k$-th largest of }\{f_{b_i,d_i}(t)\}_i,\quad k\ge1.
+$$
+to form a sequence $\Lambda(D)=(\lambda_k)_{k\ge1}\in\ell^2$, yielding a stable, Hilbert-space embedding that hierarchically encodes feature prominence \cite{bubenik2015statistical}. \\
+
+\subsubsection{Persistence Images}
+
+Map each $(b,d)\in D$ to $(x,y)=(b,d-b)$ with weight $w(b,y)$, then place Gaussian kernels $K_\sigma((u,v),(x,y))$ and rasterize on grid $(u_p,v_q)$:
+$$
+I_{p,q}=\sum_{(b_i,d_i)\in D}w(b_i,d_i-b_i)\;K_\sigma\bigl((u_p,v_q),(b_i,d_i-b_i)\bigr).
+$$
+Flattening $\{I_{p,q}\}$ yields a finite-dimensional embedding of the diagram \cite{adams2017persistence}.
+
+\subsection{Discrimination Results}\label{sec:disc-results}
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{comparative/general/DiscrimStructureV2.png}
+\caption{\textbf{Swim-lane discrimination.}  Rows: semantic categories.  Columns: $W_1$, bottleneck $d_B$, persistence landscape $L_2$, persistence image $I_2$.  Within each tile four lanes show score distributions $d=0,1,2,012$ (bottom$\to$top).}
+\label{fig:disc-results}
+\end{figure*}
+
+
+\begin{table*}[t]
+  \centering
+  \begin{tabular}{cccccr}
+    \toprule
+    \textbf{Category} & \textbf{Dim} & \textbf{Encoding} & \textbf{Top Metric} & \textbf{Disc. Type} & \textbf{Discrim.} \\
+    \midrule
+    \multirow{4}{*}{Drama or comedy}
+     & 0   & BoW   & Cosine                                    & WD &  9.3   \\
+     & 1   & BERT  & Minkowski $p=\infty$ + Wasserstein        & WD & 158.5  \\
+     & 2   & BERT  & Minkowski $p=\infty$ + Wasserstein        & WD &   6.6  \\
+     & 012 & BERT  & Minkowski $p=\infty$ + Wasserstein        & WD & \textbf{171.9} \\ 
+    \midrule
+    \multirow{4}{*}{Review type}
+     & 0   & BERT   & Minkowski $p=\infty$ + Wasserstein       & WD &   7.7  \\
+     & 1   & BERT   & Minkowski $p=\infty$ + Wasserstein       & WD & 160.7  \\
+     & 2   & TF–IDF & Cosine + Wasserstein + 10NN Geodesic       & WD &  10.9  \\
+     & 012 & BERT   & Minkowski $p=\infty$ + Wasserstein       & WD & \textbf{173.8} \\
+    \midrule
+    \multirow{4}{*}{Critic name}
+     & 0   & TF–IDF & Minkowski $p=1$                            & WD &  39.5  \\
+     & 1   & BERT   & Minkowski $p=\infty$ + Wasserstein        & WD & 191.7  \\
+     & 2   & TF–IDF & Cosine                                    & WD &  23.3  \\
+     & 012 & BERT   & Minkowski $p=\infty$ + Wasserstein        & WD & \textbf{211.0} \\
+    \midrule
+    \multirow{4}{*}{Content rating}
+     & 0   & BoW    & Cosine                                    & WD &   7.5  \\
+     & 1   & BERT   & Minkowski $p=\infty$ + Wasserstein        & WD & 331.6  \\
+     & 2   & BERT   & Minkowski $p=\infty$ + Wasserstein        & WD &   8.9  \\
+     & 012 & BERT   & Minkowski $p=\infty$ + Wasserstein        & WD & \textbf{347.6} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Best metrics, discriminability‐metric types, and maximum discriminability scores by category and dimension.}
+  \label{tab:best-metrics}
+\end{table*}
+
+
+Four semantic splits—\emph{critic name, content rating, genre, sentiment}—are evaluated with four contrast methods: Wasserstein $W_1$, bottleneck $d_B$, persistence landscapes ($L_2$), and persistence images ($I_2$).  Table \ref{tab:disc-avg} reports the mean joint score ($012$) for each pair.
+
+\begin{table}[h]
+  \centering
+  \caption{Mean $012$-scores (larger $=$ better).}
+  \label{tab:disc-avg}
+  \begin{tabular}{lcccc}
+  \toprule
+                 & $W_1$ & $d_B$ & $L_2$ & $I_2$\\
+  \midrule
+  Critic name    & 17.8 & 0.22 & 0.42 & 0.05\\
+  Content rating & 10.2 & 0.18 & 0.10 & 0.01\\
+  Genre          &  7.9 & 0.19 & 0.10 & 0.01\\
+  Sentiment      &  7.4 & 0.18 & 0.10 & 0.01\\
+  \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsubsection*{Dimension contributions under the best metric}
+For BERT + $d_\infty$ + $W_1$ the $012$ score decomposes as
+$$
+H_1{:}\;0.86,\quad H_0{:}\;0.12,\quad H_2{:}\;0.02,
+$$
+confirming that \emph{loops, not clusters or voids}, encode almost all semantic contrast.
+
+\subsubsection*{Why Wasserstein wins}
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Additivity.}  $W_1$ sums over \emph{all} matched points, so signal scales with diagram size $n$; $d_B$ is $n$-invariant.
+  \item \textbf{Lifetime weighting.}  Longer bars contribute more to $W_1$, rewarding the heavy tails induced by $d_\infty$.
+  \item \textbf{Tail preservation.}  Sinkhorn halves, landscapes truncate, and images blur the tail; plain $W_1$ leaves it intact.
+\end{enumerate}
+
+\subsubsection*{Ground-metric effects}
+Switching from Cosine to $d_\infty$ multiplies $W_1$ roughly by $16\times$ (PG vs R: $347.6$ vs.\ $18.5$).  
+A single extreme token inflates $\lVert x-y\rVert_\infty$ and, through additivity, every pairing that touches it.
+
+\subsubsection*{Category morphology}
+Content rating and critic idiolect exploit sparse “pivot” words (perfect for $d_\infty$ amplification) whereas genre and sentiment rely on broader lexical shifts, hence lower maxima.
+
+% ---------------------------------------------------------
+\paragraph{Observations.}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{$W_1$ is universally dominant.}  It outranks $d_B$ by two orders of magnitude and landscapes/images by $>40\times$.
+  \item \textbf{$d_\infty$ enhances $W_1$.}  Chebyshev gaps feed directly into $W_1$; other norms diffuse the effect.
+  \item \textbf{Loops carry the signal.}  $86\%$ of discriminative power resides in $H_1$.
+\end{itemize}
+
+\paragraph{Practical takeaway.}
+For maximal class separation in text-embedded TDA use
+$$
+\text{BERT + Chebyshev + Wasserstein}.
+$$
+Add geodesic corrections or Sinkhorn only when the goal shifts from discrimination to statistical stability; both reduce amplitude by suppressing the heavy lifetime tail that drives contrast.
+
+\subsection{Case Studies}
+\subsubsection{Observation 1: Schwartz}
 % define axes of discrimination
 % plot
 % discuss extrema (deep dive persistance)
@@ -267,7 +528,12 @@ The maximum persistence difference of 0.020 for dimension-1 features indicates t
 
 These content rating differences persist across encoding methods but are most pronounced with BERT embeddings, suggesting that contextual encodings better capture the subtle semantic differences in how critics approach films with different target audiences.
 
+<<<<<<< Updated upstream
 \subsection{Preferred Metric}
+=======
+\clearpage
+\subsection{Preferred Metric}\label{sec:pref-met}
+>>>>>>> Stashed changes
 
 To quantitatively compare the effectiveness of different distance metrics and encoding methods, we developed a topological complexity measure that captures both the quantity and quality of topological features. Our complexity formula is defined as:
 
