@@ -1,0 +1,47 @@
+{
+  "bert_strat800_cos": {
+    "H0_fresh_rotten_ratio": 1.0,
+    "H0_entropy_diff": 0.0231819656194876,
+    "H1_fresh_rotten_ratio": 1.2608695652173914,
+    "H1_entropy_diff": 0.22271184986507375,
+    "H2_fresh_rotten_ratio": 2.2982456140350878,
+    "H2_entropy_diff": 0.750091045823166
+  },
+  "bert_strat800_mp1": {
+    "H0_fresh_rotten_ratio": 1.0210526315789474,
+    "H0_entropy_diff": 0.020593482578203037,
+    "H1_fresh_rotten_ratio": 1.1666666666666667,
+    "H1_entropy_diff": 0.14871119520013387,
+    "H2_fresh_rotten_ratio": 1.9714285714285715,
+    "H2_entropy_diff": 0.6492084487042189
+  },
+  "tfidf_strat800_cos": {
+    "H0_fresh_rotten_ratio": 1.005181347150259,
+    "H0_entropy_diff": 0.017852654592932282,
+    "H1_fresh_rotten_ratio": 1.0177725118483412,
+    "H1_entropy_diff": -0.005384999173026372,
+    "H2_fresh_rotten_ratio": 1.2219020172910662,
+    "H2_entropy_diff": 0.20107120631497022
+  },
+  "tfidf_strat800_mp1": {
+    "H0_fresh_rotten_ratio": 1.0131926121372032,
+    "H0_entropy_diff": 0.02691133366375631,
+    "H1_entropy_diff": 0,
+    "H2_entropy_diff": 0
+  },
+  "bow_strat800_cos": {
+    "H0_fresh_rotten_ratio": 1.0025641025641026,
+    "H0_entropy_diff": 0.018537345750686995,
+    "H1_fresh_rotten_ratio": 1.118067978533095,
+    "H1_entropy_diff": 0.11743944216457525,
+    "H2_fresh_rotten_ratio": 1.2789256198347108,
+    "H2_entropy_diff": 0.2241194492235863
+  },
+  "bow_strat800_mp1": {
+    "H0_fresh_rotten_ratio": 1.0131926121372032,
+    "H0_entropy_diff": 0.019795039865884156,
+    "H1_fresh_rotten_ratio": 1.0,
+    "H1_entropy_diff": 0.0,
+    "H2_entropy_diff": 0
+  }
+}
