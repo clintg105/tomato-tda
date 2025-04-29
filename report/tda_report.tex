@@ -1,17 +1,54 @@
-\documentclass[]{article}
-\usepackage[margin=1in]{geometry}
+% Preamble
+\documentclass[fleqn,10pt]{SelfArx}
 
+\usepackage[english]{babel}
+\usepackage{xcolor}
+\setlength{\columnsep}{0.55cm}
+\setlength{\fboxrule}{0.75pt} 
+\definecolor{color1}{RGB}{0,0,90}
+\definecolor{color2}{RGB}{0,20,20}
+\usepackage{hyperref}
+\hypersetup{
+	hidelinks,
+	colorlinks,
+	breaklinks=true,
+	urlcolor=color2,
+	citecolor=color1,
+	linkcolor=color1,
+	bookmarksopen=false,
+	pdftitle={Title},
+	pdfauthor={Author},
+}
+
+\usepackage{lipsum}
 \usepackage{graphicx}
-\graphicspath{ {../results/data/plots/} }
+\usepackage{booktabs}
+\usepackage{cite}
+\usepackage{dblfloatfix}  % fix bottom placement
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,multirow}
+\usepackage[font=small,labelfont=bf,skip=6pt]{caption}
+\usepackage{float}
+\graphicspath{{../results/data/plots/}}
 
-\title{Tomato TDA}
-\author{Morgan Bounds, Lianghao Chen, Clinten Graham}
+\JournalInfo{JHU/EP EN.625.687.3VL.SP25 Applied Topology}
+\Archive{Final Report}
+\PaperTitle{Tomato TDA}
+\Abstract{
+    Given a finite metric space \((X,d)\) induced by text encodings (BoW, TF–IDF, BERT) and metrics (Cosine, Sinkhorn–Wasserstein, Geodesic Isomap), we build Vietoris–Rips filtrations \(\mathrm{VR}(X;\varepsilon)\) and compute persistent homology in degrees \(n=0,1,2\).
+}
+\Authors{Morgan Bounds\textsuperscript{1}, Lianghao Chen\textsuperscript{1}, Clinten Graham\textsuperscript{1}} % Authors
+\affiliation{\textsuperscript{1}\textit{JHU EP}} % Author affiliation
+
+\Keywords{}
+\newcommand{\keywordname}{Keywords}
+
 
 \begin{document}
 
 \maketitle
-%\listoffigures
-\pagebreak
+\tableofcontents % Output the contents section
+
 \section{Methodology}
 
 \subsection{Repository}
@@ -23,26 +60,77 @@
 \subsection{Metrics}
 
 \section{Results}
-
+Let $(X, d)$ be a finite metric space and set
+$$
+\operatorname{VR}(X ; \varepsilon)=\{\sigma \subseteq X: \operatorname{diam}(\sigma) \leq \varepsilon\}
+$$
+Applying homology in degree $\boldsymbol{n}$ (with field coefficients) yields a persistence module
+$$
+V_{\varepsilon}=H_n(\operatorname{VR}(X ; \varepsilon)), \quad \varphi_{\varepsilon \leq \varepsilon^{\prime}}: V_{\varepsilon} \rightarrow V_{\varepsilon^{\prime}}
+$$
+Under the usual tameness (finitely many simplices added), the structure theorem says
+$$
+V_{\bullet} \cong \bigoplus_{i \in I} I\left(b_i, d_i\right)
+$$
+where each interval module $I(b, d)$ is $\mathbf{k}$ on $[b, d)$ and 0 elsewhere. Hence the persistence diagram 
+$$\operatorname{Dgm}_n(X)=\left\{\left(b_i, d_i\right) \mid i \in I\right\}$$ 
+as a multiset of birth-death pairs is a complete invariant of the module
 \subsection{Full Structure}
 % define TP and E
-\begin{figure}[t]
-\includegraphics[width=\textwidth]{comparative/general/FullStructure.png}
+Given a persistence diagram $\operatorname{Dgm}\left(H_n\right)=\{(b, d)\}$ for homology dimension $n$.
+
+\begin{figure*}[t]
+\includegraphics[width=\textwidth]{comparative/general/FullStructureV2.png}
 \caption{bla bla}
 \label{fig:FullStructure}
-\end{figure}
+\end{figure*}
 % discuss extrema (deep dive persistance)
 
 % different embedding lead to different structure
 
 \subsection{Discriminating Structure}
 % define axes of discrimination
-\begin{figure}[t]
-\includegraphics[width=\textwidth]{comparative/general/DiscrimStructure.png}
+\begin{figure*}[t]
+\includegraphics[width=\textwidth]{comparative/general/DiscrimStructureV2.png}
 \caption{bla bla}
 \label{fig:DiscrimStructure}
-\end{figure}
+\end{figure*}
 % discuss extrema (deep dive persistance)
+
+\begin{table*}[t]
+	\centering
+	\begin{tabular}{ccccr}
+	\toprule
+	\textbf{Category} & \textbf{Dim} & \textbf{Encoding} & \textbf{Top Metric} & \textbf{Discrim.} \\
+	\midrule
+	\multirow{4}{*}{Drama or comedy}
+	 & 0   & BoW   & Cosine                          & 9.3   \\
+	 & 1   & BERT  & Minkowski $p=\infty$             & 158.5 \\
+	 & 2   & BERT  & Minkowski $p=\infty$             & 6.6   \\
+	 & 012 & BERT  & Minkowski $p=\infty$             & \textbf{171.9} \\
+	\midrule
+	\multirow{4}{*}{Review type}
+	 & 0   & BERT  & Minkowski $p=\infty$             & 7.7   \\
+	 & 1   & BERT  & Minkowski $p=\infty$             & 160.7 \\
+	 & 2   & TF-IDF & Cosine + Wasserstein + 10NN Isomap & 10.9  \\
+	 & 012 & BERT  & Minkowski $p=\infty$             & \textbf{173.8} \\
+ 	\midrule
+ 	\multirow{4}{*}{Critic name}
+	 & 0   & TF-IDF & Minkowski $p=1$                  & 39.5  \\
+	 & 1   & BERT  & Minkowski $p=\infty$             & 191.7 \\
+	 & 2   & TF-IDF & Cosine                           & 23.3  \\
+	 & 012 & BERT  & Minkowski $p=\infty$             & \textbf{211.0} \\
+	 	\midrule
+	 	\multirow{4}{*}{Content rating}
+	 & 0   & BoW   & Cosine                          & 7.5   \\
+	 & 1   & BERT  & Minkowski $p=\infty$             & 331.6 \\
+	 & 2   & BERT  & Minkowski $p=\infty$             & 8.9   \\
+	 & 012 & BERT  & Minkowski $p=\infty$             & \textbf{347.6} \\
+	\bottomrule
+	\end{tabular}
+	\caption{Best metrics and max discriminability scores by category and dimension.}
+	\label{tab:best-metrics}
+\end{table*}
 
 \subsubsection{Observation 1: Schwartz}
 % define axes of discrimination
@@ -51,14 +139,14 @@
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.75\textwidth]{critic_name/Dennis Schwartz_diagram.png}
+\includegraphics[trim={6cm 0 6cm 0},clip,width=\columnwidth]{critic_name/Dennis Schwartz_diagram.png}
 \caption{Persistence diagram for Dennis Schwartz's reviews showing birth-death pairs of topological features. Note the presence of 7 dimension-1 features (loops) and 3 dimension-2 features (voids), indicating non-trivial topological structure in the embedding space.}
 \label{fig:schwartz_diagram}
 \end{figure}
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.75\textwidth]{critic_name/betti_curves_H1.png}
+\includegraphics[width=\columnwidth]{critic_name/betti_curves_H1.png}
 \caption{Betti curves showing the persistence of 1-dimensional homology features (loops) across different filtration values for both critics. Dennis Schwartz's reviews demonstrate more persistent loops, suggesting a more complex topological structure.}
 \label{fig:betti_curves}
 \end{figure}
@@ -75,7 +163,7 @@ From a stylistic perspective, these topological features may correlate with Schw
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.75\textwidth]{comparative/critic_name/bottleneck_heatmap.png}
+\includegraphics[width=\columnwidth]{comparative/critic_name/bottleneck_heatmap.png}
 \caption{Bottleneck distance heatmap between different critics. The distance of 0.197 between Dennis Schwartz and Roger Ebert indicates meaningful topological distinctions in their critical approaches.}
 \label{fig:bottleneck_distance}
 \end{figure}
@@ -90,4 +178,7 @@ Notably, the Betti curves (Figure \ref{fig:betti_curves}) exhibit a distinctive 
 
 \section{Conclusions}
 
+\phantomsection
+\bibliographystyle{unsrt}
+\bibliography{tda.bib}
 \end{document}
