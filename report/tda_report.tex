@@ -41,7 +41,46 @@
 % discuss extrema (deep dive persistance)
 
 \subsubsection{Observation 1: Schwartz}
+% define axes of discrimination
+% plot
+% discuss extrema (deep dive persistance)
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\textwidth]{critic_name/Dennis Schwartz_diagram.png}
+\caption{Persistence diagram for Dennis Schwartz's reviews showing birth-death pairs of topological features. Note the presence of 7 dimension-1 features (loops) and 3 dimension-2 features (voids), indicating non-trivial topological structure in the embedding space.}
+\label{fig:schwartz_diagram}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\textwidth]{critic_name/betti_curves_H1.png}
+\caption{Betti curves showing the persistence of 1-dimensional homology features (loops) across different filtration values for both critics. Dennis Schwartz's reviews demonstrate more persistent loops, suggesting a more complex topological structure.}
+\label{fig:betti_curves}
+\end{figure}
+
+The topological analysis of movie reviews written by Dennis Schwartz reveals intriguing structures in the BERT embedding space. As shown in Figure \ref{fig:schwartz_diagram}, Schwartz's reviews demonstrate a notable presence of higher-dimensional topological features, with 7 dimension-1 features (loops) and 3 dimension-2 features (voids). The maximum persistence value for dimension-1 features is 0.029, while for dimension-2 features it is 0.017, indicating reasonably stable topological structures.
+
+This non-trivial topology suggests that Schwartz's critical language forms distinct clusters with interconnections, creating loop structures that likely represent recurring thematic elements or linguistic patterns in his reviews. The presence of these loops implies that Schwartz's critical style may orbit around certain conceptual centers before returning to common reference points or perspectives—a pattern consistent with a critic developing signature analytical frameworks.
+
+Comparing the Betti curves in Figure \ref{fig:betti_curves}, we observe that Schwartz's reviews maintain higher persistence in dimension-1 features compared to Roger Ebert's reviews. This suggests that Schwartz may employ a more structured approach to criticism, with greater consistency in how he frames and develops his arguments across different films.
+
+The dimension-2 features (voids) are particularly interesting, as they indicate three-dimensional "bubbles" in the semantic space. These voids might represent conceptual boundaries in Schwartz's criticism—areas where he deliberately avoids certain types of analysis or language. Alternatively, they could reflect a tendency to approach films from multiple contrasting perspectives, creating a more spherical structure in semantic space as his analysis encircles the subject from different angles.
+
+From a stylistic perspective, these topological features may correlate with Schwartz's writing style, which tends to balance academic analysis with accessible criticism. The presence of both loops and voids suggests a critic who returns to foundational principles while maintaining conceptual distinctions between different types of films or critical approaches.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\textwidth]{comparative/critic_name/bottleneck_heatmap.png}
+\caption{Bottleneck distance heatmap between different critics. The distance of 0.197 between Dennis Schwartz and Roger Ebert indicates meaningful topological distinctions in their critical approaches.}
+\label{fig:bottleneck_distance}
+\end{figure}
+
+The bottleneck distance of 0.197 between Schwartz and Ebert (Figure \ref{fig:bottleneck_distance}) quantifies the difference in their topological signatures. This substantial distance suggests fundamentally different cognitive frameworks between the two critics, despite reviewing the same films. This divergence likely reflects different priorities in their evaluations and distinct rhetorical strategies in their writing.
+
+Notably, the Betti curves (Figure \ref{fig:betti_curves}) exhibit a distinctive spike for Dennis Schwartz's reviews at a filtration value of approximately 0.05. This sharp increase indicates a threshold at which many loops simultaneously form in the embedding space, suggesting a critical distance at which Schwartz's language patterns suddenly connect to create circular semantic structures. This abrupt topological transition might correspond to a characteristic scale at which Schwartz's critical vocabulary forms conceptual relationships—perhaps indicating a distinctive granularity at which his analytical framework operates most coherently. The spike's height and narrowness suggest these structures form rapidly and in large numbers at this specific scale, potentially revealing a fundamental frequency in his linguistic patterns or conceptual organization that distinguishes his critical voice.
+
+\clearpage
 \subsection{Preferred Metric}
 % Differences heatmap
 
