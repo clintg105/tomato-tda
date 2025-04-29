@@ -19,6 +19,7 @@
 	pdftitle={Title},
 	pdfauthor={Author},
 }
+\usepackage{nameref}
 
 \usepackage{lipsum}
 \usepackage{graphicx}
@@ -26,6 +27,7 @@
 \usepackage{cite}
 \usepackage{dblfloatfix}  % fix bottom placement
 \usepackage{amsmath,amssymb}
+\usepackage{enumitem}
 \usepackage{booktabs,multirow}
 \usepackage[font=small,labelfont=bf,skip=6pt]{caption}
 \usepackage{float}
@@ -35,7 +37,7 @@
 \Archive{Final Report}
 \PaperTitle{Tomato TDA}
 \Abstract{
-    Given a finite metric space \((X,d)\) induced by text encodings (BoW, TF–IDF, BERT) and metrics (Cosine, Sinkhorn–Wasserstein, Geodesic Isomap), we build Vietoris–Rips filtrations \(\mathrm{VR}(X;\varepsilon)\) and compute persistent homology in degrees \(n=0,1,2\).
+    Given a finite metric space \((X,d)\) induced by text encodings (BoW, TF–IDF, BERT) and metrics (Cosine, Minkowski, Sinkhorn–Wasserstein, Geodesic), we build Vietoris–Rips filtrations \(\mathrm{VR}(X;\varepsilon)\) and compute persistent homology in degrees \(n=0,1,2\). In total, we assess 54 embedding/metric combinations and perform topological data analysis (TDA) on 270 metric spaces. 
 }
 \Authors{Morgan Bounds\textsuperscript{1}, Lianghao Chen\textsuperscript{1}, Clinten Graham\textsuperscript{1}} % Authors
 \affiliation{\textsuperscript{1}\textit{JHU EP}} % Author affiliation
@@ -52,32 +54,41 @@
 \section{Methodology}
 
 \subsection{Repository}
-
+We used NumPy arrays for data and boundary matrices \cite{harris2020array}, computed barcodes via Ripser \cite{bauer2021ripser}, manipulated and visualized diagrams with Persim \cite{persim2024persim}, and evaluated Wasserstein distances using the POT optimal‐transport toolbox \cite{flamary2021pot}.
 \subsection{Data Set}
 
 \subsubsection{Stratification}
 
-\subsection{Metrics}
+\subsection{Real Embeddings}
+We mostly consider a single reviews to be single points embedded in $\mathbb{R}^d$, except for when we use metrics based on \nameref{ws}.
+\subsection{Metric Spaces}
+To apply TDA, we require a notion of distance between points (reviews) in our feature space, since persistent homology typically operates on a metric space \cite{edelsbrunner2009computational}.
+\subsubsection{Cosine Distance}
+Given two vectors $x, y \in \mathbb{R}^d$, we obtain their angle using the dot product $\langle x, y\rangle  = |x||y|\cos(\theta).$
+This is converted to a distance via 
+$$d_{\cos}(x,y) = \sqrt{2\left(1 - \cos(\theta)\right)} \in [0,2].$$
+Cosine distance focuses on the difference in direction of the vectors, effectively comparing the relative term weights. For TF–IDF or BoW, this is useful because it reduces the influence of document length or overall word frequency. 
+\subsubsection{Minkowski Distances}
+A broad family of distances defined as 
+$$d_p(x,y) = \Big(\sum_{i=1}^d |x_i - y_i|^p \Big)^{1/p}$$
+for $p\ge1$ satisfy the metric axioms \cite{viro2008elementary}. We consider two important cases:
+\begin{itemize}
+	\item \textbf{Manhattan distance} ($\ell_1$ norm, with $p=1$)
+	$$d_{1}(x,y) = \sum_{i}|x_i - y_i|$$
+	If $x,y$ are BoW vectors, $d_1$ counts the total difference in word counts between two reviews. This can be more robust than Euclidean ($p=2$) to high-dimensional sparse differences, since it doesn’t overly emphasize large single-component differences (instead, it treats each dimension linearly).
+	\item \textbf{Chebyshev distance} ($\ell_{\infty}$ norm, the limit as $p \to \infty$)
+	$$d_{\infty}(x,y) = \max_i |x_i - y_i|$$
+	In text, $d_{\infty}$ might be interpreted as looking at the word with the most disproportionate frequency between two reviews. For example, if one review heavily uses the word “excellent” and another does not use it at all, Chebyshev distance would equal the normalized frequency difference for "excellent".
+\end{itemize}
 
-\section{Results}
-Let $(X, d)$ be a finite metric space and set
-$$
-\operatorname{VR}(X ; \varepsilon)=\{\sigma \subseteq X: \operatorname{diam}(\sigma) \leq \varepsilon\}
-$$
-Applying homology in degree $\boldsymbol{n}$ (with field coefficients) yields a persistence module
-$$
-V_{\varepsilon}=H_n(\operatorname{VR}(X ; \varepsilon)), \quad \varphi_{\varepsilon \leq \varepsilon^{\prime}}: V_{\varepsilon} \rightarrow V_{\varepsilon^{\prime}}
-$$
-Under the usual tameness (finitely many simplices added), the structure theorem says
-$$
-V_{\bullet} \cong \bigoplus_{i \in I} I\left(b_i, d_i\right)
-$$
-where each interval module $I(b, d)$ is $\mathbf{k}$ on $[b, d)$ and 0 elsewhere. Hence the persistence diagram 
-$$\operatorname{Dgm}_n(X)=\left\{\left(b_i, d_i\right) \mid i \in I\right\}$$ 
-as a multiset of birth-death pairs is a complete invariant of the module
-\subsection{Full Structure}
-% define TP and E
-Given a persistence diagram $\operatorname{Dgm}\left(H_n\right)=\{(b, d)\}$ for homology dimension $n$.
+\section{Full Structure}
+\subsubsection{Characterization}
+On each normalized diagram we compute total persistance and persistant entropy,
+\begin{align*}
+	\operatorname{TP}_k(X)&=\sum_{\left(b_i, d_i\right) \in \operatorname{Dgm}_k(X)}\left(d_i-b_i\right)=\int_0^{\alpha_{\max }} \beta_k(\alpha) d \alpha\\
+	\operatorname{E}_k(X)&=\sum_{\left(b_i, d_i\right) \in \operatorname{Dgm}_k(X)}-p_i\log(p_i), \quad p_i=\frac{d_i-b_i}{\sum_j\left(d_j-b_j\right)}
+\end{align*}
+capturing overall lifetime and dispersion of features \cite{adams2017persistence}.
 
 \begin{figure*}[t]
 \includegraphics[width=\textwidth]{comparative/general/FullStructureV2.png}
@@ -88,7 +99,7 @@ Given a persistence diagram $\operatorname{Dgm}\left(H_n\right)=\{(b, d)\}$ for 
 
 % different embedding lead to different structure
 
-\subsection{Discriminating Structure}
+\section{Discriminating Structure}
 % define axes of discrimination
 \begin{figure*}[t]
 \includegraphics[width=\textwidth]{comparative/general/DiscrimStructureV2.png}
@@ -132,19 +143,19 @@ Given a persistence diagram $\operatorname{Dgm}\left(H_n\right)=\{(b, d)\}$ for 
 	\label{tab:best-metrics}
 \end{table*}
 
-\subsubsection{Observation 1: Schwartz}
+\subsection{Observation 1: Schwartz}
 % define axes of discrimination
 % plot
 % discuss extrema (deep dive persistance)
 
-\begin{figure}[t]
+\begin{figure}[h]
 \centering
 \includegraphics[trim={6cm 0 6cm 0},clip,width=\columnwidth]{critic_name/Dennis Schwartz_diagram.png}
 \caption{Persistence diagram for Dennis Schwartz's reviews showing birth-death pairs of topological features. Note the presence of 7 dimension-1 features (loops) and 3 dimension-2 features (voids), indicating non-trivial topological structure in the embedding space.}
 \label{fig:schwartz_diagram}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[h]
 \centering
 \includegraphics[width=\columnwidth]{critic_name/betti_curves_H1.png}
 \caption{Betti curves showing the persistence of 1-dimensional homology features (loops) across different filtration values for both critics. Dennis Schwartz's reviews demonstrate more persistent loops, suggesting a more complex topological structure.}
@@ -161,7 +172,7 @@ The dimension-2 features (voids) are particularly interesting, as they indicate 
 
 From a stylistic perspective, these topological features may correlate with Schwartz's writing style, which tends to balance academic analysis with accessible criticism. The presence of both loops and voids suggests a critic who returns to foundational principles while maintaining conceptual distinctions between different types of films or critical approaches.
 
-\begin{figure}[t]
+\begin{figure}[h]
 \centering
 \includegraphics[width=\columnwidth]{comparative/critic_name/bottleneck_heatmap.png}
 \caption{Bottleneck distance heatmap between different critics. The distance of 0.197 between Dennis Schwartz and Roger Ebert indicates meaningful topological distinctions in their critical approaches.}
