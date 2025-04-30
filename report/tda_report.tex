@@ -79,8 +79,7 @@ The remainder of this report is structured as follows: In the Methodology sectio
 \section{Methodology}
 
 \subsection{Repository}
-We used NumPy arrays for data and boundary matrices, computed barcodes via Ripser, manipulated and visualized diagrams with Persim, and evaluated Wasserstein distances using the POT optimal‐transport toolbox.
-
+We began by loading the raw kaggle review data into pandas DataFrames \cite{kaggle_rotten_tomatoes, mckinney2010pandas}. Text was cleaned, tokenized, POS-tagged, and lemmatized with NLTK \cite{bird2009nltk}. Documents were encoded with bag-of-words and TF-IDF using scikit-learn \cite{pedregosa2011scikit}, while in parallel we generated BERT token embeddings via HuggingFace Transformers and PyTorch \cite{wolf2020transformers,paszke2019pytorch}. Embeddings and feature matrices were stored as NumPy arrays for downstream processing \cite{harris2020array}. We then built sparse distance graphs and boundary matrices with SciPy and scikit-learn utilities \cite{virtanen2020scipy,pedregosa2011scikit}, approximating geodesic distances on the inferred manifold by constructing k-nearest-neighbor graphs and computing all-pairs shortest paths \cite{virtanen2020scipy}. From each boundary matrix we formed a Vietoris–Rips filtration and extracted persistence barcodes using Ripser \cite{bauer2021ripser}. Persistence diagrams were post-processed and plotted with persim \cite{persim2024persim}. Finally, we measured Wasserstein distances between diagrams with the POT toolbox, using both Sinkhorn regularization \cite{cuturi2013sinkhorn} and sliced approximations \cite{bonneel2015sliced,flamary2021pot}.
 \subsection{Data Set}
 
 \subsubsection{Stratification}
@@ -132,7 +131,7 @@ up to a small error term $\mathcal{O}(h)$, where $h \approx \max _i \min _{j \ne
 Intuitively, if two reviews are not directly similar (in Euclidean terms) but have a chain of intermediate reviews linking them (each similar to the next), then $d_G$ will reflect the sum of small hops, capturing that they are connected through a topic pathway.
 
 \subsection{Topological Structure}
-\subsubsection{Process}
+\subsubsection*{Process}
 We follow the standard TDA procedure:
 \[
 (X,d)\xrightarrow{\tau_d}(X,\tau_d)
@@ -158,13 +157,13 @@ where
   \end{align*}
   \cite{edelsbrunner2009computational,edelsbrunner2014short}. Then Ripser’s cohomology‐based matrix-reduction algorithm is used to produce birth-death intervals $[b, d)$ \cite{bauer2021ripser}.
 \end{enumerate}
-\subsubsection{Persistence Diagrams}
+\subsubsection*{Persistence Diagrams}
 The persistence diagram 
 $$
 \operatorname{Dgm}_k(X)=\left\{\left(b_i, d_i\right)\right\}_{i=1}^{N_k}.
 $$
 is a complete invariant of the homology of the Vietoris-Rips filtration $\mathrm{VR}_\alpha(X)$, as it encodes the birth and death of topological features at various scales, uniquely characterizing the $k$-dimensional homology of $X$.
-\subsubsection{Betti Curves}
+\subsubsection*{Betti Curves}
 Betti curves plot the rank of homology groups
 \begin{align*}
 	\beta_k(\alpha)&=\operatorname{rank}H_k(\mathrm{VR}_\alpha(X);\mathbb{F}_2)\\
@@ -172,7 +171,7 @@ Betti curves plot the rank of homology groups
 \end{align*}
 as a function of the scale parameter $\alpha$, which corresponds to the parameter in the Vietoris-Rips filtration
 
-\subsubsection{Normalization}
+\subsubsection*{Normalization}
 In order to compare across metrics and emphasize relative topology, we need to correct for the fact that every metric will have a distinct absolute scale.\\
 For a metric-space persistence diagram $\operatorname{Dgm}_k(X)$ with 
 $$\operatorname{diam}(X)=\max _{i, j} d\left(x_i, x_j\right),$$
@@ -199,7 +198,7 @@ On each normalized diagram we compute total persistance and persistant entropy,
 	\operatorname{TP}_k(X)&=\sum_{i}\left(d_i-b_i\right)=\int_0^{\alpha_{\max }} \tilde{\beta}_k(\alpha) d \alpha\\
 	\operatorname{E}_k(X)&=\sum_{i}-p_i\log(p_i), \quad p_i=\frac{d_i-b_i}{\sum_j\left(d_j-b_j\right)}
 \end{align*}
-where each index $i$ above is of the from $\left(b_i, d_i\right) \in \widetilde{\operatorname{Dgm}}_k(X)$. Together these measures capture overall lifetime and dispersion of features \cite{adams2017persistence}.
+where each index above is taken to be over $\left(b_i, d_i\right) \in \widetilde{\operatorname{Dgm}}_k(X)$. Together these measures capture overall lifetime and dispersion of features \cite{adams2017persistence}.
 
 
 \subsection{Global Persistence–Entropy Insights}\label{sec:global-landscape}
@@ -222,49 +221,83 @@ The Pearson statistics (Tab.\,\ref{tab:corr}) show strong entropic coupling ($E_
   \end{tabular}
   \caption{\textbf{Scatter correlations.} Strong coupling in entropy contrasts with near-independence of total persistence.}
 \end{table}
+\subsection{Absolute Height \emph{and} Entropic Efficiency}\label{sec:metric-families}
 
-\subsection{Metric Families and Entropic Efficiency}\label{sec:metric-insight}
-
-
-\begin{table*}[ht]
-  \centering
-  \caption{Median entropic efficiency $\eta$ (all embeddings pooled).}
-  \label{tab:eta}
-  \begin{tabular}{lcc}
-  \toprule
-  Ground / transport choice & $\tilde{\eta}$ & Interpretation\\
-  \midrule
-  $d_\infty$ + $W_1$ 			& 2.00 & exploits single-token extremes\\
-  $d_\infty$ + $W_1$ + 10-NN               & 0.82 & long-edge filtering removes gain\\
-  $d_1$ + $W_1$                 & 0.76 & mass smoothing, moderate gaps\\
-  ground $d_1$                      & 0.60 & coordinate averaging\\
-  Cosine + 10-NN                   & 0.50 & angular graph distances\\
-  plain Cosine                     & 0.34 & small angular spread\\
-  \bottomrule
-  \end{tabular}
-\end{table*}
-
-Define the \emph{entropic efficiency ratio}
-$$
-\eta = \frac{TP_{1,2}}{E_{1,2}},
-$$
-units of lifetime gained per bit of high-dimensional entropy.  
-Median values by metric family are given in Tab.\,\ref{tab:eta}; higher $\eta$ means a “taller” diagram for the same entropic cost.
-
-
-\subsubsection*{Observations}
+Before we compare diagrams across categories, we need to understand what each \emph{metric family} actually does to the raw barcodes.  For every canonical variant (plain, Sinkhorn, 10-NN) of Cosine, $\ell_1$, and $\ell_\infty$, we measured three summary numbers
+\[
+\tilde T=\text{median}\bigl(TP_{1,2}\bigr),\quad
+\tilde E=\text{median}\bigl(E_{1,2}\bigr),\quad
+\eta=\tilde T/\tilde E.
+\]  
 \begin{itemize}[leftmargin=*]
-  \item \textbf{Chebyshev–Wasserstein rules.}  With $\tilde{\eta}=2.00$ it delivers roughly \emph{double} the loop/void lifetime per entropy bit compared to the next best family.  A single extreme coordinate both lengthens and diversifies lifetimes, so efficiency stays high even as entropy rises.
-  \item \textbf{Graph corrections trade height for tightness.}  Adding a 10-NN intrinsic metric cuts $\eta$ by more than half, confirming that long edges are the principal source of tall bars in the persistence diagram.
-  \item \textbf{Regularisation smooths, but costs amplitude.}  Sinkhorn on $d_1$ nudges $\eta$ downward; spreading mass flattens lifetime peaks, yielding more predictable—yet shorter—bars.
-  \item \textbf{Angular metrics are entropically expensive.}  Cosine produces the lowest $\eta$ values; its bounded range caps lifetime growth while entropy still rises through small-angle variability.
+	\item $\tilde T$ tells us how tall the high-dimensional bars typically are,
+	\item $\tilde E$ tells us how spread out those bars are, and
+	\item $\eta$ says how much “height” we buy per bit of entropy.
+\end{itemize}
+Rows with zero $\tilde E$ were discarded so the ratio never explodes.\\
+
+
+\begin{table}[h]
+\centering
+\caption{Typical height, entropy, and efficiency for each embedding–metric family.}
+\label{tab:emb-metric}
+\begin{tabular}{llcc}
+\toprule
+Embedding & Family & $\tilde T$ & $\tilde E$ \quad $\eta$\\
+\midrule
+\multirow{8}{*}{BERT}
+  & $d_\infty$ (Sinkhorn) & $2.39{\times}10^{3}$ & 8.91 \quad 268.3\\
+  & $d_\infty$ (10-NN)    & 30.7 & 6.52 \quad 4.71\\
+  & $d_\infty$ (plain)    & 20.7 & 8.18 \quad 2.53\\
+  & $d_1$ (10-NN)         & 11.3 & 5.49 \quad 2.06\\
+  & Cosine (10-NN)        & 9.56 & 5.88 \quad 1.63\\
+  & Cosine (Sinkhorn)     & 7.67 & 6.27 \quad 1.22\\
+  & Cosine (plain)        & 7.40 & 6.09 \quad 1.22\\
+  & $d_1$ (plain)         & 5.37 & 6.03 \quad 0.89\\
+\midrule
+\multirow{4}{*}{BoW}
+  & Cosine (Sinkhorn)     & 132.2 & 7.72 \quad 17.1\\
+  & Cosine (plain)        & 132.2 & 7.72 \quad 17.1\\
+  & Cosine (10-NN)        & 113.1 & 7.51 \quad 15.1\\
+  & $d_1$ (10-NN)         & 1.38 & 2.89 \quad 0.48\\
+\midrule
+\multirow{5}{*}{TF–IDF}
+  & Cosine (10-NN)        & 351.4 & 8.49 \quad 41.4\\
+  & Cosine (Sinkhorn)     & 232.0 & 8.38 \quad 27.7\\
+  & Cosine (plain)        & 232.0 & 8.38 \quad 27.7\\
+  & $d_1$ (10-NN)         & 1.05 & 2.96 \quad 0.35\\
+  & $d_\infty$ (10-NN)    & 0.74 & 2.02 \quad 0.36\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table \ref{tab:emb-metric} shows the result.\\
+
+\subsubsection*{Embedding/Metric Interactions}
+\begin{enumerate}[leftmargin=*]
+\item \textbf{BERT magnifies Chebyshev extremes.}  
+  Contextual tokens give BERT dense, high-range coordinates.  
+  Under $d_\infty$ even one rare word (say, \emph{“transcendent”}) stretches distances for every review that contains it.  
+  Add plain Wasserstein and the coupling plan sums that gap over dozens of matches, so BERT + $d_\infty$ + $W_1$ produces a skyline of bars an order of magnitude taller than anything else.
+\item \textbf{BoW and TF–IDF reward cosine angles.}  
+  These sparse count vectors differ mostly in direction, not magnitude.  
+  Cosine therefore pumps up lifetimes while keeping entropy tiny; the ratio $\eta$ shoots past 15, but the bars never exceed a few hundred units, far below BERT’s Chebyshev tower.
+\item \textbf{10-NN graph trimming hurts height everywhere.}  
+  Replacing raw distances with geodesic paths cuts long edges; BERT loses two decades, Cosine families lose about 15\%.  
+  Entropy often rises slightly (bars bunch into a tighter range) so $\eta$ falls.
+\item \textbf{$\ell_1$ is consistently flat.}  
+  Averaging coordinates suppresses extremes.  
+  Whether plain or graph-corrected, $d_1$ fails to crack ten units of height in any embedding, leaving both $\tilde T$ and $\eta$ at the bottom.
+\end{enumerate}
+
+\subsubsection*{Key observations}
+\begin{itemize}[leftmargin=*]
+\item \textbf{Amplitude first.}  If you need bars tall enough for any distance metric to grab, choose \emph{BERT with Chebyshev and no graph trimming}.  One extreme token can lift an entire skyline.
+\item \textbf{Compactness for resampling.}  When you prefer tight, low-variance diagrams (e.g.\ for bootstrapped estimates), \emph{Cosine on sparse vectors} gives the best height per entropy bit, but the overall structure stays shallow.
+\item \textbf{Graph corrections trade height for sharpness.}  Adding a $k$-NN geodesic metric removes long edges, shortening every bar.  The picture gets cleaner, but you lose amplitude.
 \end{itemize}
 
-\subsubsection*{Practical takeaway}
-\emph{Tall, information-rich diagrams come at an entropic price.}  
-Chebyshev–Wasserstein pays the price most efficiently; geodesic or entropic smoothing lowers both cost and return; cosine invests entropy for meagre gains.  
-Consequently, when the analytic goal is discrimination rather than stability, $d_\infty$ with plain Wasserstein remains the metric of choice.
-
+These patterns set the baseline.  When we start measuring class differences we will see how much of that raw height actually turns into separability.
 
 \FloatBarrier  % Force all floats to be placed before this point
 \clearpage      % Force a page break
@@ -284,19 +317,13 @@ where the infimum is over all bijections $\gamma\colon D\to D'$ (allowing matche
 
 \subsubsection{Bottleneck Distance}
 
-Finds the pairing that minimizes the maximal $\ell^\infty$ displacement, ensuring stability under small perturbations,
+Finds the pairing that minimizes the maximal $\ell^\infty$ displacement, ensuring stability under small perturbations \cite{cohen2007stability},
 $$
 d_B(D,D') \;=\; \inf_{\gamma}\;\sup_{p \in D} \bigl\lVert p - \gamma(p)\bigr\rVert_{\infty}.
 $$
-It satisfies the stability bound
-$$
-d_B\bigl(\mathrm{Dgm}(f),\,\mathrm{Dgm}(g)\bigr)\;\le\;\|f-g\|_{\infty},
-$$
-for real‐valued functions $f,g$ on a common domain \cite{cohen2007stability}.  
 
-
-\subsubsection{Vectorization}
-Both methods below are vectorizations embedding diagrams into a vector space for standard ML methods \cite{bubenik2015statistical,adams2017persistence}. One we represent diagrams $D,D'$ as vectors, we simply take the euclidean distance, $d_2$.
+\subsubsection*{Vectorization}
+Both methods below are vectorizations embedding diagrams into a Hilbert space for standard ML methods \cite{bubenik2015statistical,adams2017persistence}. One we represent diagrams $D,D'$ as vectors, we simply take the euclidean distance, $d_2$.
 
 \subsubsection{Persistence Landscapes}
 Transform each interval $(b_i,d_i)$ into a symmetric “tent” function, 
@@ -322,10 +349,9 @@ Flattening $\{I_{p,q}\}$ yields a finite-dimensional embedding of the diagram \c
 \begin{figure*}[p]
 \centering
 \includegraphics[width=\textwidth]{comparative/general/DiscrimStructureV2.png}
-\caption{\textbf{Swim-lane discrimination.}  Rows: semantic categories.  Columns: $W_1$, bottleneck $d_B$, persistence landscape $L_2$, persistence image $I_2$.  Within each tile four lanes show score distributions $d=0,1,2,012$ (bottom$\to$top).}
+\caption{\textbf{Swim-lane discrimination.}  Rows: semantic categories.  Columns: $W_1$, bottleneck $d_B$, persistence landscape $L_2$, persistence image $I_2$.  Within each tile four lanes show score distributions $d=012,2,1,0$ (top$\to$bottom).}
 \label{fig:disc-results}
 \end{figure*}
-
 
 \begin{table*}[t]
   \centering
@@ -362,10 +388,7 @@ Flattening $\{I_{p,q}\}$ yields a finite-dimensional embedding of the diagram \c
   \label{tab:best-metrics}
 \end{table*}
 
-
-Four semantic splits (\emph{critic name, content rating, genre, sentiment}) are evaluated with four contrast methods: Wasserstein $W_1$, bottleneck $d_B$, persistence landscapes ($L_2$), and persistence images ($I_2$).  Table \ref{tab:disc-avg} reports the mean joint score ($012$) for each pair.
-
-\begin{table}[h]
+\begin{table}[H]
   \centering
   \caption{Mean $012$-scores (larger $=$ better).}
   \label{tab:disc-avg}
@@ -381,41 +404,65 @@ Four semantic splits (\emph{critic name, content rating, genre, sentiment}) are 
   \end{tabular}
 \end{table}
 
-\subsubsection*{Dimension contributions under the best metric}
-For BERT + $d_\infty$ + $W_1$ the $012$ score decomposes as
-$$
-H_1{:}\;0.86,\quad H_0{:}\;0.12,\quad H_2{:}\;0.02,
-$$
-confirming that \emph{loops, not clusters or voids}, encode almost all semantic contrast.
+\subsubsection*{Overview of Top Metrics}
+Table \ref{tab:best-metrics} summarizes leading results. BERT with the Chebyshev metric combined with the standard Wasserstein distance attains the highest combined score ($012$) in every split, although the magnitude of its lead differs:
 
-\subsubsection*{Why Wasserstein wins}
-\begin{enumerate}[leftmargin=*]
-  \item \textbf{Additivity.}  $W_1$ sums over \emph{all} matched points, so signal scales with diagram size $n$; $d_B$ is $n$-invariant.
-  \item \textbf{Lifetime weighting.}  Longer bars contribute more to $W_1$, rewarding the heavy tails induced by $d_\infty$.
-  \item \textbf{Tail preservation.}  Sinkhorn halves, landscapes truncate, and images blur the tail; plain $W_1$ leaves it intact.
-\end{enumerate}
-
-\subsubsection*{Ground-metric effects}
-Switching from Cosine to $d_\infty$ multiplies $W_1$ roughly by $16\times$ (PG vs R: $347.6$ vs.\ $18.5$).  
-A single extreme token inflates $\lVert x-y\rVert_\infty$ and, through additivity, every pairing that touches it.
-
-\subsubsection*{Category morphology}
-Content rating and critic idiolect exploit sparse “pivot” words (perfect for $d_\infty$ amplification) whereas genre and sentiment rely on broader lexical shifts, hence lower maxima.
-
-% ---------------------------------------------------------
-\paragraph{Observations.}
 \begin{itemize}[leftmargin=*]
-  \item \textbf{$W_1$ is universally dominant.}  It outranks $d_B$ by two orders of magnitude and landscapes/images by $>40\times$.
-  \item \textbf{$d_\infty$ enhances $W_1$.}  Chebyshev gaps feed directly into $W_1$; other norms diffuse the effect.
-  \item \textbf{Loops carry the signal.}  $86\%$ of discriminative power resides in $H_1$.
+  \item \textbf{Content rating} is the most straightforward task: a score of 347.6 substantially exceeds the next best. Terms with strong moral connotations (e.g.\ “violent,” “wholesome”) produce pronounced extremes in the feature space, yielding early persistent loops.
+  \item \textbf{Critic name} follows at 211.0. Individual stylistic features function similarly to moral vocabulary but exhibit greater overlap across critics, narrowing the margin.
+  \item \textbf{Genre (drama vs comedy)} and \textbf{Sentiment (fresh vs rotten)} both score around 170. These rely on more diffuse lexical shifts—no single token dominates—so the advantage of the Chebyshev metric is more modest.
 \end{itemize}
 
-\paragraph{Practical takeaway.}
-For maximal class separation in text-embedded TDA use
+\subsubsection*{Relative performance of contrast methods}
+Averaging across all pairings (Table \ref{tab:disc-avg}) offers a consolidated comparison:
+
+\begin{itemize}[leftmargin=*]
+  \item The $1$-Wasserstein distance consistently outperforms other measures, though its relative gain diminishes as tasks become easier. Shifting from “genre” to “critic name” increases the mean score by a factor of 2.3, mirroring the median increase from Cosine to Chebyshev persistence.
+  \item The bottleneck distance plateaus near 0.2 for every task; it captures only the largest single mismatch and overlooks the accumulation of loops.
+  \item Persistence landscapes and images never exceed 0.5. Their truncation and smoothing obscure the tail of long-lived features that BERT+$d_{\infty}$ exploits.
+\end{itemize}
+
+\subsubsection*{Embedding–metric alignment}
+Comparing these findings with the baseline embeddings (Table \ref{tab:emb-metric}) clarifies which geometry each category favors:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Content rating} benefits most from the highest-magnitude distances: BERT with Chebyshev. A small set of age-restriction adjectives induces large separations, so all PG reviews interconnect before any contact with R-rated reviews.
+  \item \textbf{Critic name} also leverages extreme distances, albeit to a lesser extent, so the Chebyshev-induced “height” remains informative without overwhelming.
+  \item \textbf{Genre} and \textbf{Sentiment} extract value from $d_{\infty}$ but can operate—if necessary—using Cosine distance with a graph-based filtration; the performance drop is roughly 4x rather than 20x.
+\end{itemize}
+
+\subsubsection*{Rationale for loop dominance}
+Under BERT+$d_{\infty}$+$W_1$, the average joint score decomposes as
 $$
-\text{BERT + Chebyshev + Wasserstein}.
+H_1 = 0.86,\quad H_0 = 0.12,\quad H_2 = 0.02.
 $$
-Add geodesic corrections or Sinkhorn only when the goal shifts from discrimination to statistical stability; both reduce amplitude by suppressing the heavy lifetime tail that drives contrast.
+Loops dominate because all four categories are keyed to recurring phrases rather than isolated clusters or rare voids. We can look at this another way by comparing BERT and BoW.
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc}
+\toprule
+Encoding ($+$ $d_{\infty}$) & $\overline{W_1}(H_0)$ & $\overline{W_1}(H_1)$\\
+\midrule
+BoW          & 5.48 & 0.00\\
+BERT         & 3.44 & 2.45\\
+\bottomrule
+\end{tabular}
+\caption{Mean $W_1$ separations for $H_0$ (components) and $H_1$ (loops) using BoW and BERT with Chebyshev, averaged over all tasks.}
+\label{tab:H0-vs-H1}
+\end{table}
+\begin{itemize}[leftmargin=*]
+\item \textbf{BoW} Vectors are nearly binary.  
+The largest coordinate difference is a word present in one review and absent in the other, creating many late–merging components; loops seldom form, so $H_0$ dominates.
+\item \textbf{BERT} Embeddings are dense.  
+The maximal‐coordinate gap now corresponds to a salient semantic axis shared pairwise but not jointly, producing persistent 1–cycles; components merge early, so $H_1$ carries the signal.
+\end{itemize}
+Thus Chebyshev+$W_1$ extracts cluster separation from sparse BoW ($H_0$) but extracts recurrent semantic loops from dense BERT ($H_1$); higher‐dimensional voids remain negligible in both cases.
+\subsubsection*{Key conclusions}
+\begin{itemize}[leftmargin=*]
+  \item Use \textbf{BERT + Chebyshev + $W_1$} when the category depends on sparse, distinctive tokens (e.g.\ content rating, critic idiolect).
+  \item You may \textbf{downgrade to Cosine distance} (with a 10-NN filtration) for genre or sentiment if simpler persistence diagrams are preferred; the separation margin contracts but remains significant.
+  \item Do not rely on bottleneck distance, persistence landscapes, or persistence images for these text categorization tasks; none capture the long-lived feature tail sufficiently.
+\end{itemize}
 
 \subsection{Case Studies}
 \subsubsection{Observation 1: Schwartz}
