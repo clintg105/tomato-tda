@@ -362,7 +362,7 @@ def visualize_persistence_diagrams():
         # Add normalization info to title
         norm_factor = NORMALIZATION_FACTORS.get(dataset, {}).get(metric, 1.0)
         norm_info = f" (Normalized by {norm_factor})" if norm_factor != 1.0 else ""
-        plt.suptitle(f"Persistence Diagrams: {dataset}, {metric}{norm_info}, {split}")
+        plt.suptitle(f"Persistence Diagrams: {dataset}, mpinf, {split}")
         plt.tight_layout()
         plt.savefig(PLOTS_DIR / f"persistence_diagram_{dataset}_{metric}_{split.replace(' ', '_')}.png", dpi=300)
         plt.close()

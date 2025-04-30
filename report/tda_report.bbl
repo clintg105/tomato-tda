@@ -61,6 +61,11 @@ Pauli Virtanen, Ralf Gommers, Travis~E. Oliphant, and et~al.
 \newblock \url{https://github.com/scikit-tda/persim}, 2024.
 \newblock commit v0.3.8.
 
+\bibitem{bonneel2015sliced}
+Nicolas Bonneel, Julien Rabin, Gabriel Peyr{\'e}, and Hanspeter Pfister.
+\newblock Sliced and radon-wasserstein barycenters of measures.
+\newblock {\em Journal of Mathematical Imaging and Vision}, 51(1):22--45, 2015.
+
 \bibitem{flamary2021pot}
 R{\'e}mi Flamary, Nicolas Courty, Alexandre Gramfort, Mokhtar~Z. Alaya, Aur{\'e}lie Boisbunon, Stanislas Chambon, Laetitia Chapel, Adrien Corenflos, Kilian Fatras, Nemo Fournier, L{\'e}o Gautheron, Nathalie T.~H. Gayraud, Hicham Janati, Alain Rakotomamonjy, Ievgen Redko, Antoine Rolet, Antony Schutz, Vivien Seguy, Danica~J. Sutherland, Romain Tavenard, Alexander Tong, and Titouan Vayer.
 \newblock Pot: Python optimal transport.

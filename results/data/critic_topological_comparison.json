@@ -1,47 +1,68 @@
 {
   "bert_strat800_cos": {
-    "H0": "Infinity",
-    "H1": 0.03125057571965068,
-    "H2": 0.07889063363598782
+    "H0": Infinity,
+    "H1": 0.01562528785982534,
+    "H2": 0.03944531681799391
   },
   "bert_strat800_mp1": {
-    "H0": "Infinity",
-    "H1": 23.59169597562804,
-    "H2": 35.6225345875711
+    "H0": Infinity,
+    "H1": 0.030718354134932336,
+    "H2": 0.04638350857756655
   },
   "bert_strat800_mpinf": {
-    "H0": "Infinity",
+    "H0": Infinity,
     "H1": 0.114992710252603,
     "H2": 0.11121871865731155
   },
   "tfidf_strat800_cos": {
-    "H0": "Infinity",
-    "H1": 0.036600708961486816,
-    "H2": 0.04854579420424493
+    "H0": Infinity,
+    "H1": 0.018300354480743408,
+    "H2": 0.024272897102122465
   },
   "tfidf_strat800_mp1": {
-    "H0": "Infinity",
-    "H1": 4.030186403925193,
-    "H2": "NaN"
+    "H0": Infinity,
+    "H1": 0.08060372807850387,
+    "H2": NaN
   },
   "tfidf_strat800_mpinf": {
-    "H0": "Infinity",
-    "H1": "NaN",
-    "H2": "NaN"
+    "H0": Infinity,
+    "H1": NaN,
+    "H2": NaN
   },
   "bow_strat800_cos": {
-    "H0": "Infinity",
-    "H1": 0.11210364103317261,
-    "H2": 0.06305134296417236
+    "H0": Infinity,
+    "H1": 0.03736788034439084,
+    "H2": 0.021017114321390806
   },
   "bow_strat800_mp1": {
-    "H0": "Infinity",
-    "H1": "NaN",
-    "H2": "NaN"
+    "H0": Infinity,
+    "H1": NaN,
+    "H2": NaN
   },
   "bow_strat800_mpinf": {
-    "H0": "Infinity",
-    "H1": "NaN",
-    "H2": "NaN"
+    "H0": Infinity,
+    "H1": NaN,
+    "H2": NaN
+  },
+  "__normalization_metadata__": {
+    "description": "Normalization factors applied to persistence diagrams",
+    "factors": {
+      "bert_strat800": {
+        "cos": 2.0,
+        "mp1": 768.0,
+        "mpinf": 1.0
+      },
+      "tfidf_strat800": {
+        "cos": 2.0,
+        "mp1": 50.0,
+        "mpinf": 1.5
+      },
+      "bow_strat800": {
+        "cos": 3,
+        "mp1": 50.0,
+        "mpinf": 1.5
+      }
+    },
+    "note": "BERT+mp1 is normalized by dividing by 768 (embedding dimension)"
   }
 }
