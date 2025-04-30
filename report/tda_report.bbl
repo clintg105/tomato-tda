@@ -1,5 +1,76 @@
 \begin{thebibliography}{10}
 
+\bibitem{bauer2021ripser}
+Ulrich Bauer.
+\newblock Ripser: efficient computation of vietoris--rips persistence barcodes.
+\newblock {\em Journal of Applied and Computational Topology}, 5(3):391--423, 2021.
+
+\bibitem{cuturi2013sinkhorn}
+Marco Cuturi.
+\newblock Sinkhorn distances: Lightspeed computation of optimal transportation distances, 2013.
+
+\bibitem{tenenbaum2000global}
+Joshua~B Tenenbaum, Vin~de Silva, and John~C Langford.
+\newblock A global geometric framework for nonlinear dimensionality reduction.
+\newblock {\em science}, 290(5500):2319--2323, 2000.
+
+\bibitem{kaggle_rotten_tomatoes}
+Stefano Leone.
+\newblock {Rotten Tomatoes Movies and Critic Reviews Dataset}.
+\newblock Kaggle, \url{https://www.kaggle.com/datasets/stefanoleone992/rotten-tomatoes-movies-and-critic-reviews-dataset}, 2020.
+\newblock Accessed: 2025-04-29.
+
+\bibitem{mckinney2010pandas}
+Wes McKinney.
+\newblock {Data Structures for Statistical Computing in Python}.
+\newblock In Stefan van~der Walt and Jarrod Millman, editors, {\em Proceedings of the 9th Python in Science Conference (SciPy 2010)}, pages 56--61, 2010.
+
+\bibitem{bird2009nltk}
+Steven Bird, Ewan Klein, and Edward Loper.
+\newblock {\em Natural Language Processing with Python}.
+\newblock O'Reilly Media, 2009.
+
+\bibitem{pedregosa2011scikit}
+F.~Pedregosa, G.~Varoquaux, A.~Gramfort, and et~al.
+\newblock Scikit-learn: Machine learning in python.
+\newblock {\em Journal of Machine Learning Research}, 12(Oct):2825--2830, 2011.
+
+\bibitem{wolf2020transformers}
+Thomas Wolf, Lysandre Debut, Victor Sanh, Julien Chaumond, Clément Delangue, Anthony Moi, Pierric Cistac, Tim Rault, et~al.
+\newblock Transformers: State-of-the-art natural language processing.
+\newblock In {\em Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations}, pages 38--45, 2020.
+
+\bibitem{paszke2019pytorch}
+A.~Paszke, S.~Gross, F.~Massa, A.~Lerer, J.~Bradbury, G.~Chanan, T.~Killeen, and et~al.
+\newblock Pytorch: An imperative style, high-performance deep learning library.
+\newblock In {\em Advances in Neural Information Processing Systems 32 (NeurIPS 2019)}, pages 8024--8035, 2019.
+
+\bibitem{harris2020array}
+Charles~R. Harris, K.~Jarrod Millman, Stefan~J. van~der Walt, Ralf Gommers, Pauli Virtanen, David Cournapeau, Eric Wieser, Julian Taylor, Sebastian Berg, Nathaniel~J. Smith, Robert Kern, Matti Picus, Stephan Hoyer, Marten~H. van Kerkwijk, Matthew Brett, Joshua Wilson, K.~Jarrod Millman, Nikolay Mayorov, Andrew R.~J. Nelson, and Eric Jones.
+\newblock Array programming with {NumPy}.
+\newblock {\em Nature}, 585(7825):357--362, 2020.
+
+\bibitem{virtanen2020scipy}
+Pauli Virtanen, Ralf Gommers, Travis~E. Oliphant, and et~al.
+\newblock {SciPy} 1.0: Fundamental algorithms for scientific computing in python.
+\newblock {\em Nature Methods}, 17:261--272, 2020.
+
+\bibitem{persim2024persim}
+{scikit-tda/persim contributors}.
+\newblock {persim}: a python package for persistence diagrams.
+\newblock \url{https://github.com/scikit-tda/persim}, 2024.
+\newblock commit v0.3.8.
+
+\bibitem{bonneel2015sliced}
+Nicolas Bonneel, Julien Rabin, Gabriel Peyr{\'e}, and Hanspeter Pfister.
+\newblock Sliced and radon-wasserstein barycenters of measures.
+\newblock {\em Journal of Mathematical Imaging and Vision}, 51(1):22--45, 2015.
+
+\bibitem{flamary2021pot}
+R{\'e}mi Flamary, Nicolas Courty, Alexandre Gramfort, Mokhtar~Z. Alaya, Aur{\'e}lie Boisbunon, Stanislas Chambon, Laetitia Chapel, Adrien Corenflos, Kilian Fatras, Nemo Fournier, L{\'e}o Gautheron, Nathalie T.~H. Gayraud, Hicham Janati, Alain Rakotomamonjy, Ievgen Redko, Antoine Rolet, Antony Schutz, Vivien Seguy, Danica~J. Sutherland, Romain Tavenard, Alexander Tong, and Titouan Vayer.
+\newblock Pot: Python optimal transport.
+\newblock {\em Journal of Machine Learning Research}, 22:78:1--78:8, 2021.
+
 \bibitem{edelsbrunner2009computational}
 Herbert Edelsbrunner and John Harer.
 \newblock {\em Computational Topology: An Introduction}.
@@ -15,25 +86,6 @@ C.~Villani.
 \newblock {\em Optimal Transport: Old and New}.
 \newblock Grundlehren der mathematischen Wissenschaften. Springer Berlin Heidelberg, 2008.
 
-\bibitem{flamary2021pot}
-R{\'e}mi Flamary, Nicolas Courty, Alexandre Gramfort, Mokhtar~Z. Alaya, Aur{\'e}lie Boisbunon, Stanislas Chambon, Laetitia Chapel, Adrien Corenflos, Kilian Fatras, Nemo Fournier, L{\'e}o Gautheron, Nathalie T.~H. Gayraud, Hicham Janati, Alain Rakotomamonjy, Ievgen Redko, Antoine Rolet, Antony Schutz, Vivien Seguy, Danica~J. Sutherland, Romain Tavenard, Alexander Tong, and Titouan Vayer.
-\newblock Pot: Python optimal transport.
-\newblock {\em Journal of Machine Learning Research}, 22:78:1--78:8, 2021.
-
-\bibitem{cuturi2013sinkhorn}
-Marco Cuturi.
-\newblock Sinkhorn distances: Lightspeed computation of optimal transportation distances, 2013.
-
-\bibitem{virtanen2020scipy}
-Pauli Virtanen, Ralf Gommers, Travis~E. Oliphant, and et~al.
-\newblock {SciPy} 1.0: Fundamental algorithms for scientific computing in python.
-\newblock {\em Nature Methods}, 17:261--272, 2020.
-
-\bibitem{tenenbaum2000global}
-Joshua~B Tenenbaum, Vin~de Silva, and John~C Langford.
-\newblock A global geometric framework for nonlinear dimensionality reduction.
-\newblock {\em science}, 290(5500):2319--2323, 2000.
-
 \bibitem{edelsbrunner2014short}
 Herbert Edelsbrunner.
 \newblock {\em A Short Course in Computational Geometry and Topology}.
@@ -43,11 +95,6 @@ Herbert Edelsbrunner.
 Afra~J. Zomorodian.
 \newblock {\em Topology for Computing}.
 \newblock Cambridge University Press, 2005.
-
-\bibitem{bauer2021ripser}
-Ulrich Bauer.
-\newblock Ripser: efficient computation of vietoris--rips persistence barcodes.
-\newblock {\em Journal of Applied and Computational Topology}, 5(3):391--423, 2021.
 
 \bibitem{cohen2007stability}
 David Cohen-Steiner, Herbert Edelsbrunner, and John Harer.

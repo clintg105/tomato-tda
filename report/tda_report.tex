@@ -477,10 +477,6 @@ Thus Chebyshev+$W_1$ extracts cluster separation from sparse BoW ($H_0$) but ext
 
 \subsection{Case Studies}
 \subsubsection{Observation 1: Schwartz}
-% define axes of discrimination
-% plot
-% discuss extrema (deep dive persistance)
-
 \begin{figure}[H]
 \centering
 \includegraphics[trim={6cm 0 6cm 0},clip,width=\columnwidth]{critic_name/Dennis Schwartz_diagram.png}
@@ -496,15 +492,9 @@ Thus Chebyshev+$W_1$ extracts cluster separation from sparse BoW ($H_0$) but ext
 \end{figure}
 \vspace{-0.3cm}
 
-The topological analysis of movie reviews written by Dennis Schwartz reveals intriguing structures in the BERT embedding space. As shown in Figure \ref{fig:schwartz_diagram}, Schwartz's reviews demonstrate a notable presence of higher-dimensional topological features, with 7 dimension-1 features (loops) and 3 dimension-2 features (voids). The maximum persistence value for dimension-1 features is 0.029, while for dimension-2 features it is 0.017, indicating reasonably stable topological structures.
+Dennis Schwartz's reviews exhibit 7 dimension-1 features (loops) and 3 dimension-2 features (voids) with maximum persistence values of 0.029 and 0.017 respectively. This non-trivial topology suggests that Schwartz's critical language forms distinct clusters with interconnections, creating loop structures that represent recurring thematic elements in his reviews. His critical style appears to orbit around conceptual centers before returning to common reference points.
 
-This non-trivial topology suggests that Schwartz's critical language forms distinct clusters with interconnections, creating loop structures that likely represent recurring thematic elements or linguistic patterns in his reviews. The presence of these loops implies that Schwartz's critical style may orbit around certain conceptual centers before returning to common reference points or perspectives—a pattern consistent with a critic developing signature analytical frameworks.
-
-Comparing the Betti curves in Figure \ref{fig:betti_curves}, we observe that Schwartz's reviews maintain higher persistence in dimension-1 features. This suggests that Schwartz may employ a more structured approach to criticism, with greater consistency in how he frames and develops his arguments across different films.
-
-The dimension-2 features (voids) are particularly interesting, as they indicate three-dimensional "bubbles" in the semantic space. These voids might represent conceptual boundaries in Schwartz's criticism—areas where he deliberately avoids certain types of analysis or language. Alternatively, they could reflect a tendency to approach films from multiple contrasting perspectives, creating a more spherical structure in semantic space as his analysis encircles the subject from different angles.
-
-From a stylistic perspective, these topological features may correlate with Schwartz's writing style, which tends to balance academic analysis with accessible criticism. The presence of both loops and voids suggests a critic who returns to foundational principles while maintaining conceptual distinctions between different types of films or critical approaches.
+Comparing the Betti curves in Figure \ref{fig:betti_curves}, Schwartz's reviews maintain higher persistence in dimension-1 features, suggesting a more structured approach to criticism. The dimension-2 features indicate conceptual boundaries—areas where he deliberately avoids certain types of analysis or approaches films from multiple contrasting perspectives.
 
 \begin{figure}[H]
 \centering
@@ -514,9 +504,22 @@ From a stylistic perspective, these topological features may correlate with Schw
 \end{figure}
 \vspace{-0.3cm}
 
-The bottleneck distance between Schwartz and Ebert (Figure \ref{fig:bottleneck_distance}) quantifies the difference in their topological signatures. This substantial distance suggests fundamentally different cognitive frameworks between the two critics, despite reviewing the same films. This divergence likely reflects different priorities in their evaluations and distinct rhetorical strategies in their writing.
+The bottleneck distance between Schwartz and Ebert (Figure \ref{fig:bottleneck_distance}) quantifies the difference in their topological signatures, suggesting fundamentally different cognitive frameworks despite reviewing the same films.
 
-Notably, the Betti curves (Figure \ref{fig:betti_curves}) exhibit a distinctive spike for Dennis Schwartz's reviews at a filtration value of approximately 0.3. This sharp increase indicates a threshold at which many loops simultaneously form in the embedding space, suggesting a critical distance at which Schwartz's language patterns suddenly connect to create circular semantic structures. This abrupt topological transition might correspond to a characteristic scale at which Schwartz's critical vocabulary forms conceptual relationships—perhaps indicating a distinctive granularity at which his analytical framework operates most coherently. The spike's height and narrowness suggest these structures form rapidly and in large numbers at this specific scale, potentially revealing a fundamental frequency in his linguistic patterns or conceptual organization that distinguishes his critical voice.
+Notably, the Betti curves exhibit a distinctive spike for Schwartz's reviews at a filtration value of approximately 0.3, indicating a threshold at which many loops simultaneously form in the embedding space. This topological transition corresponds to a characteristic scale at which Schwartz's critical vocabulary forms conceptual relationships.
+
+Schwartz's prose pivots between scholarly commentary and plain-spoken judgment—the dual registers that our analysis interprets as "loops'' bridging academic and accessible regions of the embedding:
+\begin{quote}
+\textit{"Though Costa-Gavras brings nothing new to the table about the Holocaust, he puts another nail down in the argument that the world could have acted but didn’t."}\\[-4pt]
+\hfill(Drama, PG, Fresh)
+\end{quote}
+Here a historiographic preface is followed by a verdict.  
+Likewise,
+\begin{quote}
+\textit{"When the film cuts away from the family soap-opera dramatics and shows the macho men at work wielding their chainsaws among the giant trees, it has a buzz."}\\[-4pt]
+\hfill(Comedy, PG, Fresh)
+\end{quote}
+juxtaposes critical distance with vivid imagery. Such back-and-forth phrasing generates semantically distant but quickly re-connected points in BERT space, creating the burst of loops visible in the Betti curve.
 
 \subsubsection{Observation 2: Roger Ebert}
 \begin{figure}[H]
@@ -526,11 +529,21 @@ Notably, the Betti curves (Figure \ref{fig:betti_curves}) exhibit a distinctive 
 \label{fig:ebert_diagram}
 \end{figure}
 
-The topological analysis of Roger Ebert's reviews reveals a distinctly different structure compared to Dennis Schwartz. As shown in Figure \ref{fig:ebert_diagram}, Ebert's reviews exhibit only dimension-0 features (connected components) and completely lack any dimension-1 (loops) or dimension-2 (voids) features. This absence is a significant finding, as it contrasts sharply with Schwartz's reviews which display 7 dimension-1 features and 3 dimension-2 features.
+Roger Ebert's reviews display only dimension-0 features (connected components) and completely lack dimension-1 (loops) or dimension-2 (voids) features, contrasting sharply with Schwartz's reviews. The bottleneck distance of 0.197 between the critics quantifies this fundamental topological difference.
 
-The bottleneck distance of 0.197 between the critics quantifies this fundamental topological difference. This substantial distance primarily stems from the complete absence of higher-dimensional features in Ebert's reviews, rather than from differences in the pattern or persistence of such features.
+This topological contrast aligns with their stylistic differences: Ebert's more direct approach versus Schwartz's more complex criticism. The absence of loops and voids in Ebert's signature suggests his writing follows more linear semantic paths without the conceptual circling seen in Schwartz's work.
 
-This stark topological contrast aligns with the widely observed stylistic differences between the two critics: Ebert's more direct, accessible approach versus Schwartz's more complex, academically-oriented criticism. The absence of loops and voids in Ebert's topological signature suggests his writing may follow more linear semantic paths without the conceptual circling and three-dimensional structures seen in Schwartz's work. This provides a mathematical foundation for quantifying differences in critical voice that have traditionally been described in subjective terms.
+Ebert's embeddings show a smooth cloud with virtually no persistent loops. His sentences flow in a single arc, avoiding the abrupt register-switches that produce Schwartz's circular structures:
+\begin{quote}
+\textit{"The bare story itself could be simplistic and silly: cops chasing a couple of kids on a horse."}\\[-4pt]
+\hfill(Into the West – Comedy, PG, Fresh)
+\end{quote}
+Even when negative, the prose remains cohesive:
+\begin{quote}
+\textit{"This movie doesn't contain 'offensive language.'  The offensive language contains the movie."}\\[-4pt]
+\hfill(Sex Drive – Comedy, R, Rotten)
+\end{quote}
+Because successive clauses reinforce a single narrative thread instead of oscillating between perspectives, the point cloud contracts quickly, explaining the near-absence of $H_1$ features in Figure~\ref{fig:ebert_diagram}.
 
 \subsubsection{Observation 3: Sentiment Analysis (Fresh vs. Rotten)}
 \begin{figure}[H]
@@ -547,11 +560,22 @@ This stark topological contrast aligns with the widely observed stylistic differ
 \label{fig:rotten_diagram}
 \end{figure}
 
-Our topological analysis reveals striking differences between Fresh (positive) and Rotten (negative) reviews, suggesting that sentiment manifests as distinct topological structures in the embedding space. As shown in Figures \ref{fig:fresh_diagram} and \ref{fig:rotten_diagram}, Fresh reviews contain 7 dimension-1 features (loops), while Rotten reviews contain only 1 such feature.
+Fresh (positive) and Rotten (negative) reviews show distinct topological structures. Fresh reviews contain 7 dimension-1 features (loops), while Rotten reviews contain only 1 such feature. The bottleneck distance of 0.094 between them quantifies this difference, suggesting that positive critical language creates more complex looping structures compared to negative criticism.
 
-The bottleneck distance of 0.094 between Fresh and Rotten reviews quantifies this topological difference. This finding suggests that positive critical language creates more complex looping structures in the semantic embedding space compared to negative criticism, which exhibits a much simpler topological signature.
+These results indicate that sentiment manifests not just in word choice, but in the overall structure of how concepts relate. The greater number of loops in positive reviews suggests favorable criticism explores and connects more diverse aspects of a film.
 
-These results indicate that sentiment in film criticism manifests not just in word choice, but in the overall structure of how concepts are related to each other. The greater number of loops in positive reviews suggests that favorable criticism may explore and connect more diverse aspects of a film, creating a richer topological structure, while negative criticism may follow more linear or singular pathways.
+Fresh reviews that create persistent loops typically temper praise with caveats:
+\begin{quote}
+\textbf{Fresh}\quad\textit{"For all its flaws, this is still a very entertaining film."}\\[-4pt]
+\hfill(Comedy, PG)
+\end{quote}
+The oscillation between "flaws'' and "entertaining'' echoes the multiple loop formation.  
+Rotten reviews often stay on a single pole of sentiment:
+\begin{quote}
+\textbf{Rotten}\quad\textit{"An uneven and unimaginative sex comedy about small-town losers."}\\[-4pt]
+\hfill(Comedy, R)
+\end{quote}
+This one-directional dismissal matches the sparse $H_1$ signature of the Rotten corpus.
 
 \subsubsection{Observation 4: Content Rating (PG vs. R)}
 
@@ -577,15 +601,23 @@ These results indicate that sentiment in film criticism manifests not just in wo
 \end{figure}
 \vspace{-0.3cm}
 
-The topological analysis of reviews categorized by content rating reveals clear structural differences between PG and R rated films. Using BERT embeddings with cosine distance, we observe that PG-rated films exhibit 10 dimension-1 features, while R-rated films exhibit 6 dimension-1 features, as precisely documented in our persistence summary data.
+Using BERT embeddings with cosine distance, PG-rated films exhibit 10 dimension-1 features, while R-rated films exhibit 6. The bottleneck distance of 0.087 between them quantifies this difference.
 
-The bottleneck distance of 0.087 between PG and R reviews quantifies this topological difference. This distance reflects not only the different number of features but also their different persistence characteristics.
+The Betti curves (Figure \ref{fig:content_rating_betti}) show distinct patterns in how topological features form and persist. R-rated reviews have a median persistence value of 0.0041 for dimension-1 features, suggesting a particular scale where these features are most prevalent.
 
-As clearly visible in the Betti curves (Figure \ref{fig:content_rating_betti}), PG and R reviews show distinct patterns in how topological features form and persist across filtration values. Notably, the R-rated reviews show a specific median persistence value of 0.0041 for dimension-1 features, suggesting a particular scale at which these topological features are most prevalent.
+A key finding is that both PG and R rated reviews exhibit infinitely persistent dimension-1 features, with PG reviews containing 10 such features compared to 6 in R rated reviews. These infinitely persistent loops represent stable structures that never collapse throughout the filtration process. The greater number in PG reviews suggests more consistent thematic frameworks when discussing family-friendly films.
 
-This topological difference between content ratings may reflect how critics linguistically approach films with different target audiences—PG reviews appear to form more complex loop structures, potentially reflecting more nuanced or multifaceted critical assessment, while R reviews show fewer but still significant topological features.
-
-A particularly striking finding in our analysis is that both PG and R rated reviews exhibit infinitely persistent dimension-1 features, with PG reviews containing 10 such features compared to just 6 in R rated reviews. These infinitely persistent loops represent extremely stable topological structures that never collapse throughout the entire filtration process once they are born. The greater number of infinite-persistence loops in PG reviews suggests fundamental, permanent semantic circuits in the language used to critique family-friendly films—potentially indicating more consistent thematic frameworks or evaluative criteria. This disparity in infinite-persistence features may reflect how critics employ more standardized, cyclical reasoning patterns when discussing films intended for broader audiences, while adopting more varied, less circular argumentative structures for adult-oriented content. The persistence infinity in both categories indicates that certain semantic relationships in film criticism form remarkably stable structures regardless of content rating, pointing to foundational critical frameworks that transcend specific film classifications.
+PG-film critiques focus on family-friendly themes, forming a compact cluster with few short-lived loops:
+\begin{quote}
+\textbf{PG}\quad\textit{"Passes for lightweight but slightly perverse family-value entertainment."}\\[-4pt]
+\hfill(Comedy, Fresh)
+\end{quote}
+R-rated films elicit language about profanity, violence, or sexuality; those focal jumps create broader, longer-persisting loops:
+\begin{quote}
+\textbf{R}\quad\textit{"This movie doesn't contain 'offensive language.'  The offensive language contains the movie."}\\[-4pt]
+\hfill(Comedy, Rotten)
+\end{quote}
+The differing Betti-curve amplitudes in Figure~\ref{fig:content_rating_betti} directly reflect critics' thematic shifts when addressing PG versus R material.
 
 \clearpage
 \subsection{Preferred Metric}\label{sec:pref-met}
