@@ -631,19 +631,13 @@ This complexity measure allows us to systematically compare different combinatio
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\columnwidth]{topological_complexity_barplot.png}
-\caption{Average topological complexity by encoding method and category, showing distinct differences in complexity between content ratings.}
+\includegraphics[width=\columnwidth]{topological_complexity_metric_barplot.png}
+\caption{Average topological complexity by encoding method+metric and category}
 \label{fig:complexity_barplot}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=\columnwidth]{topological_complexity_heatmap.png}
-\caption{Normalized topological complexity across different datasets and categories, showing the relative effectiveness of different metrics and encodings.}
-\label{fig:complexity_heatmap}
-\end{figure}
 
-Our analysis of various distance metrics across different encoding methods reveals clear patterns in their effectiveness for topological data analysis of movie reviews. As shown in Figure \ref{fig:complexity_heatmap} and Table \ref{tab:best-metrics}, certain combinations of encodings and metrics consistently outperform others in discriminating between meaningful categories.
+Our analysis of various distance metrics across different encoding methods reveals clear patterns in their effectiveness for topological data analysis of movie reviews. As shown in Figure \ref{fig:complexity_barplot}, certain combinations of encodings and metrics consistently outperform others in discriminating between meaningful categories.
 
 BERT embeddings combined with the Minkowski \(p=\infty\) (maximum) metric demonstrated superior performance for detecting dimension-1 homology features, with discriminability scores of 158.5, 160.7, and 191.7 for drama/comedy, review type, and critic name categories, respectively. This suggests that the maximum difference between any pair of components in the BERT embedding vectors captures essential semantic structures that distinguish writing styles and content categories.
 

@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex tda_report"] 1746033893 "tda_report.aux" "tda_report.bbl" "tda_report" 1746033899 0
+["bibtex tda_report"] 1746036572 "tda_report.aux" "tda_report.bbl" "tda_report" 1746036578 0
   "./tda.bib" 1745959557 7575 6b926176745bf1c8d441b243c32d5be0 ""
   "/usr/local/texlive/2023/texmf-dist/bibtex/bst/base/unsrt.bst" 1292289607 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "tda_report.aux" 1746033898 17401 d72354321916d592c6b7ef54773c66dc "pdflatex"
+  "tda_report.aux" 1746036578 16782 5ae5eec601ccc4402e95f47a3fefa61b "pdflatex"
   (generated)
   "tda_report.bbl"
   "tda_report.blg"
   (rewritten before read)
-["pdflatex"] 1746033893 "/Users/lianghaochen/tomato-tda/report/tda_report.tex" "tda_report.pdf" "tda_report" 1746033899 0
+["pdflatex"] 1746036573 "/Users/lianghaochen/tomato-tda/report/tda_report.tex" "tda_report.pdf" "tda_report" 1746036578 0
   "../results/data/plots//comparative/general/DiscrimStructureV2.png" 1745948155 4605579 fbae6b7f277d879475b1f68bba624bff ""
   "../results/data/plots//comparative/general/FullStructureV2.png" 1746032831 464038 908109c2d314dc56a2df12b5c9230b7e ""
   "../results/data/plots//comparative/general/logo.png" 1746032831 133053 34af18eb3f3e2193dd478bd9c095725a ""
@@ -18,11 +18,10 @@
   "../results/data/plots//critic_name/Dennis Schwartz_diagram.png" 1745741504 75444 313ffaeb9b98a91a8c008e42586418d8 ""
   "../results/data/plots//critic_name/Roger Ebert_diagram.png" 1745741504 70080 9fd2d19e0a1a6e72e5dc9c66f5424a12 ""
   "../results/data/plots//critic_name/betti_curves_H1.png" 1745741504 112287 cfa62d2d791f9f29ef0a6e2d6a56bd93 ""
-  "../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png" 1745988663 394376 df85ac4d981e2350c2efb22a5a5cb5d3 ""
-  "../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png" 1745988663 331909 df6b9569ec87239fff59a0c8fcb9d162 ""
-  "../results/data/plots//topological_complexity_barplot.png" 1745988664 160766 8da4c2695b1ef8d2e13d75a8eef6b7d3 ""
-  "../results/data/plots//topological_complexity_heatmap.png" 1745988663 283918 e6b429e3a1f319c952cb87ccbb4bdb86 ""
-  "/Users/lianghaochen/tomato-tda/report/tda_report.tex" 1746033887 47434 ae0f0da8a9b02c8e63460e037d29ddfa ""
+  "../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png" 1746036143 357968 240f538c9dd71efd407e84fcd6b509e0 ""
+  "../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png" 1746036143 311300 59583aa15ac0f1a4588bad021507bddb ""
+  "../results/data/plots//topological_complexity_metric_barplot.png" 1746036144 207632 bfbdb450dc27d57110d531d55f38e0a0 ""
+  "/Users/lianghaochen/tomato-tda/report/tda_report.tex" 1746036567 47043 02d60744feda419975505a2e0a095db9 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1136768653 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -256,11 +255,11 @@
   "/usr/local/texlive/2023/texmf-var/web2c/pdftex/pdflatex.fmt" 1706040084 7883460 77b3d4351c5500f9109c5ee9396b49c2 ""
   "/usr/local/texlive/2023/texmf.cnf" 1678822455 577 1b2b1af17af2508fb20dd85783af4050 ""
   "SelfArx.cls" 1745948155 8092 737c8d1591f9545f221c870f69e6d87b ""
-  "tda_report.aux" 1746033898 17401 d72354321916d592c6b7ef54773c66dc "pdflatex"
-  "tda_report.bbl" 1746033893 5283 7830181168173545d414e7cc1d1e192f "bibtex tda_report"
-  "tda_report.out" 1746033898 5196 d69eaa716e8381e900054d8702a77fa9 "pdflatex"
-  "tda_report.tex" 1746033887 47434 ae0f0da8a9b02c8e63460e037d29ddfa ""
-  "tda_report.toc" 1746033898 2809 aef49ae1437f526cccf9f89aae85cb3c "pdflatex"
+  "tda_report.aux" 1746036578 16782 5ae5eec601ccc4402e95f47a3fefa61b "pdflatex"
+  "tda_report.bbl" 1746036573 5283 7830181168173545d414e7cc1d1e192f "bibtex tda_report"
+  "tda_report.out" 1746036578 5196 dbb6fa4e64de998173b9176856263aa7 "pdflatex"
+  "tda_report.tex" 1746036567 47043 02d60744feda419975505a2e0a095db9 ""
+  "tda_report.toc" 1746036578 2809 5a3dcac36a896d33f58502a50b82fafb "pdflatex"
   (generated)
   "tda_report.aux"
   "tda_report.log"

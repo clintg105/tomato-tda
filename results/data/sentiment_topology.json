@@ -9,11 +9,11 @@
   },
   "bert_strat800_mp1": {
     "H0_fresh_rotten_ratio": 1.0210526315789474,
-    "H0_entropy_diff": 0.020593482578203037,
+    "H0_entropy_diff": 0.02059348257820215,
     "H1_fresh_rotten_ratio": 1.1666666666666667,
     "H1_entropy_diff": 0.14871119520013387,
     "H2_fresh_rotten_ratio": 1.9714285714285715,
-    "H2_entropy_diff": 0.6492084487042189
+    "H2_entropy_diff": 0.6492084487042176
   },
   "bert_strat800_mpinf": {
     "H0_fresh_rotten_ratio": 1.0210526315789474,
@@ -39,29 +39,50 @@
   },
   "tfidf_strat800_mpinf": {
     "H0_fresh_rotten_ratio": 1.0131926121372032,
-    "H0_entropy_diff": 0.02240983603148372,
+    "H0_entropy_diff": 0.022409836031482833,
     "H1_entropy_diff": 0,
     "H2_entropy_diff": 0
   },
   "bow_strat800_cos": {
     "H0_fresh_rotten_ratio": 1.0025641025641026,
-    "H0_entropy_diff": 0.018537345750686995,
+    "H0_entropy_diff": 0.01853734575068522,
     "H1_fresh_rotten_ratio": 1.118067978533095,
     "H1_entropy_diff": 0.11743944216457525,
     "H2_fresh_rotten_ratio": 1.2789256198347108,
-    "H2_entropy_diff": 0.2241194492235863
+    "H2_entropy_diff": 0.2241194492235854
   },
   "bow_strat800_mp1": {
     "H0_fresh_rotten_ratio": 1.0131926121372032,
-    "H0_entropy_diff": 0.019795039865884156,
+    "H0_entropy_diff": 0.019795039865885045,
     "H1_fresh_rotten_ratio": 1.0,
     "H1_entropy_diff": 0.0,
     "H2_entropy_diff": 0
   },
   "bow_strat800_mpinf": {
     "H0_fresh_rotten_ratio": 1.0131926121372032,
-    "H0_entropy_diff": 0.013140793061057643,
+    "H0_entropy_diff": 0.01314079306105409,
     "H1_entropy_diff": 0,
     "H2_entropy_diff": 0
+  },
+  "__normalization_metadata__": {
+    "description": "Normalization factors applied to persistence diagrams",
+    "factors": {
+      "bert_strat800": {
+        "cos": 2.0,
+        "mp1": 768.0,
+        "mpinf": 1.0
+      },
+      "tfidf_strat800": {
+        "cos": 2.0,
+        "mp1": 50.0,
+        "mpinf": 1.5
+      },
+      "bow_strat800": {
+        "cos": 3,
+        "mp1": 50.0,
+        "mpinf": 1.5
+      }
+    },
+    "note": "BERT+mp1 is normalized by dividing by 768 (embedding dimension)"
   }
 }

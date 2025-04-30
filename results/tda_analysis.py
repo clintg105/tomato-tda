@@ -28,15 +28,60 @@ REDUCTIONS = ["pooled"]
 BASE_METRICS = ["cos", "mp1", "mpinf"] 
 SPLITS = ["Dennis Schwartz", "Roger Ebert", "Fresh", "Rotten", "PG", "R", "Comedy", "Drama"]
 
+# Define normalization factors for each embedding+metric combination
+# BERT has 768 dimensions, tfidf and bow dimensions vary but normalization helps for comparison
+NORMALIZATION_FACTORS = {
+    "bert_strat800": {
+        "cos": 2.0,       # Already normalized
+        "mp1": 768.0,     # Divide by dimension for L1 distance
+        "mpinf": 1.0      # Max norm doesn't need dimension normalization
+    },
+    "tfidf_strat800": {
+        "cos": 2.0,       # Already normalized
+        "mp1": 50.0,       # Keep as is for now, could be normalized by vocab size
+        "mpinf": 1.5      # Keep as is for now
+    },
+    "bow_strat800": {
+        "cos": 3,       # Already normalized
+        "mp1": 50.0,       # Keep as is for now, could be normalized by vocab size
+        "mpinf": 1.5      # Keep as is for now
+    }
+}
+
+# Add metadata about normalization to the results
+def add_normalization_metadata(results_dict):
+    """Add metadata about normalization factors to results JSON for documentation"""
+    if isinstance(results_dict, dict):
+        results_dict['__normalization_metadata__'] = {
+            'description': 'Normalization factors applied to persistence diagrams',
+            'factors': NORMALIZATION_FACTORS,
+            'note': 'BERT+mp1 is normalized by dividing by 768 (embedding dimension)'
+        }
+    return results_dict
+
 tm = TDAManager()
 
-def load_persistence_diagram(dataset, reduction, metric, split):
+def load_persistence_diagram(dataset, reduction, metric, split, normalize=True):
     try:
         npz_file = DATA_DIR / dataset / reduction / "tda" / "split" / split / f"{metric}.npz"
         if not npz_file.exists():
             return None
         data = np.load(npz_file, allow_pickle=True)
-        return data['out'].item()
+        result = data['out'].item()
+        
+        # Apply normalization if requested
+        if normalize and dataset in NORMALIZATION_FACTORS and metric in NORMALIZATION_FACTORS[dataset]:
+            norm_factor = NORMALIZATION_FACTORS[dataset][metric]
+            if norm_factor != 1.0:
+                # Normalize the birth-death coordinates by the appropriate factor
+                # Each diagram is a list where diagrams[i] corresponds to H_i homology
+                for i in range(len(result['dgms'])):
+                    if result['dgms'][i].size > 0:
+                        # Divide both birth and death by normalization factor
+                        result['dgms'][i][:, 0] /= norm_factor
+                        result['dgms'][i][:, 1] /= norm_factor
+        
+        return result
     except Exception as e:
         warnings.warn(f"Error loading {npz_file}: {e}")
         return None
@@ -93,6 +138,10 @@ def analyze_encoding_topological_differences():
                 stats = persistence_statistics(pd_data['dgms'])
                 encoding_stats[f"{dataset}_{metric}"] = stats
         results[split] = encoding_stats
+    
+    # Add normalization metadata
+    results = add_normalization_metadata(results)
+    
     with open(RESULTS_DIR / "encoding_topological_differences.json", "w") as f:
         json.dump(results, f, indent=2)
     return results
@@ -110,6 +159,10 @@ def analyze_critic_style_influence():
                 dist = bottleneck_distance(dennis_data['dgms'], roger_data['dgms'], dim)
                 bottleneck_dists[f"H{dim}"] = dist
             critic_results[f"{dataset}_{metric}"] = bottleneck_dists
+    
+    # Add normalization metadata
+    critic_results = add_normalization_metadata(critic_results)
+    
     with open(RESULTS_DIR / "critic_topological_comparison.json", "w") as f:
         json.dump(critic_results, f, indent=2)
     return critic_results
@@ -134,6 +187,10 @@ def analyze_sentiment_topology():
                 entropy_diff = fresh_stats[f"H{dim}_persistence_entropy"] - rotten_stats[f"H{dim}_persistence_entropy"]
                 feature_density[f"H{dim}_entropy_diff"] = entropy_diff
             sentiment_results[f"{dataset}_{metric}"] = feature_density
+    
+    # Add normalization metadata
+    sentiment_results = add_normalization_metadata(sentiment_results)
+    
     with open(RESULTS_DIR / "sentiment_topology.json", "w") as f:
         json.dump(sentiment_results, f, indent=2)
     return sentiment_results
@@ -159,6 +216,10 @@ def analyze_content_rating_topology():
                 r_max = r_stats[f"H{dim}_max_persistence"]
                 lifetime_comparison[f"H{dim}_max_persistence_diff"] = pg_max - r_max
             rating_results[f"{dataset}_{metric}"] = lifetime_comparison
+    
+    # Add normalization metadata
+    rating_results = add_normalization_metadata(rating_results)
+    
     with open(RESULTS_DIR / "rating_topology.json", "w") as f:
         json.dump(rating_results, f, indent=2)
     return rating_results
@@ -190,9 +251,69 @@ def calculate_topological_complexity():
                     complexity += dimension_complexity
                 split_scores[metric] = complexity
             complexity_scores[dataset][split] = split_scores
+    
+    # Add normalization metadata
+    complexity_scores = add_normalization_metadata(complexity_scores)
+    
     with open(RESULTS_DIR / "topological_complexity.json", "w") as f:
         json.dump(complexity_scores, f, indent=2)
     return complexity_scores
+
+def analyze_language_complexity():
+    h1_features = {}
+    for dataset in DATASETS:
+        h1_features[dataset] = {}
+        for split in SPLITS:
+            for metric in BASE_METRICS:
+                pd_data = load_persistence_diagram(dataset, "pooled", metric, split)
+                if pd_data is None or len(pd_data['dgms']) < 2:
+                    continue
+                h1_dgm = pd_data['dgms'][1]
+                if h1_dgm.size == 0:
+                    continue
+                persistence = h1_dgm[:, 1] - h1_dgm[:, 0]
+                finite_persistence = persistence[np.isfinite(persistence)]
+                if len(finite_persistence) == 0:
+                    continue
+                h1_features[dataset][f"{split}_{metric}"] = {
+                    "count": len(finite_persistence),
+                    "avg_persistence": float(np.mean(finite_persistence)),
+                    "max_persistence": float(np.max(finite_persistence)),
+                    "persistence_distribution": finite_persistence.tolist()
+                }
+    
+    # Add normalization metadata
+    h1_features = add_normalization_metadata(h1_features)
+    
+    with open(RESULTS_DIR / "h1_features.json", "w") as f:
+        json.dump(h1_features, f, indent=2)
+    plot_data = []
+    for dataset in h1_features:
+        if dataset == "__normalization_metadata__":
+            continue
+        for key, data in h1_features[dataset].items():
+            split = key.split('_')[0]
+            plot_data.append({
+                "Dataset": dataset.split("_")[0],
+                "Split": split,
+                "H1 Count": data["count"],
+                "Avg Persistence": data["avg_persistence"]
+            })
+    df = pd.DataFrame(plot_data)
+    plt.figure(figsize=(12, 8))
+    sns.scatterplot(
+        data=df,
+        x="H1 Count",
+        y="Avg Persistence",
+        hue="Dataset",
+        style="Split",
+        s=100,
+        alpha=0.7
+    )
+    plt.title("H1 Homology Features: Count vs. Average Persistence")
+    plt.tight_layout()
+    plt.savefig(PLOTS_DIR / "h1_feature_comparison.png", dpi=300)
+    plt.close()
 
 def visualize_persistence_diagrams():
     examples = [
@@ -208,29 +329,27 @@ def visualize_persistence_diagrams():
         if pd_data is None:
             continue
         dgms = pd_data['dgms']
-        fig, axes = plt.subplots(1, min(3, len(dgms)), figsize=(15, 5))
-        if len(dgms) == 1:
-            axes = [axes]
-        for dim, (ax, dgm) in enumerate(zip(axes, dgms)):
-            if dgm.size == 0:
-                ax.set_title(f"H{dim} (empty)")
-                ax.set_xlim(0, 1)
-                ax.set_ylim(0, 1)
+        
+        # Create a figure with subplots for different homology dimensions
+        fig, axs = plt.subplots(1, 3, figsize=(15, 5))
+        for dim in range(min(3, len(dgms))):
+            ax = axs[dim]
+            # Skip if the diagram is empty
+            if dgms[dim].size == 0:
+                ax.text(0.5, 0.5, "No features", ha='center', va='center')
+                ax.set_title(f"H{dim} Persistence Diagram")
                 continue
-            finite_mask = np.isfinite(dgm[:, 0]) & np.isfinite(dgm[:, 1])
-            if not np.any(finite_mask):
-                ax.set_title(f"H{dim} (no finite points)")
-                ax.set_xlim(0, 1)
-                ax.set_ylim(0, 1)
-                continue
-            finite_dgm = dgm[finite_mask]
-            ax.scatter(finite_dgm[:, 0], finite_dgm[:, 1], s=30, alpha=0.6, label=f"H{dim}")
-            min_val = finite_dgm[:, 0].min() if finite_dgm.size > 0 else 0
-            max_val = finite_dgm[:, 1].max() if finite_dgm.size > 0 else 1
-            margin = (max_val - min_val) * 0.1 if max_val > min_val else 0.1
-            lim_min = max(0, min_val - margin)
-            lim_max = max_val + margin
-            if not np.isfinite(lim_min) or not np.isfinite(lim_max):
+            
+            # Plot the points
+            birth = dgms[dim][:, 0]
+            death = dgms[dim][:, 1]
+            ax.scatter(birth, death, alpha=0.6, s=30)
+            
+            # Determine plot limits
+            if np.all(np.isfinite(birth)) and np.all(np.isfinite(death)):
+                lim_min = min(birth.min(), 0)
+                lim_max = death.max() * 1.05
+            else:
                 lim_min, lim_max = 0, 1
             ax.plot([lim_min, lim_max], [lim_min, lim_max], 'k--', alpha=0.3)
             ax.set_xlim(lim_min, lim_max)
@@ -239,7 +358,11 @@ def visualize_persistence_diagrams():
             ax.set_xlabel("Birth")
             ax.set_ylabel("Death")
             ax.grid(alpha=0.2)
-        plt.suptitle(f"Persistence Diagrams: {dataset}, {metric}, {split}")
+        
+        # Add normalization info to title
+        norm_factor = NORMALIZATION_FACTORS.get(dataset, {}).get(metric, 1.0)
+        norm_info = f" (Normalized by {norm_factor})" if norm_factor != 1.0 else ""
+        plt.suptitle(f"Persistence Diagrams: {dataset}, {metric}{norm_info}, {split}")
         plt.tight_layout()
         plt.savefig(PLOTS_DIR / f"persistence_diagram_{dataset}_{metric}_{split.replace(' ', '_')}.png", dpi=300)
         plt.close()
@@ -249,6 +372,8 @@ def visualize_topological_complexity():
         complexity_scores = json.load(f)
     plot_data = []
     for dataset in complexity_scores:
+        if dataset == "__normalization_metadata__":
+            continue
         for split in complexity_scores[dataset]:
             for metric in complexity_scores[dataset][split]:
                 score = complexity_scores[dataset][split][metric]
@@ -299,56 +424,6 @@ def visualize_topological_complexity():
     plt.savefig(PLOTS_DIR / "topological_complexity_metric_barplot.png", dpi=300)
     plt.close()
 
-def analyze_language_complexity():
-    h1_features = {}
-    for dataset in DATASETS:
-        h1_features[dataset] = {}
-        for split in SPLITS:
-            for metric in BASE_METRICS:
-                pd_data = load_persistence_diagram(dataset, "pooled", metric, split)
-                if pd_data is None or len(pd_data['dgms']) < 2:
-                    continue
-                h1_dgm = pd_data['dgms'][1]
-                if h1_dgm.size == 0:
-                    continue
-                persistence = h1_dgm[:, 1] - h1_dgm[:, 0]
-                finite_persistence = persistence[np.isfinite(persistence)]
-                if len(finite_persistence) == 0:
-                    continue
-                h1_features[dataset][f"{split}_{metric}"] = {
-                    "count": len(finite_persistence),
-                    "avg_persistence": float(np.mean(finite_persistence)),
-                    "max_persistence": float(np.max(finite_persistence)),
-                    "persistence_distribution": finite_persistence.tolist()
-                }
-    with open(RESULTS_DIR / "h1_features.json", "w") as f:
-        json.dump(h1_features, f, indent=2)
-    plot_data = []
-    for dataset in h1_features:
-        for key, data in h1_features[dataset].items():
-            split = key.split('_')[0]
-            plot_data.append({
-                "Dataset": dataset.split("_")[0],
-                "Split": split,
-                "H1 Count": data["count"],
-                "Avg Persistence": data["avg_persistence"]
-            })
-    df = pd.DataFrame(plot_data)
-    plt.figure(figsize=(12, 8))
-    sns.scatterplot(
-        data=df,
-        x="H1 Count",
-        y="Avg Persistence",
-        hue="Dataset",
-        style="Split",
-        s=100,
-        alpha=0.7
-    )
-    plt.title("H1 Homology Features: Count vs. Average Persistence")
-    plt.tight_layout()
-    plt.savefig(PLOTS_DIR / "h1_feature_comparison.png", dpi=300)
-    plt.close()
-
 def main():
     print("Analyzing encoding topological differences...")
     analyze_encoding_topological_differences()
@@ -367,6 +442,9 @@ def main():
     visualize_topological_complexity()
     print("Analysis complete! Results saved to:", RESULTS_DIR)
     print("Plots saved to:", PLOTS_DIR)
+    print("Note: All analyses use normalized persistence diagrams for fair comparison across embedding types.")
+    print("      - BERT+mp1: Normalized by dividing by 768 (embedding dimension)")
+    print("      - Other metrics: See NORMALIZATION_FACTORS for details")
 
 if __name__ == "__main__":
     main()
