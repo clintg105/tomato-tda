@@ -32,19 +32,19 @@ SPLITS = ["Dennis Schwartz", "Roger Ebert", "Fresh", "Rotten", "PG", "R", "Comed
 # BERT has 768 dimensions, tfidf and bow dimensions vary but normalization helps for comparison
 NORMALIZATION_FACTORS = {
     "bert_strat800": {
-        "cos": 2.0,       # Already normalized
+        "cos": 1.0,       # Already normalized
         "mp1": 768.0,     # Divide by dimension for L1 distance
         "mpinf": 1.0      # Max norm doesn't need dimension normalization
     },
     "tfidf_strat800": {
-        "cos": 2.0,       # Already normalized
+        "cos": 1.0,       # Already normalized
         "mp1": 50.0,       # Keep as is for now, could be normalized by vocab size
-        "mpinf": 1.5      # Keep as is for now
+        "mpinf": 1.0      # Keep as is for now
     },
     "bow_strat800": {
-        "cos": 3,       # Already normalized
+        "cos": 1.0,       # Already normalized
         "mp1": 50.0,       # Keep as is for now, could be normalized by vocab size
-        "mpinf": 1.5      # Keep as is for now
+        "mpinf": 1.0      # Keep as is for now
     }
 }
 
