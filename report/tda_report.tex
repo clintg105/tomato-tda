@@ -115,35 +115,6 @@ $$
 up to a small error term $\mathcal{O}(h)$, where $h \approx \max _i \min _{j \neq i}\left\|x_i-x_j\right\|$ is the sampling radius \cite{tenenbaum2000global}.\\
 Intuitively, if two reviews are not directly similar (in Euclidean terms) but have a chain of intermediate reviews linking them (each similar to the next), then $d_G$ will reflect the sum of small hops, capturing that they are connected through a topic pathway.
 
-<<<<<<< Updated upstream
-\begin{figure*}[p]
-\includegraphics[width=\textwidth]{comparative/general/FullStructureV2.png}
-\caption{bla bla}
-\label{fig:FullStructure}
-\end{figure*}
-
-\begin{figure*}[p]
-\includegraphics[width=\textwidth]{comparative/general/DiscrimStructureV2.png}
-\caption{bla bla}
-\label{fig:DiscrimStructure}
-\end{figure*}
-
-\FloatBarrier  % Force all floats to be placed before this point
-\clearpage      % Force a page break
-
-\section{Discriminating Structure}
-% define axes of discrimination
-% discuss extrema (deep dive persistance)
-=======
-
-\begin{figure*}[ht] % up here to move text
-\centering
-\includegraphics[width=0.95\textwidth]{comparative/general/FullStructureV2.png}
-\caption{\textbf{Complexity portrait.} Four-panel complexity portrait summarizing TDA metrics across encoding and distance variants. Panel (a) plots full persistent entropy $E_{0,1,2}(D)$ against total persistence $\mathrm{TP}_{0,1,2}$ on log–log scales. Panel (b) shows high- versus low-dimensional persistent entropy $E_{1,2}(D)$ as a function of $E_{0}(D)$, and panel (c) compares high- versus low-dimensional total persistence $\mathrm{TP}_{1,2}$ to $\mathrm{TP}_{0}$. The bottom-right grid legend maps marker shapes to metric families (base, Sinkhorn–Wasserstein “ws”, 5-NN, 10-NN, and their hybrids) and colors to encoding strategies (TF–IDF, BoW, BERT). Strong coupling in entropy contrasts with near-independence of total persistence.}
-\label{fig:FullStructure}
-\end{figure*}
-
-
 \subsection{Topological Structure}
 \subsubsection{Process}
 We follow the standard TDA procedure:
@@ -183,8 +154,7 @@ Betti curves plot the rank of homology groups
 	\beta_k(\alpha)&=\operatorname{rank}H_k(\mathrm{VR}_\alpha(X);\mathbb{F}_2)\\
 	&=\sum_{(b_i,d_i)\in\operatorname{Dgm}_k(X)}\!\mathbf 1_{[\,b_i,d_i)}(\alpha)\qquad 0\le\alpha\le\alpha_{\max}.
 \end{align*}
-as a function of the scale parameter $\alpha$, which corresponds to the parameter in the Vietoris-Rips filtration.
->>>>>>> Stashed changes
+as a function of the scale parameter $\alpha$, which corresponds to the parameter in the Vietoris-Rips filtration
 
 \subsubsection{Normalization}
 In order to compare across metrics and emphasize relative topology, we need to correct for the fact that every metric will have a distinct absolute scale.\\
@@ -196,9 +166,17 @@ $$
 $$
 Stability under scalar multiplication ensures consistency and permits rescaling after diagram computation \cite{cohen2007stability}. Moreover, this extends naturally to Betti curves $\tilde{\beta}_k(u)=\beta_k\bigl(u\cdot\operatorname{diam}(X)\bigr)$.
 
+
+\clearpage      % Force a page break
+
+\begin{figure*}[ht] % up here to move text
+\centering
+\includegraphics[width=\textwidth]{comparative/general/FullStructureV2.png}
+\caption{\textbf{Complexity portrait.} Four-panel complexity portrait summarizing TDA metrics across encoding and distance variants. Panel (a) plots full persistent entropy $E_{0,1,2}(D)$ against total persistence $\mathrm{TP}_{0,1,2}$ on log–log scales. Panel (b) shows high- versus low-dimensional persistent entropy $E_{1,2}(D)$ as a function of $E_{0}(D)$, and panel (c) compares high- versus low-dimensional total persistence $\mathrm{TP}_{1,2}$ to $\mathrm{TP}_{0}$. The bottom-right grid legend maps marker shapes to metric families (base, Sinkhorn–Wasserstein “ws”, 5-NN, 10-NN, and their hybrids) and colors to encoding strategies (TF–IDF, BoW, BERT). Strong coupling in entropy contrasts with near-independence of total persistence.}
+\label{fig:FullStructure}
+\end{figure*}
+
 \section{Full Structure}
-
-
 \subsection{Quantifying Structure}
 On each normalized diagram we compute total persistance and persistant entropy,
 \begin{align*}
@@ -231,14 +209,8 @@ The Pearson statistics (Tab.\,\ref{tab:corr}) show strong entropic coupling ($E_
 
 \subsection{Metric Families and Entropic Efficiency}\label{sec:metric-insight}
 
-Define the \emph{entropic efficiency ratio}
-$$
-\eta = \frac{TP_{1,2}}{E_{1,2}},
-$$
-units of lifetime gained per bit of high-dimensional entropy.  
-Median values by metric family are given in Tab.\,\ref{tab:eta}; higher $\eta$ means a “taller” diagram for the same entropic cost.
 
-\begin{table*}[h]
+\begin{table*}[ht]
   \centering
   \caption{Median entropic efficiency $\eta$ (all embeddings pooled).}
   \label{tab:eta}
@@ -256,6 +228,14 @@ Median values by metric family are given in Tab.\,\ref{tab:eta}; higher $\eta$ m
   \end{tabular}
 \end{table*}
 
+Define the \emph{entropic efficiency ratio}
+$$
+\eta = \frac{TP_{1,2}}{E_{1,2}},
+$$
+units of lifetime gained per bit of high-dimensional entropy.  
+Median values by metric family are given in Tab.\,\ref{tab:eta}; higher $\eta$ means a “taller” diagram for the same entropic cost.
+
+
 \subsubsection*{Observations}
 \begin{itemize}[leftmargin=*]
   \item \textbf{Chebyshev–Wasserstein rules.}  With $\tilde{\eta}=2.00$ it delivers roughly \emph{double} the loop/void lifetime per entropy bit compared to the next best family.  A single extreme coordinate both lengthens and diversifies lifetimes, so efficiency stays high even as entropy rises.
@@ -269,7 +249,13 @@ Median values by metric family are given in Tab.\,\ref{tab:eta}; higher $\eta$ m
 Chebyshev–Wasserstein pays the price most efficiently; geodesic or entropic smoothing lowers both cost and return; cosine invests entropy for meagre gains.  
 Consequently, when the analytic goal is discrimination rather than stability, $d_\infty$ with plain Wasserstein remains the metric of choice.
 
+
+\FloatBarrier  % Force all floats to be placed before this point
+\clearpage      % Force a page break
+
 \section{Discriminating Structure}
+
+
 \subsection{Quantifying Contrasts}
 In this section we use abbreviations $D,D'$ for distinct normalized diagrams, $\widetilde{\operatorname{Dgm}}_k$.
 \subsubsection{Wasserstein-1}
@@ -315,8 +301,9 @@ I_{p,q}=\sum_{(b_i,d_i)\in D}w(b_i,d_i-b_i)\;K_\sigma\bigl((u_p,v_q),(b_i,d_i-b_
 $$
 Flattening $\{I_{p,q}\}$ yields a finite-dimensional embedding of the diagram \cite{adams2017persistence}.
 
+
 \subsection{Discrimination Results}\label{sec:disc-results}
-\begin{figure*}[t]
+\begin{figure*}[p]
 \centering
 \includegraphics[width=\textwidth]{comparative/general/DiscrimStructureV2.png}
 \caption{\textbf{Swim-lane discrimination.}  Rows: semantic categories.  Columns: $W_1$, bottleneck $d_B$, persistence landscape $L_2$, persistence image $I_2$.  Within each tile four lanes show score distributions $d=0,1,2,012$ (bottom$\to$top).}
@@ -360,7 +347,7 @@ Flattening $\{I_{p,q}\}$ yields a finite-dimensional embedding of the diagram \c
 \end{table*}
 
 
-Four semantic splits—\emph{critic name, content rating, genre, sentiment}—are evaluated with four contrast methods: Wasserstein $W_1$, bottleneck $d_B$, persistence landscapes ($L_2$), and persistence images ($I_2$).  Table \ref{tab:disc-avg} reports the mean joint score ($012$) for each pair.
+Four semantic splits (\emph{critic name, content rating, genre, sentiment}) are evaluated with four contrast methods: Wasserstein $W_1$, bottleneck $d_B$, persistence landscapes ($L_2$), and persistence images ($I_2$).  Table \ref{tab:disc-avg} reports the mean joint score ($012$) for each pair.
 
 \begin{table}[h]
   \centering
@@ -528,12 +515,8 @@ The maximum persistence difference of 0.020 for dimension-1 features indicates t
 
 These content rating differences persist across encoding methods but are most pronounced with BERT embeddings, suggesting that contextual encodings better capture the subtle semantic differences in how critics approach films with different target audiences.
 
-<<<<<<< Updated upstream
-\subsection{Preferred Metric}
-=======
 \clearpage
 \subsection{Preferred Metric}\label{sec:pref-met}
->>>>>>> Stashed changes
 
 To quantitatively compare the effectiveness of different distance metrics and encoding methods, we developed a topological complexity measure that captures both the quantity and quality of topological features. Our complexity formula is defined as:
 
