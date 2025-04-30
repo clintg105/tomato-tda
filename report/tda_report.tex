@@ -23,6 +23,9 @@
 
 \usepackage{lipsum}
 \usepackage{graphicx}
+\usepackage{eso-pic}
+\usepackage{transparent}
+\usepackage{tikz}
 \usepackage{booktabs}
 \usepackage{cite}
 \usepackage{dblfloatfix}  % fix bottom placement
@@ -56,6 +59,15 @@ Our reproducible pipeline runs end-to-end in under 5 hours on a laptop and yield
 \Keywords{}
 \newcommand{\keywordname}{Keywords}
 
+\AddToShipoutPictureBG{%
+  \ifnum\value{page}>1
+	  \begin{tikzpicture}[remember picture, overlay]
+	    \node[anchor=north west, opacity=0.15] at ([xshift=0.5cm]current page.north west) {
+	      \includegraphics[width=2.2cm]{comparative/general/logo.png}
+	    };
+	  \end{tikzpicture}
+  \fi
+}
 
 \begin{document}
 
@@ -87,8 +99,8 @@ The remainder of this report is structured as follows: In the Methodology sectio
 \label{fig:Repo}
 \end{figure*}
 
-We began by loading the raw kaggle review data into pandas DataFrames \cite{kaggle_rotten_tomatoes, mckinney2010pandas}. Text was cleaned, tokenized, POS-tagged, and lemmatized with NLTK \cite{bird2009nltk}. Documents were encoded with bag-of-words and TF-IDF using scikit-learn \cite{pedregosa2011scikit}, while in parallel we generated BERT token embeddings via HuggingFace Transformers and PyTorch \cite{wolf2020transformers,paszke2019pytorch}. Embeddings and feature matrices were stored as NumPy arrays for downstream processing \cite{harris2020array}. We then built sparse distance graphs and boundary matrices with SciPy and scikit-learn utilities \cite{virtanen2020scipy,pedregosa2011scikit}, approximating geodesic distances on the inferred manifold by constructing k-nearest-neighbor graphs and computing all-pairs shortest paths \cite{virtanen2020scipy}.\\
-From each boundary matrix we formed a Vietoris–Rips filtration and extracted persistence barcodes using Ripser \cite{bauer2021ripser}. Persistence diagrams were post-processed and plotted with persim \cite{persim2024persim}. Finally, we measured Wasserstein distances between diagrams with the POT toolbox, using both Sinkhorn regularization \cite{cuturi2013sinkhorn} and sliced approximations \cite{bonneel2015sliced,flamary2021pot}. The complete dataflow is outline in Fig. \ref{fig:Repo}
+We began by loading the raw kaggle review data into pandas DataFrames for stratification \cite{kaggle_rotten_tomatoes, mckinney2010pandas}. Text was cleaned, tokenized, POS-tagged, and lemmatized with NLTK \cite{bird2009nltk}. Documents were encoded with bag-of-words and TF-IDF using scikit-learn \cite{pedregosa2011scikit}, while in parallel we generated BERT token embeddings via HuggingFace Transformers and PyTorch \cite{wolf2020transformers,paszke2019pytorch}. Embeddings and feature matrices were stored as NumPy arrays for downstream processing \cite{harris2020array}. We then built sparse distance graphs and boundary matrices with SciPy and scikit-learn utilities \cite{virtanen2020scipy,pedregosa2011scikit}, approximating geodesic distances on the inferred manifold by constructing k-nearest-neighbor graphs and computing all-pairs shortest paths \cite{virtanen2020scipy}.\\
+From each boundary matrix we formed a Vietoris–Rips filtration and extracted persistence barcodes using Ripser \cite{bauer2021ripser}. Persistence diagrams were post-processed and plotted with persim \cite{persim2024persim}. Finally, we measured Wasserstein distances between diagrams with the POT toolbox, both exact and using Sinkhorn regularization \cite{flamary2021pot, cuturi2013sinkhorn}. The complete dataflow is outlined in Fig. \ref{fig:Repo}.
 
 
 \subsection{Data Set}
@@ -658,7 +670,7 @@ In conclusion, while no single metric is optimal for all analytical purposes, BE
 \section{Conclusion}
 Persistent homology reveals that the most discriminative information in movie‐review embeddings comes from one-dimensional loops: across sentiment, genre, critic identity, and MPAA rating, $H_1$ captures over 85\% of the separability signal, with connected components and voids contributing the rest.  In every task, BERT coupled with the Chebyshev norm and 1-Wasserstein distance outperformed cosine and $\ell_1$ baselines by more than an order of magnitude.  Notably, adding entropic regularization made Wasserstein computations feasible at scale but did not change which encoder–metric pair ranked highest; similarly, switching to a $k$-NN geodesic metric reduced spurious long bars yet preserved the order of top performers.
 
-We also show that a simple complexity index—summing feature counts weighted by lifetime and homological dimension—predicts classification accuracy with $R^2=0.92$, making it a useful heuristic when full diagram contrasts are too costly.  Sparse embeddings (BoW, TF–IDF) pair best with cosine for compact, low‐entropy diagrams, whereas dense BERT embeddings require extreme metrics like Chebyshev to expose semantic loops.  This gives a clear workflow: select an embedding based on lexical sparsity, choose a distance that amplifies that embedding’s natural variation, and validate with the complexity index before committing to expensive Wasserstein computations.  Future work will test higher‐order homology, richer transport costs, and time‐varying filtrations on temporal text corpora.
+Sparse embeddings (BoW, TF–IDF) pair best with cosine for compact, low‐entropy diagrams, whereas dense BERT embeddings require extreme metrics like Chebyshev to expose semantic loops.  This gives a clear workflow: select an embedding based on lexical sparsity, choose a distance that amplifies that embedding’s natural variation, and validate with the complexity index before committing to expensive Wasserstein computations.  Future work will test higher‐order homology, richer transport costs, and time‐varying filtrations on temporal text corpora.
 
 \phantomsection
 \bibliographystyle{unsrt}
