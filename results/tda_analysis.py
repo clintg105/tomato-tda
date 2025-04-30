@@ -271,6 +271,7 @@ def visualize_topological_complexity():
     plt.tight_layout()
     plt.savefig(PLOTS_DIR / "topological_complexity_heatmap.png", dpi=300)
     plt.close()
+    
     plt.figure(figsize=(14, 10))
     avg_by_encoder_split = df.groupby(["Dataset", "Split"])["Complexity"].mean().reset_index()
     sns.barplot(x="Split", y="Complexity", hue="Dataset", data=avg_by_encoder_split)
@@ -279,6 +280,23 @@ def visualize_topological_complexity():
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig(PLOTS_DIR / "topological_complexity_barplot.png", dpi=300)
+    plt.close()
+    
+    plt.figure(figsize=(16, 12))
+    df["Encoding_Metric"] = df["Dataset"] + "_" + df["Metric"]
+    avg_by_encoder_metric_split = df.groupby(["Encoding_Metric", "Split"])["Complexity"].mean().reset_index()
+    
+    num_encodings = len(avg_by_encoder_metric_split["Encoding_Metric"].unique())
+    palette = sns.color_palette("husl", num_encodings)
+    
+    g = sns.barplot(x="Split", y="Complexity", hue="Encoding_Metric", data=avg_by_encoder_metric_split, palette=palette)
+    plt.yscale('log')
+    plt.title("Topological Complexity by Encoding Method + Metric and Split")
+    plt.xticks(rotation=45)
+    
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0)
+    plt.tight_layout()
+    plt.savefig(PLOTS_DIR / "topological_complexity_metric_barplot.png", dpi=300)
     plt.close()
 
 def analyze_language_complexity():
