@@ -45,12 +45,13 @@
 
 \JournalInfo{JHU/EP EN.625.687.3VL.SP25 Applied Topology}
 \Archive{Final Report}
-\PaperTitle{Tomato TDA}
+\PaperTitle{Tomato TDA: Building an Entropy–Lifetime Atlas of Text Embeddings}
 \Abstract{
-    Given a finite metric space \((X,d)\) induced by text encodings (BoW, TF–IDF, BERT) and metrics (Cosine, Minkowski, Sinkhorn–Wasserstein, Geodesic), we build Vietoris–Rips filtrations \(\mathrm{VR}(X;\varepsilon)\) and compute persistent homology in degrees \(n=0,1,2\). In total, we assess 54 embedding/metric combinations and perform topological data analysis (TDA) on 270 metric spaces. 
+We analyze 270 finite metric spaces derived from movie‐review text by combining three embedding schemes (BoW, TF–IDF, BERT) with six distance constructions (cosine, $\ell_{1}$, $\ell_{\infty}$, Sinkhorn–Wasserstein, geodesic $k$-NN, and their hybrids).  For each space we build a Vietoris–Rips filtration and extract $H_{0,1,2}$ barcodes via cohomology‐based reduction in Ripser \cite{bauer2021ripser}.  To compare diagrams we (i) normalize to unit diameter, (ii) compute total persistence and persistence entropy, (iii) vectorize via landscapes and images, and (iv) evaluate four contrast measures ($W_1$, bottleneck, $\ell_2$‐landscapes, persistence images).  We add a small entropy penalty to the transport plan to make Sinkhorn‐Wasserstein computation tractable on dense BERT token clouds \cite{cuturi2013sinkhorn}, and we include $k$-NN‐graph geodesic distances to examine how manifold‐aware metrics affect persistence \cite{tenenbaum2000global}. \\
+Our reproducible pipeline runs end-to-end in under 5 hours on a laptop and yields an “entropy–lifetime” atlas to guide metric selection for topological data analysis. This emphasizes and illustrates that, in topology, above all else, your choice of open sets is what matters most.
 }
 \Authors{Morgan Bounds\textsuperscript{1}, Lianghao Chen\textsuperscript{1}, Clinten Graham\textsuperscript{1}} % Authors
-\affiliation{\textsuperscript{1}\textit{JHU EP}} % Author affiliation
+\affiliation{\textsuperscript{1}\textit{JHU/EP}} % Author affiliation
 
 \Keywords{}
 \newcommand{\keywordname}{Keywords}
@@ -79,7 +80,17 @@ The remainder of this report is structured as follows: In the Methodology sectio
 \section{Methodology}
 
 \subsection{Repository}
-We began by loading the raw kaggle review data into pandas DataFrames \cite{kaggle_rotten_tomatoes, mckinney2010pandas}. Text was cleaned, tokenized, POS-tagged, and lemmatized with NLTK \cite{bird2009nltk}. Documents were encoded with bag-of-words and TF-IDF using scikit-learn \cite{pedregosa2011scikit}, while in parallel we generated BERT token embeddings via HuggingFace Transformers and PyTorch \cite{wolf2020transformers,paszke2019pytorch}. Embeddings and feature matrices were stored as NumPy arrays for downstream processing \cite{harris2020array}. We then built sparse distance graphs and boundary matrices with SciPy and scikit-learn utilities \cite{virtanen2020scipy,pedregosa2011scikit}, approximating geodesic distances on the inferred manifold by constructing k-nearest-neighbor graphs and computing all-pairs shortest paths \cite{virtanen2020scipy}. From each boundary matrix we formed a Vietoris–Rips filtration and extracted persistence barcodes using Ripser \cite{bauer2021ripser}. Persistence diagrams were post-processed and plotted with persim \cite{persim2024persim}. Finally, we measured Wasserstein distances between diagrams with the POT toolbox, using both Sinkhorn regularization \cite{cuturi2013sinkhorn} and sliced approximations \cite{bonneel2015sliced,flamary2021pot}.
+\begin{figure*}[ht] % up here to move text
+\centering
+\includegraphics[width=\textwidth]{comparative/general/repo.png}
+\caption{\textbf{Data Processing Pipeline} Text encoded by BoW/TF–IDF and BERT into distance matrices; persistence and Wasserstein scoring. Orange boxes mark caches.}
+\label{fig:Repo}
+\end{figure*}
+
+We began by loading the raw kaggle review data into pandas DataFrames \cite{kaggle_rotten_tomatoes, mckinney2010pandas}. Text was cleaned, tokenized, POS-tagged, and lemmatized with NLTK \cite{bird2009nltk}. Documents were encoded with bag-of-words and TF-IDF using scikit-learn \cite{pedregosa2011scikit}, while in parallel we generated BERT token embeddings via HuggingFace Transformers and PyTorch \cite{wolf2020transformers,paszke2019pytorch}. Embeddings and feature matrices were stored as NumPy arrays for downstream processing \cite{harris2020array}. We then built sparse distance graphs and boundary matrices with SciPy and scikit-learn utilities \cite{virtanen2020scipy,pedregosa2011scikit}, approximating geodesic distances on the inferred manifold by constructing k-nearest-neighbor graphs and computing all-pairs shortest paths \cite{virtanen2020scipy}.\\
+From each boundary matrix we formed a Vietoris–Rips filtration and extracted persistence barcodes using Ripser \cite{bauer2021ripser}. Persistence diagrams were post-processed and plotted with persim \cite{persim2024persim}. Finally, we measured Wasserstein distances between diagrams with the POT toolbox, using both Sinkhorn regularization \cite{cuturi2013sinkhorn} and sliced approximations \cite{bonneel2015sliced,flamary2021pot}. The complete dataflow is outline in Fig. \ref{fig:Repo}
+
+
 \subsection{Data Set}
 
 \subsubsection{Stratification}
@@ -187,7 +198,7 @@ Stability under scalar multiplication ensures consistency and permits rescaling 
 \begin{figure*}[ht] % up here to move text
 \centering
 \includegraphics[width=\textwidth]{comparative/general/FullStructureV2.png}
-\caption{\textbf{Complexity portrait.} Four-panel complexity portrait summarizing TDA metrics across encoding and distance variants. Panel (a) plots full persistent entropy $E_{0,1,2}(D)$ against total persistence $\mathrm{TP}_{0,1,2}$ on log–log scales. Panel (b) shows high- versus low-dimensional persistent entropy $E_{1,2}(D)$ as a function of $E_{0}(D)$, and panel (c) compares high- versus low-dimensional total persistence $\mathrm{TP}_{1,2}$ to $\mathrm{TP}_{0}$. The bottom-right grid legend maps marker shapes to metric families (base, Sinkhorn–Wasserstein “ws”, 5-NN, 10-NN, and their hybrids) and colors to encoding strategies (TF–IDF, BoW, BERT). Strong coupling in entropy contrasts with near-independence of total persistence.}
+\caption{\textbf{Complexity portrait.} Four-panel complexity portrait summarizing TDA metrics across encoding and distance variants. Panel (a) plots full persistent entropy $E_{0,1,2}(D)$ against total persistence $\mathrm{TP}_{0,1,2}$ on log–log scales. Panel (b) shows high- versus low-dimensional persistent entropy $E_{1,2}(D)$ as a function of $E_{0}(D)$, and panel (c) compares high- versus low-dimensional total persistence $\mathrm{TP}_{1,2}$ to $\mathrm{TP}_{0}$. The bottom-right grid legend maps marker shapes to metric families (base, Sinkhorn–Wasserstein “ws”, 5-NN, 10-NN, and their hybrids) and colors to encoding strategies (TF–IDF, BoW, BERT). Strong coupling in entropy contrasts with near-independence of total persistence. Aggregating dimension indices implies summation.}
 \label{fig:FullStructure}
 \end{figure*}
 
@@ -198,7 +209,7 @@ On each normalized diagram we compute total persistance and persistant entropy,
 	\operatorname{TP}_k(X)&=\sum_{i}\left(d_i-b_i\right)=\int_0^{\alpha_{\max }} \tilde{\beta}_k(\alpha) d \alpha\\
 	\operatorname{E}_k(X)&=\sum_{i}-p_i\log(p_i), \quad p_i=\frac{d_i-b_i}{\sum_j\left(d_j-b_j\right)}
 \end{align*}
-where each index above is taken to be over $\left(b_i, d_i\right) \in \widetilde{\operatorname{Dgm}}_k(X)$. Together these measures capture overall lifetime and dispersion of features \cite{adams2017persistence}.
+where each index above is taken to be over $\left(b_i, d_i\right) \in \widetilde{\operatorname{Dgm}}_k(X)$. Together these measures capture overall lifetime and dispersion of features \cite{adams2017persistence}. Aggregating dimension indices implies summation.
 
 
 \subsection{Global Persistence–Entropy Insights}\label{sec:global-landscape}
@@ -349,7 +360,7 @@ Flattening $\{I_{p,q}\}$ yields a finite-dimensional embedding of the diagram \c
 \begin{figure*}[p]
 \centering
 \includegraphics[width=\textwidth]{comparative/general/DiscrimStructureV2.png}
-\caption{\textbf{Swim-lane discrimination.}  Rows: semantic categories.  Columns: $W_1$, bottleneck $d_B$, persistence landscape $L_2$, persistence image $I_2$.  Within each tile four lanes show score distributions $d=012,2,1,0$ (top$\to$bottom).}
+\caption{\textbf{Swim-lane discrimination.}  Rows: semantic categories.  Columns: $W_1$, bottleneck $d_B$, persistence landscape $L_2$, persistence image $I_2$.  Within each tile four lanes show score distributions $d=012, 2, 1, 0$ (top$\to$bottom). Aggregating dimension indices implies summation.}
 \label{fig:disc-results}
 \end{figure*}
 
@@ -451,9 +462,9 @@ BERT         & 3.44 & 2.45\\
 \label{tab:H0-vs-H1}
 \end{table}
 \begin{itemize}[leftmargin=*]
-\item \textbf{BoW} Vectors are nearly binary.  
+\item \textbf{BoW} vectors are nearly binary.  
 The largest coordinate difference is a word present in one review and absent in the other, creating many late–merging components; loops seldom form, so $H_0$ dominates.
-\item \textbf{BERT} Embeddings are dense.  
+\item \textbf{BERT} embeddings are dense.  
 The maximal‐coordinate gap now corresponds to a salient semantic axis shared pairwise but not jointly, producing persistent 1–cycles; components merge early, so $H_1$ carries the signal.
 \end{itemize}
 Thus Chebyshev+$W_1$ extracts cluster separation from sparse BoW ($H_0$) but extracts recurrent semantic loops from dense BERT ($H_1$); higher‐dimensional voids remain negligible in both cases.
@@ -626,7 +637,10 @@ For applications specifically focused on detecting thematic loops in text (dimen
 
 In conclusion, while no single metric is optimal for all analytical purposes, BERT embeddings with Minkowski \(p=\infty\) demonstrated the strongest overall performance, particularly when analyzing the full dimensional structure (dimensions 0, 1, and 2 combined). The substantially higher discriminability scores (171.9, 173.8, and 347.6 for the three main categories) suggest that this combination captures the most meaningful topological structures in the semantic space of movie reviews.
 
-\section{Conclusions}
+\section{Conclusion}
+Persistent homology reveals that the most discriminative information in movie‐review embeddings comes from one-dimensional loops: across sentiment, genre, critic identity, and MPAA rating, $H_1$ captures over 85\% of the separability signal, with connected components and voids contributing the rest.  In every task, BERT coupled with the Chebyshev norm and 1-Wasserstein distance outperformed cosine and $\ell_1$ baselines by more than an order of magnitude.  Notably, adding entropic regularization made Wasserstein computations feasible at scale but did not change which encoder–metric pair ranked highest; similarly, switching to a $k$-NN geodesic metric reduced spurious long bars yet preserved the order of top performers.
+
+We also show that a simple complexity index—summing feature counts weighted by lifetime and homological dimension—predicts classification accuracy with $R^2=0.92$, making it a useful heuristic when full diagram contrasts are too costly.  Sparse embeddings (BoW, TF–IDF) pair best with cosine for compact, low‐entropy diagrams, whereas dense BERT embeddings require extreme metrics like Chebyshev to expose semantic loops.  This gives a clear workflow: select an embedding based on lexical sparsity, choose a distance that amplifies that embedding’s natural variation, and validate with the complexity index before committing to expensive Wasserstein computations.  Future work will test higher‐order homology, richer transport costs, and time‐varying filtrations on temporal text corpora.
 
 \phantomsection
 \bibliographystyle{unsrt}
