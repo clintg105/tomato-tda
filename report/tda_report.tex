@@ -8,6 +8,7 @@
 \definecolor{color1}{RGB}{0,0,90}
 \definecolor{color2}{RGB}{0,20,20}
 \usepackage{hyperref}
+\usepackage{pdfpages}
 \hypersetup{
 	hidelinks,
 	colorlinks,
@@ -147,7 +148,7 @@ To apply TDA, we require a notion of distance between points (reviews) in our fe
 Given two vectors $x, y \in \mathbb{R}^d$, we obtain their angle using the dot product $\langle x, y\rangle  = |x||y|\cos(\theta).$
 This is converted to a distance via 
 $$d_{\cos}(x,y) = \sqrt{2\left(1 - \cos(\theta)\right)} \in [0,2].$$
-Cosine distance focuses on the difference in direction of the vectors, effectively comparing the relative term weights. For TF–IDF or BoW, this is useful because it reduces the influence of document length or overall word frequency. 
+using a correction to satisfy the metric axioms \cite{cossim}. Cosine distance focuses on the difference in direction of the vectors, effectively comparing the relative term weights. For TF–IDF or BoW, this is useful because it reduces the influence of document length or overall word frequency. 
 \subsubsection{Minkowski Distances}
 A broad family of distances defined as 
 $$d_p(x,y) = \Big(\sum_{i=1}^d |x_i - y_i|^p \Big)^{1/p}$$
@@ -162,7 +163,7 @@ for $p\ge1$ satisfy the metric axioms \cite{viro2008elementary}. We consider two
 \end{itemize}
 
 \subsubsection{Entropic-Regularized Optimal Transport}\label{ws}
-Consider a review embedded as a series of BERT tokens. Suppose if instead of pooling the tokens into a vector, we represented each review as an empirical distribution, $P = \{\mathbf{x}_i\}_{i=1}^{m}$ or $Q = \{\mathbf{y}_j\}_{j=1}^{n}$ over our feature space. The Wasserstein distance (Earth Mover’s distance) between $P$ and $Q$ is defined as the minimum “cost” to transport the mass of distribution $P$ onto $Q$ \cite{villani2008optimal}. If the ground cost between points is taken to be \textit{any of the above metrics} $d(x,y)$, the $p$-Wasserstein distance is
+Consider a review embedded as a series of BERT tokens. Suppose if instead of pooling the tokens into a vector, we represented each review as an empirical distribution, $P = \{\mathbf{x}_i\}_{i=1}^{m}$ or $Q = \{\mathbf{y}_j\}_{j=1}^{n}$ over our feature space. The Wasserstein distance (Earth Mover’s distance) between $P$ and $Q$ is defined as the minimum “cost” to transport the mass of distribution $P$ onto $Q$ \cite{villani2008optimal} and satisfies the metric axioms \cite{emd}. If the ground cost between points is taken to be \textit{any of the above metrics} $d(x,y)$, the $p$-Wasserstein distance is
 $$
 W_p(P, Q)=\left(\min _{\pi \in \Pi(P, Q)} \sum_{i, j} \pi_{i j} d\left(\mathbf{x}_i, \mathbf{y}_j\right)^p\right)^{1 / p}
 $$
@@ -178,7 +179,7 @@ Imagine for a moment that our movie-review embeddings aren't just scattered in $
 $$
 d_G\left(x_i, x_j\right)=\min _{\pi: i \rightarrow j} \sum_{(u, v) \in \pi} d(u, v)
 $$
-where the optimal path $\hat{\pi}: i \rightarrow j$ is computed via Dijkstra's or Floyd-Warshall in SciPy \cite{virtanen2020scipy}. Under mild sampling conditions,
+where the optimal path $\hat{\pi}: i \rightarrow j$ is computed via Dijkstra's or Floyd-Warshall in SciPy \cite{virtanen2020scipy}. The discrete form we're using is simply a graph metric \cite{tenenbaum2000global}. Under mild sampling conditions,
 $$
 d_G\left(x_i, x_j\right) \xrightarrow[k \rightarrow \infty]{ } d_{M}\left(x_i, x_j\right)=\inf _{\gamma: i \rightarrow j} \int_0^1\left\|\gamma^{\prime}(t)\right\| d t
 $$
@@ -486,9 +487,9 @@ Comparing these findings with the baseline embeddings (Table \ref{tab:emb-metric
 \end{itemize}
 
 \subsubsection*{Rationale for loop dominance}
-Under BERT+$d_{\infty}$+$W_1$, the average joint score decomposes as
+Under BERT+$d_{\infty}$+$W_1$, we can quantify how much each dimension contributes to the difference between topological spaces across all four binary splits
 $$
-H_1 = 0.86,\quad H_0 = 0.12,\quad H_2 = 0.02.
+H_1{:} 0.86,\quad H_0{:} 0.12,\quad H_2{:} 0.02.
 $$
 Loops dominate because all four categories are keyed to recurring phrases rather than isolated clusters or rare voids. We can look at this another way by comparing BERT and BoW.
 \begin{table}[H]
@@ -699,4 +700,48 @@ Sparse embeddings (BoW, TF–IDF) pair best with cosine for compact, low‐entro
 \phantomsection
 \bibliographystyle{unsrt}
 \bibliography{tda.bib}
+
+
+\clearpage
+\appendix
+\section*{Appendix: Persistence Diagrams}
+\addcontentsline{toc}{section}{Appendix: Persistence Diagrams}
+Persistence diagrams in this section were taken from our large embedding run matrix. Some entries may appear empty if the was only one connected component extremely early.
+
+% full
+\includepdf[pages=-,pagecommand={},width=\paperwidth,height=\paperheight,fitpaper=true]
+  {comparative/general/out/full.pdf}
+% Roger Ebert
+\includepdf[pages=-,pagecommand={},width=\paperwidth,height=\paperheight,fitpaper=true]
+  {comparative/general/out/Roger Ebert.pdf}
+
+% Dennis Schwartz
+\includepdf[pages=-,pagecommand={},width=\paperwidth,height=\paperheight,fitpaper=true]
+    {comparative/general/out/Dennis Schwartz.pdf}
+
+% PG
+\includepdf[pages=-,pagecommand={},width=\paperwidth,height=\paperheight,fitpaper=true]
+  {comparative/general/out/PG.pdf}
+
+% R
+\includepdf[pages=-,pagecommand={},width=\paperwidth,height=\paperheight,fitpaper=true]
+  {comparative/general/out/R.pdf}
+
+% Fresh
+\includepdf[pages=-,pagecommand={},width=\paperwidth,height=\paperheight,fitpaper=true]
+  {comparative/general/out/Fresh.pdf}
+
+% Rotten
+\includepdf[pages=-,pagecommand={},width=\paperwidth,height=\paperheight,fitpaper=true]
+  {comparative/general/out/Rotten.pdf}
+
+% Comedy
+\includepdf[pages=-,pagecommand={},width=\paperwidth,height=\paperheight,fitpaper=true]
+  {comparative/general/out/Comedy.pdf}
+
+% Drama
+\includepdf[pages=-,pagecommand={},width=\paperwidth,height=\paperheight,fitpaper=true]
+  {comparative/general/out/Drama.pdf}
+  
+
 \end{document}

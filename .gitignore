@@ -4,6 +4,5 @@ __pycache__
 *.aux
 *.lof
 *.log
-*.pdf
 *.aux
 *.synctex.gz
