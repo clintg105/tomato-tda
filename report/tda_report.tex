@@ -61,10 +61,26 @@
 \maketitle
 \tableofcontents % Output the contents section
 
+\section{Introduction}
+Topological Data Analysis (TDA) has emerged as a powerful framework for analyzing complex, high-dimensional data by capturing its shape and structure using tools from algebraic topology. While TDA has found success in various domains including image analysis, genomics, and material science, its application to natural language processing (NLP) and text analysis remains relatively unexplored.
+
+This study investigates the potential of TDA for understanding and classifying movie reviews. Reviews constitute a rich domain of study as they combine objective descriptions, subjective opinions, and stylistic elements that may be captured by topological features. Our work is motivated by several key questions:
+
+\begin{itemize}
+    \item Can topological features of text embeddings effectively distinguish between different categories of movie reviews (e.g., by genre, sentiment, or critic)?
+    \item How do different text embedding methods (Bag of Words, TF-IDF, BERT) and distance metrics influence the resulting topological signatures?
+    \item Can persistent homology reveal meaningful patterns in review text that traditional NLP approaches might miss?
+\end{itemize}
+
+We present a framework that combines modern NLP embedding techniques with computational topology. By analyzing 54 combinations of embeddings and metrics across 270 metric spaces, we systematically evaluate which approaches best capture the semantic and structural information in review text. Our methodology leverages persistent homology to extract topological signatures that characterize the "shape" of the data in embedding space, then applies various metrics to quantify differences between these signatures.
+
+The remainder of this report is structured as follows: In the Methodology section, we describe our software tools, dataset, embedding methods, and the various distance metrics used in our analysis. Next, we explore the topological structures discovered in our data and present insights on their persistence and entropy characteristics. We then evaluate how well different embedding-metric combinations discriminate between review categories. The report concludes with a summary of our key findings and potential directions for future work in applying TDA to text analysis.
+
 \section{Methodology}
 
 \subsection{Repository}
-We used NumPy arrays for data and boundary matrices \cite{harris2020array}, computed barcodes via Ripser \cite{bauer2021ripser}, manipulated and visualized diagrams with Persim \cite{persim2024persim}, and evaluated Wasserstein distances using the POT optimal‐transport toolbox \cite{flamary2021pot}.
+We used NumPy arrays for data and boundary matrices, computed barcodes via Ripser, manipulated and visualized diagrams with Persim, and evaluated Wasserstein distances using the POT optimal‐transport toolbox.
+
 \subsection{Data Set}
 
 \subsubsection{Stratification}

@@ -1,25 +1,4 @@
-\begin{thebibliography}{1}
-
-\bibitem{harris2020array}
-Charles~R. Harris, K.~Jarrod Millman, Stefan~J. van~der Walt, Ralf Gommers, Pauli Virtanen, David Cournapeau, Eric Wieser, Julian Taylor, Sebastian Berg, Nathaniel~J. Smith, Robert Kern, Matti Picus, Stephan Hoyer, Marten~H. van Kerkwijk, Matthew Brett, Joshua Wilson, K.~Jarrod Millman, Nikolay Mayorov, Andrew R.~J. Nelson, and Eric Jones.
-\newblock Array programming with {NumPy}.
-\newblock {\em Nature}, 585(7825):357--362, 2020.
-
-\bibitem{bauer2021ripser}
-Ulrich Bauer.
-\newblock Ripser: efficient computation of vietoris--rips persistence barcodes.
-\newblock {\em Journal of Applied and Computational Topology}, 5(3):391--423, 2021.
-
-\bibitem{persim2024persim}
-{scikit-tda/persim contributors}.
-\newblock {persim}: a python package for persistence diagrams.
-\newblock \url{https://github.com/scikit-tda/persim}, 2024.
-\newblock commit v0.3.8.
-
-\bibitem{flamary2021pot}
-R{\'e}mi Flamary, Nicolas Courty, Alexandre Gramfort, Mokhtar~Z. Alaya, Aur{\'e}lie Boisbunon, Stanislas Chambon, Laetitia Chapel, Adrien Corenflos, Kilian Fatras, Nemo Fournier, L{\'e}o Gautheron, Nathalie T.~H. Gayraud, Hicham Janati, Alain Rakotomamonjy, Ievgen Redko, Antoine Rolet, Antony Schutz, Vivien Seguy, Danica~J. Sutherland, Romain Tavenard, Alexander Tong, and Titouan Vayer.
-\newblock Pot: Python optimal transport.
-\newblock {\em Journal of Machine Learning Research}, 22:78:1--78:8, 2021.
+\begin{thebibliography}{10}
 
 \bibitem{edelsbrunner2009computational}
 Herbert Edelsbrunner and John Harer.
@@ -31,9 +10,58 @@ O.~Ya. Viro, O.~A. Ivanov, N.~Yu. Netsvetaev, and V.~M. Kharlamov.
 \newblock {\em Elementary Topology: Problem Textbook}.
 \newblock American Mathematical Society, Providence, RI, 2008.
 
+\bibitem{villani2008optimal}
+C.~Villani.
+\newblock {\em Optimal Transport: Old and New}.
+\newblock Grundlehren der mathematischen Wissenschaften. Springer Berlin Heidelberg, 2008.
+
+\bibitem{flamary2021pot}
+R{\'e}mi Flamary, Nicolas Courty, Alexandre Gramfort, Mokhtar~Z. Alaya, Aur{\'e}lie Boisbunon, Stanislas Chambon, Laetitia Chapel, Adrien Corenflos, Kilian Fatras, Nemo Fournier, L{\'e}o Gautheron, Nathalie T.~H. Gayraud, Hicham Janati, Alain Rakotomamonjy, Ievgen Redko, Antoine Rolet, Antony Schutz, Vivien Seguy, Danica~J. Sutherland, Romain Tavenard, Alexander Tong, and Titouan Vayer.
+\newblock Pot: Python optimal transport.
+\newblock {\em Journal of Machine Learning Research}, 22:78:1--78:8, 2021.
+
+\bibitem{cuturi2013sinkhorn}
+Marco Cuturi.
+\newblock Sinkhorn distances: Lightspeed computation of optimal transportation distances, 2013.
+
+\bibitem{virtanen2020scipy}
+Pauli Virtanen, Ralf Gommers, Travis~E. Oliphant, and et~al.
+\newblock {SciPy} 1.0: Fundamental algorithms for scientific computing in python.
+\newblock {\em Nature Methods}, 17:261--272, 2020.
+
+\bibitem{tenenbaum2000global}
+Joshua~B Tenenbaum, Vin~de Silva, and John~C Langford.
+\newblock A global geometric framework for nonlinear dimensionality reduction.
+\newblock {\em science}, 290(5500):2319--2323, 2000.
+
+\bibitem{edelsbrunner2014short}
+Herbert Edelsbrunner.
+\newblock {\em A Short Course in Computational Geometry and Topology}.
+\newblock Springer International Publishing, 2014.
+
+\bibitem{zomorodian2005topology}
+Afra~J. Zomorodian.
+\newblock {\em Topology for Computing}.
+\newblock Cambridge University Press, 2005.
+
+\bibitem{bauer2021ripser}
+Ulrich Bauer.
+\newblock Ripser: efficient computation of vietoris--rips persistence barcodes.
+\newblock {\em Journal of Applied and Computational Topology}, 5(3):391--423, 2021.
+
+\bibitem{cohen2007stability}
+David Cohen-Steiner, Herbert Edelsbrunner, and John Harer.
+\newblock Stability of persistence diagrams.
+\newblock {\em Discrete \& Computational Geometry}, 37(1):103--120, 2007.
+
 \bibitem{adams2017persistence}
 Henry Adams, Sofya Chepushtanova, Tegan Emerson, Eric Hanson, Michael Kirby, Francis Motta, Rachel Neville, Chris Peterson, Patrick Shipman, and Lori Ziegelmeier.
 \newblock Persistence images: A stable vector representation of persistent homology.
 \newblock {\em Journal of Machine Learning Research}, 18:1--35, 2017.
+
+\bibitem{bubenik2015statistical}
+Peter Bubenik.
+\newblock Statistical topological data analysis using persistence landscapes.
+\newblock {\em Journal of Machine Learning Research}, 16:77--102, 2015.
 
 \end{thebibliography}
