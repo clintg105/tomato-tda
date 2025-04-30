@@ -9,6 +9,11 @@
     "H1": 23.59169597562804,
     "H2": 35.6225345875711
   },
+  "bert_strat800_mpinf": {
+    "H0": "Infinity",
+    "H1": 0.114992710252603,
+    "H2": 0.11121871865731155
+  },
   "tfidf_strat800_cos": {
     "H0": "Infinity",
     "H1": 0.036600708961486816,
@@ -19,12 +24,22 @@
     "H1": 4.030186403925193,
     "H2": "NaN"
   },
+  "tfidf_strat800_mpinf": {
+    "H0": "Infinity",
+    "H1": "NaN",
+    "H2": "NaN"
+  },
   "bow_strat800_cos": {
     "H0": "Infinity",
     "H1": 0.11210364103317261,
     "H2": 0.06305134296417236
   },
   "bow_strat800_mp1": {
+    "H0": "Infinity",
+    "H1": "NaN",
+    "H2": "NaN"
+  },
+  "bow_strat800_mpinf": {
     "H0": "Infinity",
     "H1": "NaN",
     "H2": "NaN"

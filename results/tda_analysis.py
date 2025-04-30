@@ -25,7 +25,7 @@ PLOTS_DIR.mkdir(exist_ok=True, parents=True)
 
 DATASETS = ["bert_strat800", "tfidf_strat800", "bow_strat800"]
 REDUCTIONS = ["pooled"]
-BASE_METRICS = ["cos", "mp1"] 
+BASE_METRICS = ["cos", "mp1", "mpinf"] 
 SPLITS = ["Dennis Schwartz", "Roger Ebert", "Fresh", "Rotten", "PG", "R", "Comedy", "Drama"]
 
 tm = TDAManager()

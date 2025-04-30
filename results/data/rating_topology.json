@@ -15,6 +15,14 @@
     "H2_lifetime_ratio": 0.9454144708847508,
     "H2_max_persistence_diff": 0.5661773681640625
   },
+  "bert_strat800_mpinf": {
+    "H0_lifetime_ratio": 1.01559772041165,
+    "H0_max_persistence_diff": -0.16131889820098877,
+    "H1_lifetime_ratio": 1.048571946130239,
+    "H1_max_persistence_diff": 0.023043334484100342,
+    "H2_lifetime_ratio": 1.0760940883369854,
+    "H2_max_persistence_diff": -0.004933834075927734
+  },
   "tfidf_strat800_cos": {
     "H0_lifetime_ratio": 1.0039217160833938,
     "H0_max_persistence_diff": 0.0,
@@ -27,6 +35,12 @@
     "H0_lifetime_ratio": 1.005228951753622,
     "H0_max_persistence_diff": -0.4925670623779297,
     "H1_max_persistence_diff": 0.008653640747070312,
+    "H2_max_persistence_diff": 0
+  },
+  "tfidf_strat800_mpinf": {
+    "H0_lifetime_ratio": 0.9941740424723586,
+    "H0_max_persistence_diff": 0.11929160356521606,
+    "H1_max_persistence_diff": 0.07273569703102112,
     "H2_max_persistence_diff": 0
   },
   "bow_strat800_cos": {
@@ -42,6 +56,12 @@
     "H0_max_persistence_diff": -1.0,
     "H1_lifetime_ratio": 1.0,
     "H1_max_persistence_diff": 0.0,
+    "H2_max_persistence_diff": 0
+  },
+  "bow_strat800_mpinf": {
+    "H0_lifetime_ratio": 1.0,
+    "H0_max_persistence_diff": 0.0,
+    "H1_max_persistence_diff": 0,
     "H2_max_persistence_diff": 0
   }
 }

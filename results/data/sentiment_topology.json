@@ -15,6 +15,14 @@
     "H2_fresh_rotten_ratio": 1.9714285714285715,
     "H2_entropy_diff": 0.6492084487042189
   },
+  "bert_strat800_mpinf": {
+    "H0_fresh_rotten_ratio": 1.0210526315789474,
+    "H0_entropy_diff": 0.020865740243382724,
+    "H1_fresh_rotten_ratio": 1.1131034482758622,
+    "H1_entropy_diff": 0.08430657009010467,
+    "H2_fresh_rotten_ratio": 1.1317600786627335,
+    "H2_entropy_diff": 0.11652869351489858
+  },
   "tfidf_strat800_cos": {
     "H0_fresh_rotten_ratio": 1.005181347150259,
     "H0_entropy_diff": 0.017852654592932282,
@@ -26,6 +34,12 @@
   "tfidf_strat800_mp1": {
     "H0_fresh_rotten_ratio": 1.0131926121372032,
     "H0_entropy_diff": 0.02691133366375631,
+    "H1_entropy_diff": 0,
+    "H2_entropy_diff": 0
+  },
+  "tfidf_strat800_mpinf": {
+    "H0_fresh_rotten_ratio": 1.0131926121372032,
+    "H0_entropy_diff": 0.02240983603148372,
     "H1_entropy_diff": 0,
     "H2_entropy_diff": 0
   },
@@ -42,6 +56,12 @@
     "H0_entropy_diff": 0.019795039865884156,
     "H1_fresh_rotten_ratio": 1.0,
     "H1_entropy_diff": 0.0,
+    "H2_entropy_diff": 0
+  },
+  "bow_strat800_mpinf": {
+    "H0_fresh_rotten_ratio": 1.0131926121372032,
+    "H0_entropy_diff": 0.013140793061057643,
+    "H1_entropy_diff": 0,
     "H2_entropy_diff": 0
   }
 }
