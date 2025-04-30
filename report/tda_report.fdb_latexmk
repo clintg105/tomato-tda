@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex tda_report"] 1745981711 "tda_report.aux" "tda_report.bbl" "tda_report" 1745981716 0
+["bibtex tda_report"] 1745983246 "tda_report.aux" "tda_report.bbl" "tda_report" 1745983867 0
   "./tda.bib" 1745959557 7575 6b926176745bf1c8d441b243c32d5be0 ""
   "/usr/local/texlive/2023/texmf-dist/bibtex/bst/base/unsrt.bst" 1292289607 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "tda_report.aux" 1745981716 16288 8fd4da67c4b0a501f3314b6a921c822a "pdflatex"
+  "tda_report.aux" 1745983867 16472 a51ca034ff765a0d8a2e268d5b67e91f "pdflatex"
   (generated)
   "tda_report.bbl"
   "tda_report.blg"
   (rewritten before read)
-["pdflatex"] 1745981711 "/Users/lianghaochen/tomato-tda/report/tda_report.tex" "tda_report.pdf" "tda_report" 1745981716 0
+["pdflatex"] 1745983862 "/Users/lianghaochen/tomato-tda/report/tda_report.tex" "tda_report.pdf" "tda_report" 1745983867 0
   "../results/data/plots//comparative/critic_name/bottleneck_heatmap.png" 1745741504 112999 7dfd90e386eb6cceb3443b05e2ee60f4 ""
   "../results/data/plots//comparative/general/DiscrimStructureV2.png" 1745948155 4605579 fbae6b7f277d879475b1f68bba624bff ""
   "../results/data/plots//comparative/general/FullStructureV2.png" 1745948155 564068 b2ef91a4c46b482787631ed3a6bf88c0 ""
@@ -21,7 +21,7 @@
   "../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png" 1745888426 331909 df6b9569ec87239fff59a0c8fcb9d162 ""
   "../results/data/plots//topological_complexity_barplot.png" 1745888427 162984 1555d9d1985df08953daca06305606a9 ""
   "../results/data/plots//topological_complexity_heatmap.png" 1745888427 242782 9bd6a76ffcf4cdf8bcea4b0de698c967 ""
-  "/Users/lianghaochen/tomato-tda/report/tda_report.tex" 1745981705 42587 5680971132afd4e19bfa8900c4e6e9f6 ""
+  "/Users/lianghaochen/tomato-tda/report/tda_report.tex" 1745983861 42368 59fcf0df2222b30f816192f158ec8c1b ""
   "/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/helvetic/phvb7t.tfm" 1136768653 2240 eb56c13537f4d8a0bd3fafc25572b1bd ""
@@ -181,11 +181,11 @@
   "/usr/local/texlive/2023/texmf-var/web2c/pdftex/pdflatex.fmt" 1706040084 7883460 77b3d4351c5500f9109c5ee9396b49c2 ""
   "/usr/local/texlive/2023/texmf.cnf" 1678822455 577 1b2b1af17af2508fb20dd85783af4050 ""
   "SelfArx.cls" 1745948155 8092 737c8d1591f9545f221c870f69e6d87b ""
-  "tda_report.aux" 1745981716 16288 8fd4da67c4b0a501f3314b6a921c822a "pdflatex"
-  "tda_report.bbl" 1745981711 3019 004edb39b22337c7ed5a1c3b68c2ef4b "bibtex tda_report"
-  "tda_report.out" 1745981716 5872 ca77c0f91443fe5ef2f2e1277c6b814c "pdflatex"
-  "tda_report.tex" 1745981705 42587 5680971132afd4e19bfa8900c4e6e9f6 ""
-  "tda_report.toc" 1745981716 3370 2500c3ae0da712b4d5e7e1ac9b5d5141 "pdflatex"
+  "tda_report.aux" 1745983867 16472 a51ca034ff765a0d8a2e268d5b67e91f "pdflatex"
+  "tda_report.bbl" 1745983247 3019 004edb39b22337c7ed5a1c3b68c2ef4b "bibtex tda_report"
+  "tda_report.out" 1745983867 5872 ca77c0f91443fe5ef2f2e1277c6b814c "pdflatex"
+  "tda_report.tex" 1745983861 42368 59fcf0df2222b30f816192f158ec8c1b ""
+  "tda_report.toc" 1745983867 3370 2500c3ae0da712b4d5e7e1ac9b5d5141 "pdflatex"
   (generated)
   "tda_report.aux"
   "tda_report.log"
