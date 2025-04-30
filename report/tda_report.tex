@@ -23,9 +23,6 @@
 
 \usepackage{lipsum}
 \usepackage{graphicx}
-\usepackage{eso-pic}
-\usepackage{transparent}
-\usepackage{tikz}
 \usepackage{booktabs}
 \usepackage{cite}
 \usepackage{dblfloatfix}  % fix bottom placement
@@ -59,15 +56,6 @@ Our reproducible pipeline runs end-to-end in under 5 hours on a laptop and yield
 \Keywords{}
 \newcommand{\keywordname}{Keywords}
 
-\AddToShipoutPictureBG{%
-  \ifnum\value{page}>1
-	  \begin{tikzpicture}[remember picture, overlay]
-	    \node[anchor=north west, opacity=0.15] at ([xshift=0.5cm]current page.north west) {
-	      \includegraphics[width=2.2cm]{comparative/general/logo.png}
-	    };
-	  \end{tikzpicture}
-  \fi
-}
 
 \begin{document}
 
@@ -99,16 +87,60 @@ The remainder of this report is structured as follows: In the Methodology sectio
 \label{fig:Repo}
 \end{figure*}
 
-We began by loading the raw kaggle review data into pandas DataFrames for stratification \cite{kaggle_rotten_tomatoes, mckinney2010pandas}. Text was cleaned, tokenized, POS-tagged, and lemmatized with NLTK \cite{bird2009nltk}. Documents were encoded with bag-of-words and TF-IDF using scikit-learn \cite{pedregosa2011scikit}, while in parallel we generated BERT token embeddings via HuggingFace Transformers and PyTorch \cite{wolf2020transformers,paszke2019pytorch}. Embeddings and feature matrices were stored as NumPy arrays for downstream processing \cite{harris2020array}. We then built sparse distance graphs and boundary matrices with SciPy and scikit-learn utilities \cite{virtanen2020scipy,pedregosa2011scikit}, approximating geodesic distances on the inferred manifold by constructing k-nearest-neighbor graphs and computing all-pairs shortest paths \cite{virtanen2020scipy}.\\
-From each boundary matrix we formed a Vietoris–Rips filtration and extracted persistence barcodes using Ripser \cite{bauer2021ripser}. Persistence diagrams were post-processed and plotted with persim \cite{persim2024persim}. Finally, we measured Wasserstein distances between diagrams with the POT toolbox, both exact and using Sinkhorn regularization \cite{flamary2021pot, cuturi2013sinkhorn}. The complete dataflow is outlined in Fig. \ref{fig:Repo}.
+We began by loading the raw Kaggle review data into pandas DataFrames \cite{kaggle_rotten_tomatoes, mckinney2010pandas}. Text was cleaned, tokenized, POS-tagged, and lemmatized with NLTK \cite{bird2009nltk}. Documents were encoded with bag-of-words and TF-IDF using scikit-learn \cite{pedregosa2011scikit}, while in parallel we generated BERT token embeddings via HuggingFace Transformers and PyTorch \cite{wolf2020transformers,paszke2019pytorch}. Embeddings and feature matrices were stored as NumPy arrays for downstream processing \cite{harris2020array}. We then built sparse distance graphs and boundary matrices with SciPy and scikit-learn utilities \cite{virtanen2020scipy,pedregosa2011scikit}, approximating geodesic distances on the inferred manifold by constructing k-nearest-neighbor graphs and computing all-pairs shortest paths \cite{virtanen2020scipy}.\\
+From each boundary matrix we formed a Vietoris–Rips filtration and extracted persistence barcodes using Ripser \cite{bauer2021ripser}. Persistence diagrams were post-processed and plotted with persim \cite{persim2024persim}. Finally, we measured Wasserstein distances between diagrams with the POT toolbox, using both Sinkhorn regularization \cite{cuturi2013sinkhorn} and sliced approximations \cite{bonneel2015sliced,flamary2021pot}. The complete dataflow is outline in Fig. \ref{fig:Repo}
 
 
 \subsection{Data Set}
+The original Kaggle dataset contained 1,130,017 reviews. In order to make our topological data analysis tractable, we downsampled to 800 reviews using the following scheme. 
 
 \subsubsection{Stratification}
+We identified four features of interest (besides the reviews themselves): \textit{critic\_name}, \textit{content\_rating}, \textit{review\_type}, and \textit{genres}. For each of these features, we selected two values of interest in order to create binary splits for later comparison. For \textit{critic\_name}, we selected the two most prolific critics in the data set, \textit{Roger Ebert} and \textit{Dennis Schwartz}. For \textit{content\_rating}, we selected \textit{PG} and \textit{R}. The \textit{review\_type} feature was already binary, containing the values \textit{Fresh} and \textit{Rotten}. The \textit{genres} feature was multiclass (i.e. each film can have multiple genre tags). Thus, we identified films that contained either the \textit{Drama} or \textit{Comedy} tag, but not both. In this way, we created 16 possible combinations:
+\begin{align*}
+    &\{\textrm{Roger Ebert}, \textrm{Dennis Schwartz}\} \times \\
+    &\{\textrm{PG}, \textrm{R}\} \times \\
+    &\{\textrm{Fresh}, \textrm{Rotten}\} \times \\
+    &\{\textrm{Drama}, \textrm{Comedy}\}. 
+\end{align*}
+Next, we randomly sampled 50 reviews from each of these combinations, resulting in a downsampled data set of 800 reviews total, stratified across each of the four binary categories.
 
-\subsection{Real Embeddings}
-We mostly consider a single reviews to be single points embedded in $\mathbb{R}^d$, except for when we use metrics based on \nameref{ws}.
+\subsubsection{Preprocessing}
+For text embeddings that rely on pretrained transformer architectures (e.g. BERT), it is often unnecessary to preprocess the text. However, for classical NLP embedding techniques (e.g. Bag-of-Words, TF-IDF), preprocessing is often a prerequisite. Thus, when utilizing the latter techniques, we put our data through the following preprocessing pipeline. 
+
+First, the characters in each review were standardized. This was accomplished by removing all non-alphabet characters (excluding spaces), lowercasing the remaining characters, and standardizing the remaining space between words to be a single space. In NLP, ``stopwords" are words which are common in natural language, yet convey little semantic meaning (e.g. ``a", ``the", ``of", etc). Next, using the NLTK \textit{stopwords} module, all common English stopwords were removed from the reviews. Next, using the NLTK \textit{pos\_tag} module, each word was tagged with its part-of-speech (e.g. ``noun", ``verb", ``adjective", etc.). These part-of-speech tags then aid in lemmatization, a transformation which reduces words to their lemmas (e.g. the verbs ``walking", ``walks", "walked" all share the same lemma``walk"). Finally, using the NLTK \textit{WordNetLemmatizer} module, we lemmatized all of the remaining words in the review data.
+
+Let us now illustrate the full preprocessing pipeline on a review from our data set. The review 
+
+\vspace{0.1cm}
+\textit{I appreciate how entertaining it was, its riveting performances by the two stars and how goofy was the absurdist parody.}
+
+\vspace{0.1cm}
+gets preprocessed into
+
+\vspace{0.1cm}
+\textit{appreciate entertain rivet performance two star goofy absurdist parody}
+
+\vspace{0.1cm}
+. With this preprocessing pipeline in place as an option, we are now ready to tackle text embeddings. 
+
+\subsection{Text Embeddings}
+The goal of text embedding is to represent each review as a point in $\mathbb{R}^n$ (or in the case of BERT, to embed each word of each review as its own point in $\mathbb{R}^n$). We explored the three following embedding techniques. 
+
+\subsubsection{Bag-of-Words}
+The \textit{Bag-of-Words} (BoW) embedding utilizes preprocessed text and simply counts the occurrence of each word in the vocabulary (i.e. every distinct word which appears across the entire corpus). To further simplify BoW, we opted to use the binary option, where each word is either counted as 1 (appears) or 0 (does not appear) for each review. Furthermore, to reduce the vocabulary size, we limited the scope to words which appear in more than one review. After this, we ended up with a vocabulary of size $1120$, and hence our BoW embedding mapped each review to a point in $\mathbb{R}^{1120}$, or more specifically, $\{0,1\}^{1120}$. This is our crudest embedding scheme. 
+
+\subsubsection{TF-IDF}
+We utilized \textit{Term Frequency-Inverse Document Frequency} (TF-IDF) embeddings to assign a real-valued scalar to each unigram (i.e. one-word phrase), bigram (i.e. two-word phrase), and trigram (i.e. three-word phrase) of each review. Note that TF-IDF relies on preprocessed data. For a given phrase (i.e. unigram, bigram, or trigram) $x$ appearing in a review $y$, the TF-IDF embedding maps it to the scalar $w_{x,y}$, which is defined as
+$$
+    w_{x,y} = \textrm{tf}_{x,y} \times \log\left(\frac{N}{\textrm{df}_x}\right),
+$$
+where the ``term frequency" $\textrm{tf}_{x,y}$ is the number of times the phrase $x$ appears in review $y$, the ``document frequency" $\textrm{df}_{x}$ is the number of reviews containing the phrase $x$, and $N$ is the total number of reviews (in our case $N=800$). Then, the embedding dimension of each review is the total number of unique phrases (i.e. unigrams, bigrams, trigrams) appearing in the document. Once again, to reduce noise, we limited our consideration to phrases which appeared in more than one document. After that, we ended up with $1845$ unique phrases, and hence our TF-IDF embedding mapped each review to a point in $\mathbb{R}^{1845}$.
+
+We see that TF-IDF is more advanced than BoW in terms of complexity. Unlike our binary BoW embedding, TF-IDF takes into account short phrases in addition to words, and also accounts for how frequently they occur. However, neither BoW nor TF-IDF takes into account context.
+
+\subsubsection{BERT}
+Our most complex embedding, which takes into account context, is Google's \textit{Bidirectional Encoder Representations from Transformers} (BERT) model. This is a model that understands context (hence the term ``bidirectional"), so it does not require preprocessed data. The model has a fixed embedding dimension, $768$, which is a result of the model being pretrained on \textit{Wikipedia} and other large corpora. Rather than embedding each review in $\mathbb{R}^{768}$, BERT instead embeds each word of each review in $\mathbb{R}^{768}$. From there, we are free to either pool (i.e. average) the individual word vectors of each review into a single review vector in $\mathbb{R}^{768}$ (as is the case for most of our metrics), or we may use word-wise distances within and between reviews (as is the case for \nameref{ws}). Note that BERT provides our most sophisticated embedding, and with a smaller embedding dimension (when pooled) than BoW or TF-IDF.
+
 \subsection{Metric Spaces}
 To apply TDA, we require a notion of distance between points (reviews) in our feature space, since persistent homology typically operates on a metric space \cite{edelsbrunner2009computational}.
 \subsubsection{Cosine Distance}
@@ -508,6 +540,16 @@ Dennis Schwartz's reviews exhibit 7 dimension-1 features (loops) and 3 dimension
 
 Comparing the Betti curves in Figure \ref{fig:betti_curves}, Schwartz's reviews maintain higher persistence in dimension-1 features, suggesting a more structured approach to criticism. The dimension-2 features indicate conceptual boundaries—areas where he deliberately avoids certain types of analysis or approaches films from multiple contrasting perspectives.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{comparative/critic_name/bottleneck_heatmap.png}
+\caption{Bottleneck distance heatmap between different critics. The distance of 0.197 between Dennis Schwartz and Roger Ebert indicates meaningful topological distinctions in their critical approaches.}
+\label{fig:bottleneck_distance}
+\end{figure}
+\vspace{-0.3cm}
+
+The bottleneck distance between Schwartz and Ebert (Figure \ref{fig:bottleneck_distance}) quantifies the difference in their topological signatures, suggesting fundamentally different cognitive frameworks despite reviewing the same films.
+
 Notably, the Betti curves exhibit a distinctive spike for Schwartz's reviews at a filtration value of approximately 0.3, indicating a threshold at which many loops simultaneously form in the embedding space. This topological transition corresponds to a characteristic scale at which Schwartz's critical vocabulary forms conceptual relationships.
 
 Schwartz's prose pivots between scholarly commentary and plain-spoken judgment—the dual registers that our analysis interprets as "loops'' bridging academic and accessible regions of the embedding:
@@ -631,13 +673,19 @@ This complexity measure allows us to systematically compare different combinatio
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\columnwidth]{topological_complexity_metric_barplot.png}
-\caption{Average topological complexity by encoding method+metric and category}
+\includegraphics[width=\columnwidth]{topological_complexity_barplot.png}
+\caption{Average topological complexity by encoding method and category, showing distinct differences in complexity between content ratings.}
 \label{fig:complexity_barplot}
 \end{figure}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{topological_complexity_heatmap.png}
+\caption{Normalized topological complexity across different datasets and categories, showing the relative effectiveness of different metrics and encodings.}
+\label{fig:complexity_heatmap}
+\end{figure}
 
-Our analysis of various distance metrics across different encoding methods reveals clear patterns in their effectiveness for topological data analysis of movie reviews. As shown in Figure \ref{fig:complexity_barplot}, certain combinations of encodings and metrics consistently outperform others in discriminating between meaningful categories.
+Our comprehensive analysis of various distance metrics across different encoding methods reveals clear patterns in their effectiveness for topological data analysis of movie reviews. As shown in Figure \ref{fig:complexity_heatmap} and Table \ref{tab:best-metrics}, certain combinations of encodings and metrics consistently outperform others in discriminating between meaningful categories.
 
 BERT embeddings combined with the Minkowski \(p=\infty\) (maximum) metric demonstrated superior performance for detecting dimension-1 homology features, with discriminability scores of 158.5, 160.7, and 191.7 for drama/comedy, review type, and critic name categories, respectively. This suggests that the maximum difference between any pair of components in the BERT embedding vectors captures essential semantic structures that distinguish writing styles and content categories.
 
@@ -654,7 +702,7 @@ In conclusion, while no single metric is optimal for all analytical purposes, BE
 \section{Conclusion}
 Persistent homology reveals that the most discriminative information in movie‐review embeddings comes from one-dimensional loops: across sentiment, genre, critic identity, and MPAA rating, $H_1$ captures over 85\% of the separability signal, with connected components and voids contributing the rest.  In every task, BERT coupled with the Chebyshev norm and 1-Wasserstein distance outperformed cosine and $\ell_1$ baselines by more than an order of magnitude.  Notably, adding entropic regularization made Wasserstein computations feasible at scale but did not change which encoder–metric pair ranked highest; similarly, switching to a $k$-NN geodesic metric reduced spurious long bars yet preserved the order of top performers.
 
-Sparse embeddings (BoW, TF–IDF) pair best with cosine for compact, low‐entropy diagrams, whereas dense BERT embeddings require extreme metrics like Chebyshev to expose semantic loops.  This gives a clear workflow: select an embedding based on lexical sparsity, choose a distance that amplifies that embedding’s natural variation, and validate with the complexity index before committing to expensive Wasserstein computations.  Future work will test higher‐order homology, richer transport costs, and time‐varying filtrations on temporal text corpora.
+We also show that a simple complexity index—summing feature counts weighted by lifetime and homological dimension—predicts classification accuracy with $R^2=0.92$, making it a useful heuristic when full diagram contrasts are too costly.  Sparse embeddings (BoW, TF–IDF) pair best with cosine for compact, low‐entropy diagrams, whereas dense BERT embeddings require extreme metrics like Chebyshev to expose semantic loops.  This gives a clear workflow: select an embedding based on lexical sparsity, choose a distance that amplifies that embedding’s natural variation, and validate with the complexity index before committing to expensive Wasserstein computations.  Future work will test higher‐order homology, richer transport costs, and time‐varying filtrations on temporal text corpora.
 
 \phantomsection
 \bibliographystyle{unsrt}
