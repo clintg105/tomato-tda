@@ -1162,14 +1162,14 @@ INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
 INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
 INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
 INPUT ../results/data/plots//critic_name/Roger Ebert_diagram.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Fresh.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
-INPUT ../results/data/plots//persistence_diagram_bert_strat800_cos_Rotten.png
+INPUT ../results/data/plots//review_type/Fresh_diagram.png
+INPUT ../results/data/plots//review_type/Fresh_diagram.png
+INPUT ../results/data/plots//review_type/Fresh_diagram.png
+INPUT ../results/data/plots//review_type/Fresh_diagram.png
+INPUT ../results/data/plots//review_type/Rotten_diagram.png
+INPUT ../results/data/plots//review_type/Rotten_diagram.png
+INPUT ../results/data/plots//review_type/Rotten_diagram.png
+INPUT ../results/data/plots//review_type/Rotten_diagram.png
 INPUT ../results/data/plots//content_rating/betti_curves_H1.png
 INPUT ../results/data/plots//content_rating/betti_curves_H1.png
 INPUT ../results/data/plots//content_rating/betti_curves_H1.png
