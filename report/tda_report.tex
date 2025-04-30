@@ -172,7 +172,7 @@ $$
 W_p^{(\epsilon)}(P, Q)=\left(\min _{\pi \in \Pi(P, Q)} \sum_{i, j} \pi_{i j} d\left(\mathbf{x}_i, \mathbf{y}_j\right)^p+\epsilon \sum_{i, j} \pi_{i j} \ln \pi_{i j}\right)^{1 / p} .
 $$
 The extra entropy term $H(\pi) = -\sum_{ij}\pi_{ij}\ln \pi_{ij}$ encourages the optimal $\pi$ to be more diffuse (higher entropy), avoiding overly sparse solutions and greatly speeding up computation via iterative proportional fitting (the Sinkhorn-Knopp algorithm) \cite{cuturi2013sinkhorn}. In this work, we used a typically computed $W_1^{(0.01)}$ unless explicitly stated otherwise.\\
-For comparing text embedding distributions, $W_p$ gives a meaningful measure: if two sets of reviews have very similar content and style distribution, the Wasserstein distance will be low (cheap transport), whereas if one set of reviews uses very different language (requiring moving probability mass far in the embedding space), the distance will be high.
+For comparing text embedding distributions, if two sets of reviews have very similar content and style distribution, the Wasserstein distance will be low (cheap transport), whereas if one set of reviews uses very different language (requiring moving probability mass far in the embedding space), the distance will be high.
 \subsubsection{Graph-Based Geodesic Distances}
 Imagine for a moment that our movie-review embeddings aren't just scattered in $\mathbb{R}^D$ but actually lie on some hidden, winding "topic manifold" $M$. We can approximate the structure of this manifold by building the $k$-nearest-neighbor graph $G$ on our points $\left\{x_i\right\}$, weighing each edge by \textit{any of the above metrics} $d\left(x_i, x_j\right)$, and defining
 $$
@@ -263,7 +263,6 @@ The Pearson statistics (Tab.\,\ref{tab:corr}) show strong entropic coupling ($E_
 
 \begin{table}[h]
   \centering
-  \caption{Key correlations (all 54 metric pairs).}
   \label{tab:corr}
   \begin{tabular}{lc}
   \toprule
@@ -289,7 +288,7 @@ Before we compare diagrams across categories, we need to understand what each \e
 	\item $\tilde E$ tells us how spread out those bars are, and
 	\item $\eta$ says how much “height” we buy per bit of entropy.
 \end{itemize}
-Rows with zero $\tilde E$ were discarded so the ratio never explodes.\\
+Where the medians are taken over all categorical splits. Rows with zero $\tilde E$ were discarded so the ratio never explodes.\\
 
 
 \begin{table}[h]
@@ -695,7 +694,7 @@ In conclusion, while no single metric is optimal for all analytical purposes, BE
 \section{Conclusion}
 Persistent homology reveals that the most discriminative information in movie‐review embeddings comes from one-dimensional loops: across sentiment, genre, critic identity, and MPAA rating, $H_1$ captures over 85\% of the separability signal, with connected components and voids contributing the rest.  In every task, BERT coupled with the Chebyshev norm and 1-Wasserstein distance outperformed cosine and $\ell_1$ baselines by more than an order of magnitude.  Notably, adding entropic regularization made Wasserstein computations feasible at scale but did not change which encoder–metric pair ranked highest; similarly, switching to a $k$-NN geodesic metric reduced spurious long bars yet preserved the order of top performers.
 
-We also show that a simple complexity index—summing feature counts weighted by lifetime and homological dimension—predicts classification accuracy with $R^2=0.92$, making it a useful heuristic when full diagram contrasts are too costly.  Sparse embeddings (BoW, TF–IDF) pair best with cosine for compact, low‐entropy diagrams, whereas dense BERT embeddings require extreme metrics like Chebyshev to expose semantic loops.  This gives a clear workflow: select an embedding based on lexical sparsity, choose a distance that amplifies that embedding’s natural variation, and validate with the complexity index before committing to expensive Wasserstein computations.  Future work will test higher‐order homology, richer transport costs, and time‐varying filtrations on temporal text corpora.
+Sparse embeddings (BoW, TF–IDF) pair best with cosine for compact, low‐entropy diagrams, whereas dense BERT embeddings require extreme metrics like Chebyshev to expose semantic loops.  This gives a clear workflow: select an embedding based on lexical sparsity, choose a distance that amplifies that embedding’s natural variation, and validate with the complexity index before committing to expensive Wasserstein computations.  Future work will test higher‐order homology, richer transport costs, and time‐varying filtrations on temporal text corpora.
 
 \phantomsection
 \bibliographystyle{unsrt}
